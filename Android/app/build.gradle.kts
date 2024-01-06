@@ -1,11 +1,14 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    // Google services 플러그인
+    //id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.pro_diction"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.pro_diction"
@@ -47,6 +50,15 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth:22.0.0")
     implementation ("com.google.firebase:firebase-bom:32.0.0")
     implementation ("com.google.android.gms:play-services-auth:20.5.0")
+
+    // firebase BoM
+    //implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    //implementation("com.google.firebase:firebase-analytics")
+
+    // Retrofit 의존성 추가
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

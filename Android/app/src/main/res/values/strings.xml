@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Pro-Diction</string>
+    <string name="google_login_client_id">1016660677235-737fibn9iegldckhii1j4t5g7fbtmh43.apps.googleusercontent.com</string>
+    <string name="sign_in">Continue with Google</string>
+    <string name="login_text1">For your proper diction</string>
+    <string name="login_text2">바름 [Pro - Diction]</string>
 </resources>
