@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+
     // Google services 플러그인
     //id("com.google.gms.google-services")
 }
@@ -27,6 +29,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
         }
     }
     compileOptions {
@@ -35,6 +38,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -58,6 +66,29 @@ dependencies {
     // Retrofit 의존성 추가
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
+
+    // googleid
+    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
+    // view model
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
+    // ViewModel 생성함수를 편하게 사용하고 싶다면?
+    implementation ("androidx.fragment:fragment-ktx:1.5.3")
+    implementation ("androidx.activity:activity-ktx:1.6.0")
+    implementation("androidx.benchmark:benchmark-common:1.2.2")
+
+    // 서버 통신
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+
+    // define any required OkHttp artifacts without version (BOM을 위에 명시했으니, 밑의 버전들은 BOM에 맞게 적용됩니다.)
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
 
 
     testImplementation("junit:junit:4.13.2")
