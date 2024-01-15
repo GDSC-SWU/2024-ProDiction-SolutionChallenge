@@ -34,6 +34,14 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws GeneralException, ServletException, IOException, ExpiredJwtException {
         final String TOKEN_REFRESH_API_URL = "/api/v1/member/refresh";
+        final String LOGIN_API_URL = "/api/v1/member/login/oauth/google";
+
+        // uri 검사하여 jwt 검증 필터 통과 여부 결정
+        String uri = request.getRequestURI();
+        if (uri.equals(LOGIN_API_URL)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // refresh token을 헤더에 가지고 있는 경우 검증 후 token 재발급
         String refresh_token = jwtUtil.decodeHeader(false, request);

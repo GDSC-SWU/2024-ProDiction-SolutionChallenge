@@ -38,18 +38,12 @@ public class SecurityConfig {
                                 , new AntPathRequestMatcher("/css/**")
                                 , new AntPathRequestMatcher("/images/**")
                         ).permitAll()
+                        .requestMatchers("/api/v1/member/login/oauth/google").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterAfter(new JwtAuthenticationProcessingFilter(jwtUtil, responseUtil), LogoutFilter.class)
                 .addFilterBefore(new ExceptionHandlerFilter(responseUtil), JwtAuthenticationProcessingFilter.class);
 
         return httpSecurity.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring()
-                .requestMatchers("/api/v1/member/login/oauth/google")
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }
