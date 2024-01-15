@@ -30,9 +30,9 @@ public enum ErrorCode {
     LOGIN_REQUIRED(40006, HttpStatus.FORBIDDEN, "Login required."),
 
     // Google Login Error
-    CODE_REQUIRED(11000, HttpStatus.BAD_REQUEST, "Code required."),
+    CODE_REQUIRED(11000, HttpStatus.BAD_REQUEST, "Id token required."),
     LOGIN_FAILED(11001, HttpStatus.UNAUTHORIZED, "Login failed."),
-    INVALID_CODE(11002, HttpStatus.UNAUTHORIZED, "Invalid Code."),
+    INVALID_ID_TOKEN(11002, HttpStatus.UNAUTHORIZED, "Invalid Code."),
 
     // Member Error
     MEMBER_NOT_FOUND(12000, HttpStatus.UNAUTHORIZED, "Member not found.");
