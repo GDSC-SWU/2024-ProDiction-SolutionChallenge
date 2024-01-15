@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
     public void checkIsUserAndRegister(HttpServletRequest request, HttpServletResponse response) throws IOException, GeneralException, GeneralSecurityException {
         Member requestMember = googleOAuthUtil.authenticate(getIdToken(request));
 
-        Optional<Member> existingMemberOptional = memberRepository.findOneByGoogle_email(requestMember.getGoogle_email());
+        Optional<Member> existingMemberOptional = memberRepository.findOneByGoogleEmail(requestMember.getGoogleEmail());
 
         if (existingMemberOptional.isPresent()) {
             requestMember = existingMemberOptional.get();

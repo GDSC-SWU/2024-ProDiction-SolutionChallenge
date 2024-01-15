@@ -19,13 +19,13 @@ public class Member {
     private Long id;
 
     @NotNull
-    private String google_email;
+    private String googleEmail;
 
     @NotNull
-    private String google_nickname;
+    private String googleNickname;
 
     @NotNull
-    private String google_profile;
+    private String googleProfile;
 
     private Integer age;
 

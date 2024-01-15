@@ -12,7 +12,7 @@ public class ContextUser extends User {
     private final Member member;
 
     public ContextUser(Member member) {
-        super(member.getGoogle_email(), member.getGoogle_nickname(), Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())));
+        super(member.getGoogleEmail(), member.getGoogleNickname(), Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())));
         this.member = member;
     }
 }

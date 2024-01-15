@@ -31,7 +31,7 @@ public class JwtUtil {
     private String JWT_SECRET_KEY;
 
     public LoginResponseDto generateTokens(Member member) {
-        TokenClaimVo vo = new TokenClaimVo(member.getId(), member.getGoogle_email());
+        TokenClaimVo vo = new TokenClaimVo(member.getId(), member.getGoogleEmail());
 
         // 토큰 발급
         String accessToken = generateToken(true, vo);
