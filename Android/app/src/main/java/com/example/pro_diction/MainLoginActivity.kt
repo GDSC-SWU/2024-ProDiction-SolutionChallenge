@@ -58,6 +58,7 @@ class MainLoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_login)
 
         getGoogleClient()
+
         googleSignResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -73,8 +74,8 @@ class MainLoginActivity : AppCompatActivity() {
             val googleSignInOption =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
-                    .requestServerAuthCode(getString(R.string.SERVER_CLIENT_ID))
-                    .requestIdToken(getString(R.string.SERVER_CLIENT_ID))
+                    .requestServerAuthCode("1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com")
+                    .requestIdToken("1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com")
                     .build()
 
             val mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOption)
@@ -86,6 +87,7 @@ class MainLoginActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+            Log.e("account", account.toString())
             var googleTokenAuth = account?.idToken.toString()
             Log.d("token", googleTokenAuth)
             if (!googleTokenAuth.isNullOrBlank()) {
@@ -93,6 +95,7 @@ class MainLoginActivity : AppCompatActivity() {
             }
         } catch (e: ApiException) {
             Log.d("ddd", "signInResult:failed Code = " + e.statusCode)
+            e.printStackTrace()
         }
     }
 

@@ -8,6 +8,7 @@ plugins {
     //id("com.google.gms.google-services")
 }
 
+
 android {
     namespace = "com.example.pro_diction"
     compileSdk = 34
@@ -20,6 +21,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -42,6 +44,11 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
+    }
+
+    // 뷰 바인딩 사용
+    buildFeatures {
         viewBinding = true
     }
 }
@@ -70,6 +77,11 @@ dependencies {
 
     // googleid
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
+    // Matrial Design
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.gms:play-services-base:18.2.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // view model
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")

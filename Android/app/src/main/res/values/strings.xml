@@ -5,4 +5,6 @@
     <string name="login_text1">For your proper diction</string>
     <string name="login_text2">바름 [Pro - Diction]</string>
     <string name="BASE_URL">aaaaa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
