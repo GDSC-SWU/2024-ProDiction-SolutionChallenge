@@ -1,5 +1,6 @@
 package com.pro_diction.server.domain.member.entity;
 
+import com.pro_diction.server.domain.model.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,4 +28,8 @@ public class Member {
     private String google_profile;
 
     private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 }
