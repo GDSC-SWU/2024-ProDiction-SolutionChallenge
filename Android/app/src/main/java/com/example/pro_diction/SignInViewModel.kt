@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pro_diction.ApiPool
-import com.example.pro_diction.RetrofitPool
-import kotlinx.coroutines.launch
 import com.example.pro_diction.UiState
+import kotlinx.coroutines.launch
 
 class SignInViewModel : ViewModel() {
+
     private val _accessToken: MutableLiveData<UiState<String>> = MutableLiveData()
     val accessToken: LiveData<UiState<String>> = _accessToken
 

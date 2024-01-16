@@ -58,7 +58,6 @@ class MainLoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_login)
 
         getGoogleClient()
-
         googleSignResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -87,7 +86,6 @@ class MainLoginActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            Log.e("account", account.toString())
             var googleTokenAuth = account?.idToken.toString()
             Log.d("token", googleTokenAuth)
             if (!googleTokenAuth.isNullOrBlank()) {
@@ -98,6 +96,7 @@ class MainLoginActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
 
     private fun observe() {
         viewModel.accessToken.observe(this) {

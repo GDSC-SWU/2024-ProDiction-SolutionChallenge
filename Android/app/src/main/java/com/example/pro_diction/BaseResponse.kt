@@ -1,7 +1,10 @@
 package com.example.pro_diction
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class BaseResponse<T> (
     @SerialName("code") val code: Int,
     @SerialName("message") val message: String,
