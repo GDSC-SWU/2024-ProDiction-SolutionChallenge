@@ -54,7 +54,7 @@ object RetrofitPool {
 
         Retrofit.Builder()
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("http://35.216.90.0:10000")
+            .baseUrl("http://172.30.1.54:8080")
             .client(okHttpClient)
             .build()
     }

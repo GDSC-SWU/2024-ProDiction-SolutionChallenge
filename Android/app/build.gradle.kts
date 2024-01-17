@@ -93,10 +93,25 @@ dependencies {
 
     // 서버 통신
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     // define a BOM and its version
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+    //implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+    implementation("com.squareup.okhttp3:okhttp-bom:4.9.0")
+
+    //kotlinX
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+    implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+    implementation ("io.coil-kt:coil:2.3.0")
+
+    // viewpager2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    // indicator
+    implementation("me.relex:circleindicator:2.1.6")
 
     // define any required OkHttp artifacts without version (BOM을 위에 명시했으니, 밑의 버전들은 BOM에 맞게 적용됩니다.)
     implementation("com.squareup.okhttp3:okhttp")

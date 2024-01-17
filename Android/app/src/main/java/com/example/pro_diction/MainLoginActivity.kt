@@ -102,7 +102,7 @@ class MainLoginActivity : AppCompatActivity() {
         viewModel.accessToken.observe(this) {
             when (it) {
                 is UiState.Success -> {
-                    navigateTo<MainActivity>()
+                    navigateTo<OnboardingActivity>()
                 }
                 else -> Unit
             }
