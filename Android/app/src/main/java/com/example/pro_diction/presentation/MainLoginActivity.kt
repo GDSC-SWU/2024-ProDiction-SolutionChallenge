@@ -1,52 +1,22 @@
-package com.example.pro_diction
+package com.example.pro_diction.presentation
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Binding
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
-import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.Dimension
-import androidx.core.content.ContextCompat.startActivity
-import androidx.credentials.CustomCredential
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.PasswordCredential
-import androidx.databinding.DataBindingUtil.setContentView
-import com.example.pro_diction.databinding.ActivityMainLoginBinding
+import com.example.pro_diction.OnboardingActivity
+import com.example.pro_diction.R
+import com.example.pro_diction.coreui.view.UiState
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpResponse
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.NameValuePair
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.ClientProtocolException
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.entity.UrlEncodedFormEntity
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.HttpPost
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.DefaultHttpClient
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.message.BasicNameValuePair
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.util.EntityUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import com.example.pro_diction.UiState
-import java.io.IOException
 
 class MainLoginActivity : AppCompatActivity() {
 

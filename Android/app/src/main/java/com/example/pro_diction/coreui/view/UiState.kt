@@ -1,4 +1,4 @@
-package com.example.pro_diction
+package com.example.pro_diction.coreui.view
 
 sealed interface UiState<out T> {
     object Empty : UiState<Nothing>

@@ -1,6 +1,8 @@
-package com.example.pro_diction
+package com.example.pro_diction.data.api
 
-import retrofit2.http.Body
+import com.example.pro_diction.data.BaseResponse
+import com.example.pro_diction.data.dto.ResponseSignInDto
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
