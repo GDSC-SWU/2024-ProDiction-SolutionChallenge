@@ -85,7 +85,11 @@ class MainLoginActivity : AppCompatActivity() {
         viewModel.accessToken.observe(this) {
             when (it) {
                 is UiState.Success -> {
-                    navigateTo<MainActivity>()
+                    if (App.prefs.getLoggedInBefore() == true) {
+                        navigateTo<MainActivity>()
+                    } else{
+                        navigateTo<OnboardingActivity>()
+                    }
                 }
                 else -> Unit
             }

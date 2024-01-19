@@ -95,8 +95,10 @@ object RetrofitPool {
                                 .build()
                         } ?: chain.request()*/
                     }
+                    response
+                } else {
+                    response
                 }
-                response
             }.build()
 
         Retrofit.Builder()

@@ -29,6 +29,8 @@ class SignInViewModel : ViewModel() {
                 App.prefs.setAccessToken(it.data?.accessToken ?: "")
                 App.prefs.setRefreshToken(it.data?.refreshToken ?: "")
                 App.prefs.setLoggedIn(true) // 로그인 상태
+                App.prefs.setLoggedInBefore(true) // 첫 로그인 성공
+                Log.e("App.pref", (App.prefs.getAccessToken("")).toString())
             },
             {
                 Log.e("dddd", it.message.toString())
