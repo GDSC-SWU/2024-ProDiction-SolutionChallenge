@@ -11,11 +11,14 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         // 앱 초기 실행 시 홈화면으로 설정
         if (savedInstanceState == null) {
-            binding.bottomNavigationView.selectedItemId = R.id.fragment_comm      }
+            binding.bottomNavigationView.selectedItemId = R.id.fragment_comm
+        }
+
+        setBottomNavigationView()
     }
 
     fun setBottomNavigationView() {

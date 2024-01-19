@@ -8,6 +8,7 @@ class Utils (context: Context) {
     private val PREFS = "prefs"
     private val ACCESS_TOKEN = "Access_Token"
     private val REFRESH_TOKEN = "Refresh_Token"
+    private val LOGGED_IN = "Logged_in"
     // private val mContext: Context = context.applicationContext
     // private val prefs: SharedPreferences
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -55,6 +56,21 @@ class Utils (context: Context) {
 
     fun getRefreshToken(defValue: String): String? {
         return prefs.getString(REFRESH_TOKEN, defValue)
+    }
+
+    fun setLoggedIn(loggedIn: Boolean) {
+        prefsEditor.putBoolean(LOGGED_IN, loggedIn).apply()
+    }
+
+    fun getLoggedIn(): Boolean {
+        return prefs.getBoolean(LOGGED_IN, false)
+    }
+
+    fun signOut() {
+        prefsEditor.remove(ACCESS_TOKEN)
+        prefsEditor.remove(REFRESH_TOKEN)
+        prefsEditor.putBoolean(LOGGED_IN, false)
+
     }
 
     fun clearToken() {

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.example.pro_diction.App
 import com.example.pro_diction.MainActivity
 import com.example.pro_diction.OnboardingActivity
 import com.example.pro_diction.R
@@ -42,10 +43,11 @@ class MainLoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        account?.let {
-            // 이미 로그인 되어있으먄 바로 메인 액티비티로 이동
+        if (account != null) {
+            // 이미 로그인 되어있으면 바로 메인 액티비티로 이동
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            Log.e("Logged", "${App.prefs.getLoggedIn()}")
         }
     }
 
@@ -83,7 +85,7 @@ class MainLoginActivity : AppCompatActivity() {
         viewModel.accessToken.observe(this) {
             when (it) {
                 is UiState.Success -> {
-                    navigateTo<OnboardingActivity>()
+                    navigateTo<MainActivity>()
                 }
                 else -> Unit
             }

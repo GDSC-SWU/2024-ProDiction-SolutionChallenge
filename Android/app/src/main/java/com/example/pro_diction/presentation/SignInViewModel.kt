@@ -28,6 +28,7 @@ class SignInViewModel : ViewModel() {
                 Log.e("응답값3", it.data?.refreshToken.toString())
                 App.prefs.setAccessToken(it.data?.accessToken ?: "")
                 App.prefs.setRefreshToken(it.data?.refreshToken ?: "")
+                App.prefs.setLoggedIn(true) // 로그인 상태
             },
             {
                 Log.e("dddd", it.message.toString())
