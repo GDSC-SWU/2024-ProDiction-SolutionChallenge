@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation
+package com.example.pro_diction.presentation.auth
 
 import android.app.Activity
 import android.content.Intent
@@ -6,13 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.example.pro_diction.App
 import com.example.pro_diction.MainActivity
-import com.example.pro_diction.OnboardingActivity
+import com.example.pro_diction.OnBoarding1Activity
 import com.example.pro_diction.R
 import com.example.pro_diction.coreui.view.UiState
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -43,7 +42,7 @@ class MainLoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        if (account != null) {
+        if (account != null) { // account != null || App.prefs.getLoggedInBefore() == true
             // 이미 로그인 되어있으면 바로 메인 액티비티로 이동
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -88,7 +87,8 @@ class MainLoginActivity : AppCompatActivity() {
                     if (App.prefs.getLoggedInBefore() == true) {
                         navigateTo<MainActivity>()
                     } else{
-                        navigateTo<OnboardingActivity>()
+                        navigateTo<OnBoarding1Activity>()
+                        App.prefs.setLoggedInBefore(true) // 첫 로그인 성공
                     }
                 }
                 else -> Unit

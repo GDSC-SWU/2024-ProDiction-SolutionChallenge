@@ -1,4 +1,4 @@
-package com.example.pro_diction
+package com.example.pro_diction.presentation.xxxx
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -11,7 +11,7 @@ class OnboardingAdapter (fa: FragmentActivity, private val count: Int) : Fragmen
 
         return when (index) {
             0 -> OnboardingFragment_1()
-            1 -> OnboardingFragment_2()
+            //1 -> OnboardingFragment_2()
             else -> OnboardingFragment_3()
         }
     }

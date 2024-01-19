@@ -1,13 +1,15 @@
-package com.example.pro_diction
+package com.example.pro_diction.presentation.onboarding
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.pro_diction.R
+import com.example.pro_diction.presentation.xxxx.OnboardingAdapter
 import me.relex.circleindicator.CircleIndicator3
 
 class OnboardingActivity : AppCompatActivity() {
+
 
     private lateinit var mPager: ViewPager2
     private lateinit var pagerAdapter: FragmentStateAdapter
@@ -16,7 +18,9 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /*
         setContentView(R.layout.activity_onboarding)
+
 
         /**
          * 가로 슬라이드 뷰 Fragment
@@ -33,6 +37,7 @@ class OnboardingActivity : AppCompatActivity() {
         mIndicator.createIndicators(numPage, 0)
         // ViewPager Setting
         mPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        mPager.isUserInputEnabled = false
 
         /**
          * 이 부분 조정하여 처음 시작하는 이미지 설정.
@@ -44,6 +49,9 @@ class OnboardingActivity : AppCompatActivity() {
         mPager.offscreenPageLimit = 3 // 최대 이미지 수
 
         mPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+            }
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -55,7 +63,13 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             }
 
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+            }
 
-        })
+
+        })*/
+
+
     }
 }

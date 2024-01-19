@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation
+package com.example.pro_diction.presentation.auth
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.pro_diction.App
 import com.example.pro_diction.coreui.view.UiState
 import com.example.pro_diction.data.ApiPool
-import com.example.pro_diction.data.RetrofitPool
 import kotlinx.coroutines.launch
 
 class SignInViewModel : ViewModel() {
@@ -29,7 +28,6 @@ class SignInViewModel : ViewModel() {
                 App.prefs.setAccessToken(it.data?.accessToken ?: "")
                 App.prefs.setRefreshToken(it.data?.refreshToken ?: "")
                 App.prefs.setLoggedIn(true) // 로그인 상태
-                App.prefs.setLoggedInBefore(true) // 첫 로그인 성공
                 Log.e("App.pref", (App.prefs.getAccessToken("")).toString())
             },
             {
