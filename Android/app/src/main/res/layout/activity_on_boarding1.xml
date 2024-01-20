@@ -9,6 +9,7 @@
     android:paddingHorizontal="30dp" >
 
     <TextView
+        android:id="@+id/tv_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/skip"
@@ -51,7 +52,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.465"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck"
+        android:inputType="number"
+        android:digits="0123456789"/>
 
     <Button
         android:id="@+id/btn_onboarding_1"
@@ -61,10 +64,10 @@
         android:text="@string/onboarding_1_btn"
         tools:textColor="#B9B9B9"
         android:textSize="17sp"
-        tools:backgroundTint="#F8F8F8"
+        android:enabled="false"
+        tools:background="@drawable/bg_background_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="100dp"
-        android:clickable="false" />
+        android:layout_marginBottom="100dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

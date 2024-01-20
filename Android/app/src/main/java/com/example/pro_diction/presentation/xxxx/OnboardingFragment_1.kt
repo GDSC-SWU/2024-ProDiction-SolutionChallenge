@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.example.pro_diction.R
+
 //import com.example.pro_diction.databinding.Onboarding1Binding
 
 class OnboardingFragment_1 : Fragment() {
@@ -53,12 +55,12 @@ class OnboardingFragment_1 : Fragment() {
     private fun updateButtonState(text: String, button: Button) {
         if (text.isNotEmpty()) {
             // EditText에 값이 있을 때 버튼의 색상과 텍스트 변경
-            button.setBackgroundColor(Color.parseColor("@colors/main"))
+            button.setBackgroundResource(R.drawable.bg_background_round_on)
             button.setTextColor(Color.parseColor("@color/sub3"))
             button.isClickable = true
         } else {
             // EditText에 값이 없을 때 버튼을 초기 상태로 변경
-            button.setBackgroundColor(Color.parseColor("#F8F8F8"))
+            button.setBackgroundResource(R.drawable.bg_background_round)
             button.setTextColor(Color.parseColor("#B9B9B9"))
             button.isClickable = false
         }
