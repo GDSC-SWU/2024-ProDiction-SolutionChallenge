@@ -9,23 +9,17 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Study")
+@Table(name = "SubCategory")
 @Entity
-public class Study {
+public class SubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "study_id")
-    private Long id;
+    @Column(name = "subcategory_id")
+    private Integer id;
 
-    @NotNull
-    private String content;
-
-    @NotNull
-    private String pronunciation;
-
-    private String pronunciation_link;
+    private String name;
 
     @ManyToOne
-    @JoinColumn(name = "subcategory_id")
-    private SubCategory subCategory;
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
