@@ -50,6 +50,7 @@ android {
     // 뷰 바인딩 사용
     buildFeatures {
         viewBinding = true
+        mlModelBinding = true
     }
 }
 
@@ -116,6 +117,59 @@ dependencies {
     // define any required OkHttp artifacts without version (BOM을 위에 명시했으니, 밑의 버전들은 BOM에 맞게 적용됩니다.)
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+
+    // mediapipe
+    // implementation ("com.google.mediapipe:solution-core:0.10.9")
+    // implementation ("com.google.mediapipe:hands:0.10.9")
+
+    // permission
+    implementation ("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
+
+    // Tensorflow
+    implementation ("org.tensorflow:tensorflow-lite:2.10.0")
+    //implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.1.0")
+    implementation ("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
+    implementation ("com.google.android.gms:play-services-tflite-gpu:16.0.0")
+    implementation ("org.tensorflow:tensorflow-lite-task-vision:0.4.0")
+
+
+
+    //
+    implementation ("androidx.fragment:fragment-ktx:1.5.4")
+
+    // Navigation library
+    val nav_version = "2.5.3"
+    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    // CameraX core library
+    val camerax_version = "1.2.0-alpha02"
+    implementation ("androidx.camera:camera-core:$camerax_version")
+
+    // CameraX Camera2 extensions
+    implementation ("androidx.camera:camera-camera2:$camerax_version")
+
+    // CameraX Lifecycle library
+    implementation ("androidx.camera:camera-lifecycle:$camerax_version")
+
+    // CameraX View class
+    implementation ("androidx.camera:camera-view:$camerax_version")
+
+    // WindowManager
+    implementation ("androidx.window:window:1.1.0-alpha03")
+
+    // Unit testing
+    testImplementation ("junit:junit:4.13.2")
+
+    // Instrumented testing
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+
+    // Mediapipe Library
+    implementation ("com.google.mediapipe:tasks-vision:0.10.0") // 0.10.0
+
 
 
     testImplementation("junit:junit:4.13.2")

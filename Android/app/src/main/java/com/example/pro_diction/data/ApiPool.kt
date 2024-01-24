@@ -59,7 +59,7 @@ object RetrofitPool {
                 var response = chain.proceed(request)
 
                 // 토큰 만료 에러 발생시
-                if (response.code == 40005) {
+                if (response.code == 401) {
                     runBlocking {
                         //  accessToken 재발급 api 요청
                         val refreshToken = App.prefs.getRefreshToken("")
@@ -103,7 +103,7 @@ object RetrofitPool {
 
         Retrofit.Builder()
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("http://172.30.1.54:8080")
+            .baseUrl("http://172.30.1.28:8080")
             .client(okHttpClient)
             .build()
     }

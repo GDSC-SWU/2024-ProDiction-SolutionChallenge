@@ -11,16 +11,15 @@ import com.example.pro_diction.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
-    }
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 앱 초기 실행 시 홈화면으로 설정
         if (savedInstanceState == null) {
-            binding.bottomNavigationView.selectedItemId = R.id.fragment_comm
+            binding.bottomNavigationView.selectedItemId = R.id.fragment_learn
         }
 
         setBottomNavigationView()

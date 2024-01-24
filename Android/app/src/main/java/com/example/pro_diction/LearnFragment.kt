@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
+import com.example.pro_diction.databinding.FragmentLearnBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +25,8 @@ class LearnFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var binding: FragmentLearnBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,6 +39,7 @@ class LearnFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentLearnBinding.inflate(inflater, container, false,)
         // Inflate the layout for this fragment
         val learnInflater = inflater.inflate(R.layout.fragment_learn, container, false)
         learnInflater.findViewById<Button>(R.id.btn_test).setOnClickListener {
@@ -43,6 +48,7 @@ class LearnFragment : Fragment() {
         }
         return learnInflater
     }
+
 
     companion object {
         /**

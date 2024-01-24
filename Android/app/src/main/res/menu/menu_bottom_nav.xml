@@ -7,7 +7,7 @@
     <item
         android:id="@+id/fragment_learn"
         android:title="Learn"
-        android:icon="@drawable/ic_setting_off"/>
+        android:icon="@drawable/ic_setting_off" />
     <item
         android:id="@+id/fragment_my"
         android:title="My"
