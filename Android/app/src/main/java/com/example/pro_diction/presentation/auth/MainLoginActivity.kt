@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.example.pro_diction.App
 import com.example.pro_diction.MainActivity
-import com.example.pro_diction.OnBoarding1Activity
+import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity
 import com.example.pro_diction.R
 import com.example.pro_diction.coreui.view.UiState
 import com.google.android.gms.auth.api.signin.GoogleSignIn

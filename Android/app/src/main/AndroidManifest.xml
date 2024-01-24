@@ -25,22 +25,22 @@
 
         tools:targetApi="31">
         <activity
-            android:name=".OnBoardingFinishActivity"
+            android:name=".presentation.onboarding.OnBoardingFinishActivity"
             android:exported="false" />
         <activity
-            android:name=".OnBoarding2_1FinishActivity"
+            android:name=".presentation.onboarding.OnBoarding2_1FinishActivity"
             android:exported="false" />
         <activity
-            android:name=".OnBoarding2_1Activity"
+            android:name=".presentation.onboarding.OnBoarding2_1Activity"
             android:exported="false" />
         <activity
-            android:name="OnBoarding2Activity"
+            android:name=".presentation.onboarding.OnBoarding2Activity"
             android:exported="false" />
         <activity
             android:name=".LearnDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".OnBoarding1Activity"
+            android:name=".presentation.onboarding.OnBoarding1Activity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

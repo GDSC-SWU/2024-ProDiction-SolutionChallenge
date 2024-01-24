@@ -1,6 +1,7 @@
-package com.example.pro_diction
+package com.example.pro_diction.presentation.comm
 
 import androidx.lifecycle.ViewModel
+import com.example.pro_diction.presentation.comm.GestureRecognizerHelper
 
 class MainViewModel : ViewModel() {
     private var _delegate: Int = GestureRecognizerHelper.DELEGATE_CPU

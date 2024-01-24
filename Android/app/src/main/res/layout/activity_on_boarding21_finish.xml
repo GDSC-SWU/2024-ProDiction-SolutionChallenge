@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OnBoarding2_1FinishActivity"
+    tools:context=".presentation.onboarding.OnBoarding2_1FinishActivity"
     android:background="@color/white"
     android:layout_marginHorizontal="30dp" >
 

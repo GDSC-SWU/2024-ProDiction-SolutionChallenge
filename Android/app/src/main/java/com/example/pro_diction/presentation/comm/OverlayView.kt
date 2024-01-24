@@ -1,4 +1,4 @@
-package com.example.pro_diction
+package com.example.pro_diction.presentation.comm
 
 /*
  * Copyright 2022 The TensorFlow Authors. All Rights Reserved.
@@ -23,6 +23,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.example.pro_diction.R
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.gesturerecognizer.GestureRecognizerResult
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker

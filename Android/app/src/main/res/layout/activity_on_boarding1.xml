@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OnBoarding1Activity"
+    tools:context=".presentation.onboarding.OnBoarding1Activity"
     android:background="@color/white"
     android:paddingHorizontal="30dp" >
 
@@ -54,7 +54,11 @@
         app:layout_constraintVertical_bias="0.465"
         tools:ignore="SpeakableTextPresentCheck"
         android:inputType="number"
-        android:digits="0123456789"/>
+        android:digits="0123456789"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
+        android:textSize="30sp"
+        android:paddingStart="20dp"/>
 
     <Button
         android:id="@+id/btn_onboarding_1"

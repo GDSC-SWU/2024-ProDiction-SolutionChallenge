@@ -1,4 +1,4 @@
-package com.example.pro_diction
+package com.example.pro_diction.presentation.onboarding
 
 import android.content.Intent
 import android.graphics.Color
@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import com.example.pro_diction.MainActivity
+import com.example.pro_diction.R
 
 class OnBoarding1Activity : AppCompatActivity() {
     lateinit var editAge : EditText

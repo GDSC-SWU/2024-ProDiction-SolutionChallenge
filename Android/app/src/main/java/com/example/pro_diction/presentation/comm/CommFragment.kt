@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.pro_diction
+package com.example.pro_diction.presentation.comm
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -29,11 +29,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pro_diction.GestureRecognizerHelper
-import com.example.pro_diction.MainViewModel
-import com.example.pro_diction.R
 import com.example.pro_diction.databinding.FragmentCommBinding
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.gun0912.tedpermission.PermissionListener

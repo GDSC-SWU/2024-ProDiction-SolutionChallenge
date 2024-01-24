@@ -2,11 +2,7 @@ package com.example.pro_diction
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.pro_diction.CommFragment
-import com.example.pro_diction.LearnFragment
-import com.example.pro_diction.MyFragment
-import com.example.pro_diction.R
-import com.example.pro_diction.SettingFragment
+import com.example.pro_diction.presentation.comm.CommFragment
 import com.example.pro_diction.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
