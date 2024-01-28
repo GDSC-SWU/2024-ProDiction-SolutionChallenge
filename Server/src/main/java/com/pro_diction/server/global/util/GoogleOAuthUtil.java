@@ -46,7 +46,7 @@ public class GoogleOAuthUtil {
                 .googleNickname(nickname)
                 .googleEmail(email)
                 .googleProfile(pictureUrl)
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
     }
 }
