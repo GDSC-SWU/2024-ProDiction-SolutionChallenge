@@ -1,6 +1,5 @@
 package com.pro_diction.server.global.util.filter;
 
-import com.pro_diction.server.domain.member.dto.LoginResponseDto;
 import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.model.ContextUser;
 import com.pro_diction.server.global.exception.GeneralException;
@@ -34,36 +33,28 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws GeneralException, ServletException, IOException, ExpiredJwtException {
         final String TOKEN_REFRESH_API_URL = "/api/v1/member/refresh";
+        final String LOGIN_API_URL = "/api/v1/member/login/oauth/google";
 
-        // 토큰 재발급 요청이 올 경우
-        if(request.getRequestURI().equals(TOKEN_REFRESH_API_URL)) {
-            // refresh token을 헤더에 가지고 있는 경우 검증 후 token 재발급
-            String refreshToken = jwtUtil.decodeHeader(false, request);
-
-            // refresh_token 만료 검증
-            jwtUtil.validateToken(refreshToken);
-            Member member = jwtUtil.getMember(refreshToken);
-            LoginResponseDto dto = jwtUtil.generateTokens(member);
-
-            responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, dto);
-
+        String uri = request.getRequestURI();
+        if (uri.equals(LOGIN_API_URL)) {
+            filterChain.doFilter(request, response);
             return;
-        } else {    // 재발급 요청 이외의 모든 요청 처리
-            // access token을 헤더에 가지고 있는 경우 검증
-            String token = jwtUtil.decodeHeader(true, request);
-
-            if (token != null && jwtUtil.validateToken(token)) {
-                // access token 검증
-                String accessToken = jwtUtil.decodeHeader(true, request);
-                Member member = jwtUtil.getMember(accessToken);
-
-                saveAuthentication(member);
-                filterChain.doFilter(request, response);
-
-                return;
-            }
         }
 
+        // 토큰 재발급 요청이 올 경우
+        if(uri.equals(TOKEN_REFRESH_API_URL)) {
+            String refreshToken = jwtUtil.decodeHeader(false, request);
+            Member member = jwtUtil.getMember(refreshToken);
+            saveAuthentication(member);
+            responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(member));
+
+            return;
+        }
+
+        String accessToken = jwtUtil.decodeHeader(true, request);
+        Member member = jwtUtil.getMember(accessToken);
+
+        saveAuthentication(member);
         filterChain.doFilter(request, response);
     }
 
