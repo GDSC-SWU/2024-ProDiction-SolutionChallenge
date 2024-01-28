@@ -32,4 +32,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    public void update(Integer age) {
+        this.age = age;
+    }
 }
