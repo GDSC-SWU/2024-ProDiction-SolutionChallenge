@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
-                .addFilterAfter(new JwtAuthenticationProcessingFilter(jwtUtil, responseUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationProcessingFilter(jwtUtil, responseUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionHandlerFilter(responseUtil), JwtAuthenticationProcessingFilter.class)
                 .exceptionHandling((exceptionConfig) ->
                         exceptionConfig
