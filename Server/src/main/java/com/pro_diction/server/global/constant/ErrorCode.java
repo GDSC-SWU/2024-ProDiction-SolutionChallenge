@@ -17,6 +17,7 @@ public enum ErrorCode {
     BAD_REQUEST(10000, HttpStatus.BAD_REQUEST, "Bad request"),
     VALIDATION_ERROR(10001, HttpStatus.BAD_REQUEST, "Validation error"),
     NOT_FOUND(10002, HttpStatus.NOT_FOUND, "Requested resource is not found"),
+    METHOD_NOT_ALLOWED(10003, HttpStatus.METHOD_NOT_ALLOWED, "Method not allowed."),
 
     INTERNAL_SERVER_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
     DATA_ACCESS_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error"),
@@ -28,6 +29,7 @@ public enum ErrorCode {
     INVALID_TOKEN(40004, HttpStatus.UNAUTHORIZED, "Invalid token."),
     EXPIRED_JWT(40005, HttpStatus.UNAUTHORIZED, "Token expired."),
     LOGIN_REQUIRED(40006, HttpStatus.FORBIDDEN, "Login required."),
+    UNAUTHORIZED_ROLE(40007, HttpStatus.FORBIDDEN, "Unauthorized role."),
 
     // Google Login Error
     ID_TOKEN_REQUIRED(11000, HttpStatus.BAD_REQUEST, "Id token required."),

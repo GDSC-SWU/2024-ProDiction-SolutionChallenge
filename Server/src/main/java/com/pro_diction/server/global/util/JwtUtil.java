@@ -70,19 +70,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Validate Token
-    public boolean validateToken(String token) throws ExpiredJwtException {
-        // 토큰 검증
-        parserBuilder()
-                .setSigningKey(getSigninKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        return true;
-    }
-
-    public Member getMember(String token) {
+    public Member getMember(String token) throws ExpiredJwtException {
         // 검증 및 payload 추출
         Map<String, Object> payloads = parserBuilder()
                 .setSigningKey(getSigninKey())
@@ -103,7 +91,7 @@ public class JwtUtil {
 
         String headerValue = request.getHeader(header);
         if(isAccessToken && headerValue == null) {
-            return null;
+            throw new GeneralException(ErrorCode.ACCESS_TOKEN_REQUIRED);
         } else if(!isAccessToken && headerValue == null) {
             throw new GeneralException(ErrorCode.REFRESH_TOKEN_REQUIRED);
         }
@@ -113,14 +101,12 @@ public class JwtUtil {
 
     // Decode Bearer
     public String decodeBearer(String bearerToken) {
-        final String BEARER = "Bearer ";
-        List<String> tokenParts = Arrays.asList(bearerToken.split(BEARER));
-
-        if (tokenParts.size() < 2) {
+        try {
+            final String BEARER = "Bearer ";
+            return Arrays.stream(bearerToken.split(BEARER)).toList().get(1);
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new GeneralException(ErrorCode.INVALID_TOKEN);
         }
-
-        return tokenParts.get(1);
     }
 
     // secretKey 로드
