@@ -42,6 +42,14 @@ public class MemberServiceImpl implements MemberService {
         responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(requestMember));
     }
 
+    @Override
+    @Transactional
+    public Integer updateAge(Integer age, Member member) {
+        member.update(age);
+
+        return memberRepository.save(member).getAge();
+    }
+
     private String getIdToken(HttpServletRequest request) throws AuthenticationServiceException {
         String idToken = request.getHeader("id-token");
 

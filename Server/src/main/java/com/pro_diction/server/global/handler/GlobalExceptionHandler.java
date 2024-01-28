@@ -24,9 +24,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponseDto> handleException(Exception e) {
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         int code = errorCode.getHttpStatus().value();
-        String message = errorCode.getMessage();
 
-        return ResponseEntity.status(code).body(ApiResponseDto.of(code, message));
+        return ResponseEntity.status(code).body(ApiResponseDto.of(code, e.getMessage()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
