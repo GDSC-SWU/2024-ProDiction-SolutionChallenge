@@ -24,7 +24,7 @@ public class Test {
     private LocalDate date;
 
     @NotNull
-    private Integer score;
+    private Integer stage;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
