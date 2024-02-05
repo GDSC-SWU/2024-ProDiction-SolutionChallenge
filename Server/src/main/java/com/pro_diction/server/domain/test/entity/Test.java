@@ -1,7 +1,6 @@
 package com.pro_diction.server.domain.test.entity;
 
 import com.pro_diction.server.domain.member.entity.Member;
-import com.pro_diction.server.domain.model.Role;
 import com.pro_diction.server.domain.model.Stage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
