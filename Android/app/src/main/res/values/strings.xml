@@ -36,6 +36,8 @@
     <string name="delete_account">회원 탈퇴</string>
     <string name="now">현재</string>
     <string name="level">단계입니다.</string>
+    <string name="media_url_mp4_v1">https://storage.googleapis.com/prodiction-bucket/diction_video_v1/</string>
+    <string name="media_url_mp4_v2">https://storage.googleapis.com/prodiction-bucket/diction_video_v2/</string>
 
 
     <!-- gesture -->
