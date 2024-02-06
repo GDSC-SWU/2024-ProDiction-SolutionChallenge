@@ -45,9 +45,14 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
             .also { exoPlayer ->
                 viewBinding.videoView.player = exoPlayer
                 var baseUriV1 = getString(R.string.media_url_mp4_v1)
-                var uri = baseUriV1 + item + ".mp4"
-                val mediaItem = MediaItem.fromUri(uri)
+                var uri1 = baseUriV1 + item + ".mp4"
+                val mediaItem = MediaItem.fromUri(uri1)
                 exoPlayer.setMediaItem(mediaItem)
+
+                var baseUriV2 = getString(R.string.media_url_mp4_v1)
+                var uri2 = baseUriV2 + item + ".mp4"
+                val secondMediaItem = MediaItem.fromUri(uri2)
+                exoPlayer.addMediaItem(secondMediaItem)
 
                 exoPlayer.playWhenReady = playWhenReady
                 exoPlayer.seekTo(currentWindow, playbackPosition)
