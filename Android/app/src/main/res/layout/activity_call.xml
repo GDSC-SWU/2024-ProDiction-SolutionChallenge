@@ -41,6 +41,7 @@
         android:textColor="@color/sub1"/>
 
     <Button
+        android:id="@+id/btn_call_now"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/call"
