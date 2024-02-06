@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import com.example.pro_diction.databinding.FragmentMyBinding
 import com.example.pro_diction.presentation.auth.MainLoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -56,7 +57,7 @@ class MyFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val myInflater = inflater.inflate(R.layout.fragment_my, container, false)
-        myInflater.findViewById<Button>(R.id.btn_logout).setOnClickListener {
+        myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             signOut()
         }
         return myInflater

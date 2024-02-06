@@ -56,10 +56,10 @@
             android:name=".presentation.onboarding.OnBoarding1Activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.auth.MainLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.auth.MainLoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
