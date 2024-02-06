@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.pro_diction.databinding.FragmentMyBinding
 import com.example.pro_diction.presentation.auth.MainLoginActivity
+import com.example.pro_diction.presentation.learn.LearnPhonemeDetailActivity
+import com.example.pro_diction.presentation.my.MyWordActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -32,6 +35,7 @@ class MyFragment : Fragment() {
 
     private lateinit var binding: FragmentMyBinding
     var googleSignInClient: GoogleSignInClient?= null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +63,12 @@ class MyFragment : Fragment() {
         val myInflater = inflater.inflate(R.layout.fragment_my, container, false)
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             signOut()
+        }
+
+        val intent = Intent(this.context, MyWordActivity::class.java)
+        myInflater.findViewById<ImageView>(R.id.btn_my_1).setOnClickListener {
+            intent.putExtra("type", "1")
+            startActivity(intent)
         }
         return myInflater
     }
