@@ -28,7 +28,22 @@ class MyWordActivity : AppCompatActivity() {
             "1" -> {
                 val stringValue = getString(R.string.learn_1)
                 tvType.text = stringValue
-                Log.e("text", R.string.learn_1.toString())
+            }
+            "2" -> {
+                val stringValue = getString(R.string.learn_2)
+                tvType.text = stringValue
+            }
+            "3" -> {
+                val stringValue = getString(R.string.learn_3)
+                tvType.text = stringValue
+            }
+            "4" -> {
+                val stringValue = getString(R.string.learn_4)
+                tvType.text = stringValue
+            }
+            "5" -> {
+                val stringValue = getString(R.string.learn_5)
+                tvType.text = stringValue
             }
         }
 

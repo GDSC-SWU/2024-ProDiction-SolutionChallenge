@@ -70,6 +70,22 @@ class MyFragment : Fragment() {
             intent.putExtra("type", "1")
             startActivity(intent)
         }
+        myInflater.findViewById<ImageView>(R.id.btn_my_2).setOnClickListener {
+            intent.putExtra("type", "2")
+            startActivity(intent)
+        }
+        myInflater.findViewById<ImageView>(R.id.btn_my_3).setOnClickListener {
+            intent.putExtra("type", "3")
+            startActivity(intent)
+        }
+        myInflater.findViewById<ImageView>(R.id.btn_my_4).setOnClickListener {
+            intent.putExtra("type", "4")
+            startActivity(intent)
+        }
+        myInflater.findViewById<ImageView>(R.id.btn_my_5).setOnClickListener {
+            intent.putExtra("type", "5")
+            startActivity(intent)
+        }
         return myInflater
     }
 
