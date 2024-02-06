@@ -26,7 +26,7 @@
     <string name="consonant">Consonant</string>
     <string name="vowels">Vowels</string>
     <string name="syllable_sub">Change your vowels</string>
-    <string name="retest">테스트 다시하기</string>
+    <string name="retest"><u>레벨 테스트 하러 가기></u></string>
     <string name="word_list">단어장</string>
     <string name="support">지원</string>
     <string name="center">107 손말이음센터</string>
@@ -34,6 +34,8 @@
     <string name="my">개인정보</string>
     <string name="logout">로그아웃</string>
     <string name="delete_account">회원 탈퇴</string>
+    <string name="now">현재</string>
+    <string name="level">단계입니다.</string>
 
 
     <!-- gesture -->
