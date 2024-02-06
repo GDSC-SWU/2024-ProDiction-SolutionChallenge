@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.example.pro_diction.databinding.FragmentMyBinding
 import com.example.pro_diction.presentation.auth.MainLoginActivity
 import com.example.pro_diction.presentation.learn.LearnPhonemeDetailActivity
+import com.example.pro_diction.presentation.my.CallActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -61,10 +62,13 @@ class MyFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val myInflater = inflater.inflate(R.layout.fragment_my, container, false)
+
+        // 로그아웃 버튼 logout button
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             signOut()
         }
 
+        // 단어장 word list button
         val intent = Intent(this.context, MyWordActivity::class.java)
         myInflater.findViewById<ImageView>(R.id.btn_my_1).setOnClickListener {
             intent.putExtra("type", "1")
@@ -86,6 +90,15 @@ class MyFragment : Fragment() {
             intent.putExtra("type", "5")
             startActivity(intent)
         }
+
+        val callIntent = Intent(this.context, CallActivity::class.java)
+        myInflater.findViewById<TextView>(R.id.tv_center).setOnClickListener {
+            startActivity(callIntent)
+        }
+        myInflater.findViewById<ImageView>(R.id.iv_center).setOnClickListener {
+            startActivity(callIntent)
+        }
+
         return myInflater
     }
 
