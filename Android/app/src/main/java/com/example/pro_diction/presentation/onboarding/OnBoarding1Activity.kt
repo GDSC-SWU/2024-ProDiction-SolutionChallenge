@@ -9,14 +9,19 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.pro_diction.MainActivity
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import retrofit2.Call
+import retrofit2.Response
 
 class OnBoarding1Activity : AppCompatActivity() {
     lateinit var editAge : EditText
     lateinit var btnNext: Button
     lateinit var btnSkip: TextView
+    // private val patchAgeService = ApiPool.patchAge
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_on_boarding1)
@@ -47,8 +52,28 @@ class OnBoarding1Activity : AppCompatActivity() {
         })
 
         btnNext.setOnClickListener {
-            val intent = Intent(this, OnBoarding2Activity::class.java)
-            startActivity(intent)
+            if (editAge.text.toString().toInt() > 0 && editAge.text.toString().toInt() <= 110) {
+                /*
+                patchAgeService.patchAge(editAge.text.toString().toInt()).enqueue(object : retrofit2.Callback<Int> {
+                    override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                        if (response.isSuccessful) {
+                            response.body()?.let {
+                                val intent = Intent(this@OnBoarding1Activity, OnBoarding2Activity::class.java)
+                                startActivity(intent)
+                            }
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Int>, t: Throwable) {
+                        Toast.makeText(this@OnBoarding1Activity , "나이를 저장하지 못했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                })*/
+
+            }
+            else {
+                Toast.makeText(this , "올바른 나이를 입력하세요.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnSkip.setOnClickListener {
@@ -79,5 +104,9 @@ class OnBoarding1Activity : AppCompatActivity() {
         }
 
         this.onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun patchAgeApi() {
+
     }
 }

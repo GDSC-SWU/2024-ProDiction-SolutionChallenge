@@ -28,10 +28,12 @@ class SignInViewModel : ViewModel() {
                 App.prefs.setAccessToken(it.data?.accessToken ?: "")
                 App.prefs.setRefreshToken(it.data?.refreshToken ?: "")
                 App.prefs.setLoggedIn(true) // 로그인 상태
-                Log.e("App.pref", (App.prefs.getAccessToken("")).toString())
+                Log.e("accessToken", (App.prefs.getAccessToken("")).toString())
             },
             {
                 Log.e("dddd", it.message.toString())
+                Log.e("dddd", it.cause.toString())
+                Log.e("dddd", it.toString())
             }
         )
     }

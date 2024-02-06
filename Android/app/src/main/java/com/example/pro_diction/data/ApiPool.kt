@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.pro_diction.App
 import com.example.pro_diction.data.api.SignInApiService
 import com.example.pro_diction.data.API.API_TAG
+import com.example.pro_diction.data.api.OnBoardingAgeApiService
 import com.example.pro_diction.data.api.TokenRefreshApiService
 import com.example.pro_diction.data.dto.ResponseSignInDto
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -15,10 +16,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 object ApiPool {
     val getSignIn = RetrofitPool.retrofit.create(SignInApiService::class.java)
     val getTokenRefresh = RetrofitPool.retrofit.create(TokenRefreshApiService::class.java)
+    val patchAge = RetrofitPool.retrofit.create(OnBoardingAgeApiService::class.java)
 }
 
 object RetrofitPool {
@@ -48,7 +51,9 @@ object RetrofitPool {
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val okHttpClient =
-            OkHttpClient.Builder().addInterceptor(loggingInterceptor).addInterceptor { chain ->
+            OkHttpClient.Builder().connectTimeout( 100, TimeUnit.SECONDS )
+                .readTimeout( 100, TimeUnit.SECONDS )
+                .writeTimeout( 100, TimeUnit.SECONDS ).addInterceptor(loggingInterceptor).addInterceptor { chain ->
                 // AccessToken이 있는 경우, 헤더에 추가합니다.
                 val request = accessToken?.let { token ->
                     chain.request().newBuilder()
@@ -103,7 +108,7 @@ object RetrofitPool {
 
         Retrofit.Builder()
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("http://172.30.1.77:8080")
+            .baseUrl("http://35.216.25.233:8080")
             .client(okHttpClient)
             .build()
     }
