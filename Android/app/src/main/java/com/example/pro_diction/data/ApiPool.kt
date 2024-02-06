@@ -103,7 +103,7 @@ object RetrofitPool {
 
         Retrofit.Builder()
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("http://172.30.1.28:8080")
+            .baseUrl("http://172.30.1.77:8080")
             .client(okHttpClient)
             .build()
     }

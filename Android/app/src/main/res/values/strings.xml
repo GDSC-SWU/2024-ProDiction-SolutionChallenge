@@ -16,6 +16,24 @@
     <string name="onboarding_2_1_btn_finish">View Level</string>
     <string name="onboarding_finish">Report</string>
     <string name="onboarding_finish_btn">Start</string>
+    <string name="learn_sub">Learn at a level that suits you!</string>
+    <string name="learn_search">Search for pronunciation</string>
+    <string name="learn_1">Phoneme</string>
+    <string name="learn_2">Syllable</string>
+    <string name="learn_3">Word</string>
+    <string name="learn_4">Phrase</string>
+    <string name="learn_5">Sentense</string>
+    <string name="consonant">Consonant</string>
+    <string name="vowels">Vowels</string>
+    <string name="syllable_sub">Change your vowels</string>
+    <string name="retest">테스트 다시하기</string>
+    <string name="word_list">단어장</string>
+    <string name="support">지원</string>
+    <string name="center">107 손말이음센터</string>
+    <string name="language_setting">언어 설정</string>
+    <string name="my">개인정보</string>
+    <string name="logout">로그아웃</string>
+    <string name="delete_account">회원 탈퇴</string>
 
 
     <!-- gesture -->

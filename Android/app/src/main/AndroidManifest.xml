@@ -20,10 +20,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProDiction"
-
         android:usesCleartextTraffic="true"
-
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.learn.LearnPhonemeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.LearnSyllableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.LearnPhonemeActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnBoardingFinishActivity"
             android:exported="false" />

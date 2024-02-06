@@ -146,6 +146,10 @@ class CommFragment : Fragment(),
             .setPermissions(*REQUIRED_PERMISSIONS)
             .check()
 
+        fragmentCommBinding.btn.setOnClickListener {
+            Log.e("클릭", "클릭")
+            Toast.makeText(requireContext(), "클릭", Toast.LENGTH_SHORT).show()
+        }
 
         return fragmentCommBinding.root
     }

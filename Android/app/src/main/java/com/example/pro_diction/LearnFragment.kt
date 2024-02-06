@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.databinding.DataBindingUtil
 import com.example.pro_diction.databinding.FragmentLearnBinding
+import com.example.pro_diction.presentation.learn.LearnPhonemeActivity
+import com.example.pro_diction.presentation.learn.LearnSyllableActivity
+import com.example.pro_diction.presentation.learn.SearchActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,8 +46,23 @@ class LearnFragment : Fragment() {
         binding = FragmentLearnBinding.inflate(inflater, container, false,)
         // Inflate the layout for this fragment
         val learnInflater = inflater.inflate(R.layout.fragment_learn, container, false)
-        learnInflater.findViewById<Button>(R.id.btn_test).setOnClickListener {
-            val intent = Intent(requireContext(), LearnDetailActivity::class.java)
+        
+        // phoneme 음소
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_1).setOnClickListener {
+            val intent = Intent(requireContext(), LearnPhonemeActivity::class.java)
+            startActivity(intent)
+        }
+
+        // syllable 음절
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_2).setOnClickListener {
+            val intent = Intent(requireContext(), LearnSyllableActivity::class.java)
+            startActivity(intent)
+        }
+
+        // search button 검색
+        val search = learnInflater.findViewById<Button>(R.id.btn_search)
+        search.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
         return learnInflater

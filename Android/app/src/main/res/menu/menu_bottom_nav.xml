@@ -12,8 +12,5 @@
         android:id="@+id/fragment_my"
         android:title="My"
         android:icon="@drawable/ic_setting_off"/>
-    <item
-        android:id="@+id/fragment_setting"
-        android:title="Setting"
-        android:icon="@drawable/ic_setting_off"/>
+
 </menu>

@@ -13,12 +13,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setBottomNavigationView()
+
         // 앱 초기 실행 시 홈화면으로 설정
         if (savedInstanceState == null) {
             binding.bottomNavigationView.selectedItemId = R.id.fragment_learn
         }
 
-        setBottomNavigationView()
+
     }
 
     fun setBottomNavigationView() {
@@ -36,10 +38,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.main_container, MyFragment()).commit()
                     true
                 }
-                R.id.fragment_setting -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.main_container, SettingFragment()).commit()
-                    true
-                }
+
                 else -> false
             }
         }
