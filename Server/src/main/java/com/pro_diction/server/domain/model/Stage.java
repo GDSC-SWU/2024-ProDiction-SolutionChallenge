@@ -14,4 +14,13 @@ public enum Stage {
 
     private final Integer level;
     private final String title;
+
+    public static Stage getByLevel(Integer level) {
+        for (Stage stage : Stage.values()) {
+            if (stage.getLevel().equals(level)) {
+                return stage;
+            }
+        }
+        throw new IllegalArgumentException("No Stage found for level: " + level);
+    }
 }

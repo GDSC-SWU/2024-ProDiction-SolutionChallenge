@@ -1,9 +1,14 @@
 package com.pro_diction.server.domain.test.service;
 
+import com.pro_diction.server.domain.member.entity.Member;
+import com.pro_diction.server.domain.model.Stage;
 import com.pro_diction.server.domain.study.entity.Study;
 import com.pro_diction.server.domain.study.exception.StudyNotFoundException;
 import com.pro_diction.server.domain.study.repository.StudyRepository;
 import com.pro_diction.server.domain.test.dto.*;
+import com.pro_diction.server.domain.test.entity.Test;
+import com.pro_diction.server.domain.test.exception.InvalidStageException;
+import com.pro_diction.server.domain.test.repository.TestRepository;
 import com.pro_diction.server.global.constant.ErrorCode;
 import com.pro_diction.server.global.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
     private final StudyRepository studyRepository;
+    private final TestRepository testRepository;
 
     @Value("${DICTION_TEST_API_URL}")
     private String DICTION_TEST_API_URL;
@@ -39,6 +45,18 @@ public class TestServiceImpl implements TestService {
                 .studyId(id)
                 .score(score)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public Integer saveOrUpdateStage(Integer stage, Member member) {    // 처음이라면 save, 존재한다면 update
+        if (!(stage > 0 && stage < 6))   throw new InvalidStageException();
+
+        Test test = testRepository.findOneByMember(member).orElse(new Test(member));
+        test.update(Stage.getByLevel(stage));
+        testRepository.save(test);
+
+        return stage;
     }
 
     private Double test(MultipartFile file, String pronunciation) throws IOException {
