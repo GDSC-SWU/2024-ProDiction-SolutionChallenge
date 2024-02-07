@@ -8,6 +8,5 @@ import retrofit2.http.Header
 interface TokenRefreshApiService {
     @GET("/api/v1/member/refresh")
     suspend fun getTokenRefresh(
-        @Header("Authorization-refresh") AuthorizationRefresh : String
     ): BaseResponse<ResponseSignInDto>
 }

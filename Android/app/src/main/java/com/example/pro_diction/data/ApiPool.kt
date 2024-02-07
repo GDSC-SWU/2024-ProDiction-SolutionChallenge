@@ -29,6 +29,9 @@ object RetrofitPool {
     private var accessToken: String? = null
     //private var accessToken = App.prefs.getAccessToken("")
 
+    // check refresh 리프레시 중인지 확인
+    private var isRefresh: Boolean = false
+
     // AccessToken을 설정하는 함수
     fun setAccessToken(token: String?) {
         accessToken = token
@@ -53,11 +56,23 @@ object RetrofitPool {
             OkHttpClient.Builder().connectTimeout( 100, TimeUnit.SECONDS )
                 .readTimeout( 100, TimeUnit.SECONDS )
                 .writeTimeout( 100, TimeUnit.SECONDS ).addInterceptor(loggingInterceptor).addInterceptor { chain ->
+
                 // AccessToken이 있는 경우, 헤더에 추가합니다.
+                    Log.e("access accessToken", accessToken.toString())
+                    Log.e("refresh accessToken", accessToken.toString())
+                    Log.e("access", App.prefs.getAccessToken("").toString())
+                    Log.e("refresh", App.prefs.getRefreshToken("").toString())
                 val request = accessToken?.let { token ->
-                    chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer $token")
-                        .build()
+                    if(!isRefresh) {
+                        chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer $token")
+                            .build()
+                    }
+                    else {
+                        chain.request().newBuilder()
+                            .addHeader("Authorization-refresh", "Bearer $token")
+                            .build()
+                    }
                 } ?: chain.request()
 
                 var response = chain.proceed(request)
@@ -65,26 +80,36 @@ object RetrofitPool {
                 // 토큰 만료 에러 발생시
                 if (response.code == 401) {
                     Log.e("response", response.toString())
+                    Log.e("last access", App.prefs.getAccessToken("").toString())
+                    Log.e("last refresh", App.prefs.getRefreshToken("").toString())
                     runBlocking {
                         //  accessToken 재발급 api 요청
                         val refreshToken = App.prefs.getRefreshToken("")
+                        isRefresh = true
                         if (refreshToken != null) {
-                            val refreshResponse : BaseResponse<ResponseSignInDto> = ApiPool.getTokenRefresh.getTokenRefresh(refreshToken)
+                            accessToken = refreshToken
+                            val refreshResponse : BaseResponse<ResponseSignInDto> = ApiPool.getTokenRefresh.getTokenRefresh()
+
 
                             // accessToken 재발급 api가 성공적으로 응답이 왔을 때
                             if (refreshResponse.data!=null) {
+                                isRefresh = false
                                 App.prefs.setAccessToken(refreshResponse.data.accessToken)
                                 App.prefs.setRefreshToken(refreshResponse.data.refreshToken)
-                                // setAccessToken(App.prefs.getAccessToken(""))
+                                accessToken = App.prefs.getAccessToken("")
 
                                 // 새로운 accessToken을 Request Header에 추가하고, 기존에 요청하고자 했던 api를 재요청
-                                val refreshRequest = refreshToken?.let { refreshToken ->
+                                val refreshRequest = accessToken?.let { token ->
                                     chain.request().newBuilder()
                                         .addHeader("Authorization", "Bearer ${App.prefs.getAccessToken("")}")
                                         .build()
                                 } ?: chain.request()
                                 response.close()
                                 response = chain.proceed(refreshRequest)
+                                Log.e("now access accessToken", accessToken.toString())
+                                Log.e("now refresh accessToken", accessToken.toString())
+                                Log.e("now access", App.prefs.getAccessToken("").toString())
+                                Log.e("now refresh", App.prefs.getRefreshToken("").toString())
                             }
                             else {
                                 Log.e("refreshResponse.data : 서버 통신", "refreshResponse.data == null")

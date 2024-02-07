@@ -15,6 +15,7 @@ import com.example.pro_diction.presentation.auth.MainLoginActivity
 import com.example.pro_diction.presentation.learn.LearnPhonemeDetailActivity
 import com.example.pro_diction.presentation.my.CallActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
+import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -97,6 +98,12 @@ class MyFragment : Fragment() {
         }
         myInflater.findViewById<ImageView>(R.id.iv_center).setOnClickListener {
             startActivity(callIntent)
+        }
+
+        // test 온보딩
+        val onIntent = Intent(this.context, OnBoarding1Activity::class.java)
+        myInflater.findViewById<Button>(R.id.btn_t).setOnClickListener {
+            startActivity(onIntent)
         }
 
         return myInflater
