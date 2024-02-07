@@ -18,6 +18,9 @@ import com.example.pro_diction.R
 import com.example.pro_diction.data.dto.ConsonantDto
 
 class LearnSyllableActivity : AppCompatActivity() {
+    var ja: MutableList<ConsonantDto> = mutableListOf()
+    var resultList: MutableList<ConsonantDto> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_learn_syllable)
@@ -57,11 +60,8 @@ class LearnSyllableActivity : AppCompatActivity() {
         recyclerview.layoutManager = GridLayoutManager(this, 3)
 
         // parser
-        val ja = consonantList
-        //val parser = koreanParser()
+        ja = consonantList
         var result = ArrayList<String>()
-        val resultList: MutableList<ConsonantDto> = mutableListOf()
-
 
 
 
@@ -76,19 +76,69 @@ class LearnSyllableActivity : AppCompatActivity() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when(p2) {
                     0 -> {
-                        resultList.clear()
-                        for (i in ja) {
-                            val hangulChar = HangulConverter.joinHangul(i.item[0], 'ㅏ')
-                            resultList.add(ConsonantDto(hangulChar.toString()))
-                        }
+                        setList('ㅏ')
                     }
                     1 -> {
-                        resultList.clear()
-                        for (i in ja) {
-                            val hangulChar = HangulConverter.joinHangul(i.item[0], 'ㅑ')
-                            resultList.add(ConsonantDto(hangulChar.toString()))
-                        }
+                        setList('ㅑ')
                     }
+                    2 -> {
+                        setList('ㅓ')
+                    }
+                    3 -> {
+                        setList('ㅕ')
+                    }
+                    4 -> {
+                        setList('ㅗ')
+                    }
+                    5 -> {
+                        setList('ㅛ')
+                    }
+                    6 -> {
+                        setList('ㅜ')
+                    }
+                    7 -> {
+                        setList('ㅠ')
+                    }
+                    8 -> {
+                        setList('ㅡ')
+                    }
+                    9 -> {
+                        setList('ㅣ')
+                    }
+                    10 -> {
+                        setList('ㅐ')
+                    }
+                    11 -> {
+                        setList('ㅒ')
+                    }
+                    12 -> {
+                        setList('ㅔ')
+                    }
+                    13 -> {
+                        setList('ㅖ')
+                    }
+                    14 -> {
+                        setList('ㅚ')
+                    }
+                    15 -> {
+                        setList('ㅟ')
+                    }
+                    16 -> {
+                        setList('ㅢ')
+                    }
+                    17 -> {
+                        setList('ㅘ')
+                    }
+                    18 -> {
+                        setList('ㅝ')
+                    }
+                    19 -> {
+                        setList('ㅙ')
+                    }
+                    20 -> {
+                        setList('ㅞ')
+                    }
+
                     else -> {
 
                     }
@@ -133,76 +183,8 @@ class LearnSyllableActivity : AppCompatActivity() {
                             resultList.add(ConsonantDto(final))
                             result.clear()
                         }
-                    }
-                    2 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅓ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
-                    }
-                    3 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅕ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
-                    }
-                    4 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅗ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
-                    }
-                    5 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅛ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
-                    }
-                    6 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅜ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
-                    }
-                    7 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅠ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
-                    }
-                    8 -> {
-                        resultList.clear()
-                        for(i in ja) {
-                            result.add(i.item)
-                            result.add("ㅡ")
-                            var final = parser.assem(result)
-                            resultList.add(ConsonantDto(final))
-                            result.clear()
-                        }
+
+
                     }
                     // 전부 추가하기
                     else -> {
@@ -229,6 +211,14 @@ class LearnSyllableActivity : AppCompatActivity() {
             }
         }*/
 
+    }
+
+    fun setList(jungsung: Char) {
+        resultList.clear()
+        for (i in ja) {
+            val hangulChar = HangulConverter.joinHangul(i.item[0], jungsung)
+            resultList.add(ConsonantDto(hangulChar.toString()))
+        }
     }
 
 
