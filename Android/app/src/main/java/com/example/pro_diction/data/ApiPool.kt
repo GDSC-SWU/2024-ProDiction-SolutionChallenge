@@ -26,14 +26,13 @@ object ApiPool {
 
 object RetrofitPool {
     // AccessToken을 관리하는 변수 (로그인 이후 여기에 AccessToken을 저장한다고 가정)
-    // private var accessToken: String? = null
-    private var accessToken = App.prefs.getAccessToken("")
+    private var accessToken: String? = null
+    //private var accessToken = App.prefs.getAccessToken("")
 
     // AccessToken을 설정하는 함수
-    /*
     fun setAccessToken(token: String?) {
         accessToken = token
-    }*/
+    }
 
     val retrofit: Retrofit by lazy {
         val loggingInterceptor = HttpLoggingInterceptor { message ->
@@ -65,6 +64,7 @@ object RetrofitPool {
 
                 // 토큰 만료 에러 발생시
                 if (response.code == 401) {
+                    Log.e("response", response.toString())
                     runBlocking {
                         //  accessToken 재발급 api 요청
                         val refreshToken = App.prefs.getRefreshToken("")
