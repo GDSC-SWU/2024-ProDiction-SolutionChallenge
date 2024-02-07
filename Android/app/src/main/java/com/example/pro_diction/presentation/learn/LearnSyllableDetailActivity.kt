@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pro_diction.HangulConverter
 import com.example.pro_diction.R
 import com.example.pro_diction.data.dto.ConsonantDto
 
@@ -82,8 +83,10 @@ class LearnSyllableDetailActivity : AppCompatActivity() {
                 //result.addAll(list)
                 //result.add(consonantList[position].item)
                 //tv.text = parser.assem(result)
+                // 종성 합치기
+                val hangulChar = HangulConverter.joinHangulJongsung(item!!.get(0), consonantList[position].item[0])
                 val intent = Intent(this@LearnSyllableDetailActivity, LearnPhonemeDetailActivity::class.java)
-                intent.putExtra("item", item)
+                intent.putExtra("item", hangulChar.toString())
                 startActivity(intent)
             }
         })

@@ -54,8 +54,13 @@ object HangulConverter {
     fun joinHangul(chosung: Char, jungsung: Char): Char {
         val choIndex = CHOSUNG_LIST.indexOf(chosung)
         val jungIndex = JUNGSUNG_LIST.indexOf(jungsung)
-        Log.e("cho", choIndex.toString())
         return (0xac00 + choIndex * 28 * 21 + jungIndex * 28).toChar()
+    }
+
+    fun joinHangulJongsung(chojung: Char, jongsung: Char): Char {
+        val chojungUni = chojung.code
+        val jongsungIndex = JONGSUNG_LIST.indexOf(jongsung)
+        return (chojungUni + jongsungIndex).toChar()
     }
 
 
