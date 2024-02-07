@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface TestService {
-    TestResponseDto testWithStep(MultipartFile multipartFile, Long id) throws IOException;
+    TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException;
 }

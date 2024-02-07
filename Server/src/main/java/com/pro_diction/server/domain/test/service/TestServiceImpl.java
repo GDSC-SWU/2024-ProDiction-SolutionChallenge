@@ -31,7 +31,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     @Transactional(readOnly = true)
-    public TestResponseDto testWithStep(MultipartFile multipartFile, Long id) throws IOException {
+    public TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException {
         Study study = studyRepository.findById(id).orElseThrow(() -> new StudyNotFoundException());
         Double score = test(multipartFile, study.getPronunciation());
 
