@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import com.example.pro_diction.R
@@ -19,95 +20,39 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
     private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityLearnPhonemeDetailBinding.inflate(layoutInflater)
     }
-    private var player: SimpleExoPlayer?= null
     private var item: String? = null
-    private var playWhenReady = true
-    private var currentWindow = 0
-    private var playbackPosition = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
 
+        // textview text
         item = intent.getStringExtra("item")
         val tv = findViewById<TextView>(R.id.textView)
         tv.text = item
+
+        // video click
+        val video1 = findViewById<ImageView>(R.id.iv_video1)
+        val video2 = findViewById<ImageView>(R.id.iv_video2)
+        video1.setOnClickListener {
+            val videoIntent = Intent(this@LearnPhonemeDetailActivity, VideoActivity::class.java)
+            videoIntent.putExtra("item", item)
+            videoIntent.putExtra("videoType", "1")
+            startActivity(videoIntent)
+        }
+        video2.setOnClickListener {
+            val videoIntent = Intent(this@LearnPhonemeDetailActivity, VideoActivity::class.java)
+            videoIntent.putExtra("item", item)
+            videoIntent.putExtra("videoType", "2")
+            startActivity(videoIntent)
+        }
+
 
         // tool bar
         val toolbar: Toolbar = findViewById(R.id.tb_phoneme)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-    }
-
-    private fun initializePlayer() {
-        player = SimpleExoPlayer.Builder(this)
-            .build()
-            .also { exoPlayer ->
-                viewBinding.videoView.player = exoPlayer
-                var baseUriV1 = getString(R.string.media_url_mp4_v1)
-                var uri1 = baseUriV1 + item + ".mp4"
-                val mediaItem = MediaItem.fromUri(uri1)
-                exoPlayer.setMediaItem(mediaItem)
-
-                var baseUriV2 = getString(R.string.media_url_mp4_v1)
-                var uri2 = baseUriV2 + item + ".mp4"
-                val secondMediaItem = MediaItem.fromUri(uri2)
-                exoPlayer.addMediaItem(secondMediaItem)
-
-                exoPlayer.playWhenReady = playWhenReady
-                exoPlayer.seekTo(currentWindow, playbackPosition)
-                exoPlayer.prepare()
-            }
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (Util.SDK_INT >= 24) {
-            initializePlayer()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        hideSystemUi()
-        if ((Util.SDK_INT < 24 || player == null)) {
-            initializePlayer()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Util.SDK_INT < 24) {
-            releasePlayer()
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (Util.SDK_INT >= 24) {
-            releasePlayer()
-        }
-    }
-
-    @SuppressLint("InlinedApi")
-    private fun hideSystemUi() {
-        viewBinding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-    }
-
-    private fun releasePlayer() {
-        player?.run {
-            playbackPosition = this.currentPosition
-            currentWindow = this.currentWindowIndex
-            playWhenReady = this.playWhenReady
-            release()
-        }
-        player = null
     }
 
     // 툴바 메뉴 버튼 설정
