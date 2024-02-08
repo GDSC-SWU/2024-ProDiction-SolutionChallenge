@@ -57,11 +57,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_word_detail_main"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constrainedHeight="true"
         android:layout_marginTop="20dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
-        tools:listitem="@layout/word_detail_item" />
+        tools:listitem="@layout/word_detail_item"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_word_detail"

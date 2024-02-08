@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.learn.word.LearnWordActivity">
+    tools:context=".presentation.learn.phrase.LearnPhraseActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_phoneme"
@@ -16,10 +16,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_word_title"
+        android:id="@+id/tv_phrase_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/learn_3"
+        android:text="@string/learn_4"
         android:textStyle="bold"
         android:textSize="23sp"
         android:textColor="@color/font"
@@ -28,17 +28,18 @@
         android:layout_marginStart="30dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_word"
+        android:id="@+id/rv_phrase"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tv_word_title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_phrase_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_phrase_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constrainedHeight="true"
         android:layout_marginTop="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/word_item"
+        tools:listitem="@layout/phrase_item"
+        android:layout_marginHorizontal="30dp"
         android:clipToPadding="false"
         android:paddingBottom="20dp" />
 
