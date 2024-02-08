@@ -120,41 +120,42 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/comm_top"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-
 
     <EditText
         android:id="@+id/edit_comm_tts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:background="@color/comm_edit_back"
+        app:layout_constraintBottom_toTopOf="@+id/comm_bottom"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_comm_tts"
-        android:layout_marginBottom="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="5dp"
         android:singleLine="true"
         android:imeOptions="actionDone"/>
-    <Button
-        android:id="@+id/btn_comm_tts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tts"
-        app:layout_constraintStart_toEndOf="@+id/edit_comm_tts"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_comm_tts"
-        app:layout_constraintTop_toTopOf="@+id/edit_comm_tts"/>
 
     <View
+        android:id="@+id/comm_bottom"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="@color/camera_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_comm_tts"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:text="tts"
+        android:src="@drawable/btn_tts"
+        android:scaleType="fitCenter"
+        android:background="#00ff0000"
+        app:layout_constraintStart_toStartOf="@+id/comm_bottom"
+        app:layout_constraintEnd_toEndOf="@+id/comm_bottom"
+        app:layout_constraintBottom_toBottomOf="@+id/comm_bottom"
+        app:layout_constraintTop_toTopOf="@+id/comm_bottom"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
