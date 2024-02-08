@@ -5,10 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
+import com.example.pro_diction.data.dto.MyWordDto
+import com.example.pro_diction.data.dto.SentenseDetailDto
 import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
+import com.example.pro_diction.presentation.learn.sentense.SentenseDetailAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MyWordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +53,33 @@ class MyWordActivity : AppCompatActivity() {
                 val stringValue = getString(R.string.learn_5)
                 tvType.text = stringValue
             }
+        }
+        // recycler view
+        // main 이 뭔지에 따라서 리스트에 넣는 값이 달라짐
+        val recyclerview = findViewById<RecyclerView>(R.id.rv_myword)
+        val mywordList: MutableList<MyWordDto> = mutableListOf()
+        mywordList.add(MyWordDto("단어"))
+        mywordList.add(MyWordDto("카카오톡"))
+
+
+        // 어댑터에 리스트 연결
+        val adapter = MyWordAdapter(mywordList)
+        recyclerview.adapter = adapter
+        recyclerview.layoutManager = LinearLayoutManager(this@MyWordActivity)
+
+        val intent = Intent(this@MyWordActivity, LearnPhonemeDetailActivity::class.java)
+        // item 클릭 시 해당 음소 페이지로 연결
+        adapter.setOnItemClickListener(object: MyWordAdapter.OnItemClickListener {
+            override fun onItemClick(view: View, position: Int) {
+                intent.putExtra("item", mywordList[position].item)
+                startActivity(intent)
+            }
+        })
+
+        // floating action button 플로팅 버튼 연결
+        val fab: FloatingActionButton = findViewById(R.id.fab_myword)
+        fab.setOnClickListener {
+            recyclerview.smoothScrollToPosition(0)
         }
 
     }
