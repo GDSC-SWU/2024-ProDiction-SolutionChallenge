@@ -16,6 +16,7 @@ import com.example.pro_diction.data.dto.WordDto
 import com.example.pro_diction.presentation.learn.LearnPhonemeDetailActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.SyllableAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LearnWordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,14 @@ class LearnWordActivity : AppCompatActivity() {
         wordList.add(WordDto("ㄴ", listOf("나무", "나무", "나무")))
         wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
         wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
+        wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
+        wordList.add(WordDto("ㄴ", listOf("나무", "나무", "나무")))
+        wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
+        wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
+        wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
+        wordList.add(WordDto("ㄴ", listOf("나무", "나무", "나무")))
+        wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
+        wordList.add(WordDto("ㄱ", listOf("가위", "그림책", "가위")))
         val adapter = WordAdapter(wordList)
 
         recyclerview.adapter = adapter
@@ -48,6 +57,12 @@ class LearnWordActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        // floating action button 플로팅 버튼 연결
+        val fab: FloatingActionButton = findViewById(R.id.fab_word)
+        fab.setOnClickListener {
+            recyclerview.smoothScrollToPosition(0)
+        }
     }
     // 툴바 메뉴 버튼 설정
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
