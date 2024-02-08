@@ -1,60 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.comm.CommFragment" >
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/view_finder"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:scaleType="fillStart" >
-    </androidx.camera.view.PreviewView>
+        android:layout_height="match_parent" >
+        <androidx.camera.view.PreviewView
+            android:id="@+id/view_finder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scaleType="fillStart" >
+        </androidx.camera.view.PreviewView>
 
-    <com.example.pro_diction.presentation.comm.OverlayView
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.example.pro_diction.presentation.comm.OverlayView
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <include
-        android:id="@+id/bottom_sheet_layout"
-        layout="@layout/info_bottom_sheet" />
+        <include
+            android:id="@+id/bottom_sheet_layout"
+            layout="@layout/info_bottom_sheet" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_results"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginBottom="50dp"
-        android:background="#EEEEEE"
-        android:clipToPadding="true"
-        android:padding="16dp"
-        app:layout_anchor="@id/bottom_sheet_layout"
-        app:layout_anchorGravity="top"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="50dp"
+            android:background="#EEEEEE"
+            android:clipToPadding="true"
+            android:padding="16dp"
+            app:layout_anchor="@id/bottom_sheet_layout"
+            app:layout_anchorGravity="top"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="#007F8B"
-        app:layout_anchor="@id/recyclerview_results"
-        app:layout_anchorGravity="bottom" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="#007F8B"
+            app:layout_anchor="@id/recyclerview_results"
+            app:layout_anchorGravity="bottom" />
 
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        app:layout_anchor="@id/recyclerview_results"
-        app:layout_anchorGravity="top" />
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_anchor="@id/recyclerview_results"
+            app:layout_anchorGravity="top" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
     <Button
         android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test" />
+        android:text="test"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <TextView
+        android:id="@+id/tv_stt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="@+id/btn"
+        app:layout_constraintBottom_toBottomOf="@+id/btn"
+        app:layout_constraintStart_toEndOf="@+id/btn"
+        android:layout_marginStart="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
