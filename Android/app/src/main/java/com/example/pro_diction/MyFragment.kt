@@ -106,6 +106,12 @@ class MyFragment : Fragment() {
             startActivity(onIntent)
         }
 
+        // test 온보딩
+        val sttIntent = Intent(this.context, SttActivity::class.java)
+        myInflater.findViewById<Button>(R.id.btn_t_stt).setOnClickListener {
+            startActivity(sttIntent)
+        }
+
         return myInflater
     }
 
