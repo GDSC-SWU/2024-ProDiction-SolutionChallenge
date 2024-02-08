@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,20 @@ public class TestServiceImpl implements TestService {
 
     @Value("${DICTION_TEST_API_KEY}")
     private String DICTION_TEST_API_KEY;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TestContentResponseDto> getTestStudyList(Integer stage) {
+        if (!(stage > 0 && stage < 6))   throw new InvalidStageException();
+        List<Study> studyList = studyRepository.getStudyByCategoryId(stage);
+
+        return studyList.stream()
+                .map(study -> TestContentResponseDto.builder()
+                        .studyId(study.getId())
+                        .content(study.getContent())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional(readOnly = true)
