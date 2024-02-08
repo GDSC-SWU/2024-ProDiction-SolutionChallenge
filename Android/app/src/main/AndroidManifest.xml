@@ -88,9 +88,6 @@
             android:name=".presentation.onboarding.OnBoarding2Activity"
             android:exported="false" />
         <activity
-            android:name=".LearnDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.onboarding.OnBoarding1Activity"
             android:exported="false" />
         <activity
