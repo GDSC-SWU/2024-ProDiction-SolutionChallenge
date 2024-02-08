@@ -23,6 +23,8 @@ public class Study {
     @NotNull
     private String pronunciation;
 
+    private Integer relevantNum;
+
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
     private SubCategory subCategory;
