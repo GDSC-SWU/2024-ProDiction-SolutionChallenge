@@ -7,15 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
-import com.example.pro_diction.data.dto.ConsonantDto
 import com.example.pro_diction.data.dto.WordDto
-import com.example.pro_diction.presentation.learn.LearnPhonemeDetailActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
-import com.example.pro_diction.presentation.learn.SyllableAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LearnWordActivity : AppCompatActivity() {

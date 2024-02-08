@@ -8,10 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import androidx.databinding.DataBindingUtil
 import com.example.pro_diction.databinding.FragmentLearnBinding
-import com.example.pro_diction.presentation.learn.LearnPhonemeActivity
-import com.example.pro_diction.presentation.learn.LearnSyllableActivity
+import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeActivity
+import com.example.pro_diction.presentation.learn.syllable.LearnSyllableActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.word.LearnWordActivity
 

@@ -1,9 +1,8 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.syllable
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.HangulConverter
 import com.example.pro_diction.R
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.presentation.learn.SearchActivity
 
 class LearnSyllableActivity : AppCompatActivity() {
     var ja: MutableList<ConsonantDto> = mutableListOf()

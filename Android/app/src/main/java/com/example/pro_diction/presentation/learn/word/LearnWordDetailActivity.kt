@@ -21,9 +21,12 @@ class LearnWordDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
+        // consonant setting 자음 설정
         val main = intent.getStringExtra("main")
         var tvMain = findViewById<TextView>(R.id.tv_word_detail_main)
         tvMain.text = main
+
+
     }
     // 툴바 메뉴 버튼 설정
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.phoneme
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.presentation.learn.ConsonantAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match

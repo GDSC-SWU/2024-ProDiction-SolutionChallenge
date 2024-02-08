@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.syllable
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.HangulConverter
 import com.example.pro_diction.R
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
 
 class LearnSyllableDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

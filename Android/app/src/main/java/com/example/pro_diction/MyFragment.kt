@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.pro_diction.databinding.FragmentMyBinding
 import com.example.pro_diction.presentation.auth.MainLoginActivity
-import com.example.pro_diction.presentation.learn.LearnPhonemeDetailActivity
 import com.example.pro_diction.presentation.my.CallActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
 import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity

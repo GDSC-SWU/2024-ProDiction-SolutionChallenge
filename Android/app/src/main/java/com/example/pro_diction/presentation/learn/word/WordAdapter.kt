@@ -8,11 +8,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pro_diction.data.dto.ConsonantDto
 import com.example.pro_diction.data.dto.WordDto
-import com.example.pro_diction.databinding.SyllableItemBinding
 import com.example.pro_diction.databinding.WordItemBinding
-import com.example.pro_diction.presentation.learn.SyllableAdapter
 
 class WordAdapter (private val dataList: MutableList<WordDto>) :
     RecyclerView.Adapter<WordAdapter.WordViewHolder>() {

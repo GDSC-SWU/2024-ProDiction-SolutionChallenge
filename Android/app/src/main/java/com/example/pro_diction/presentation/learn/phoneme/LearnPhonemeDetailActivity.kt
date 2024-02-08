@@ -1,20 +1,17 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.phoneme
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import com.example.pro_diction.R
 import com.example.pro_diction.databinding.ActivityLearnPhonemeDetailBinding
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.util.Util
+import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.learn.VideoActivity
 
 class LearnPhonemeDetailActivity : AppCompatActivity() {
     private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {

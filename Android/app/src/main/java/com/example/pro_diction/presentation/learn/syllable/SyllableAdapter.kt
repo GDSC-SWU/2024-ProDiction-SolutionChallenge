@@ -1,16 +1,17 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.syllable
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.data.dto.ConsonantDto
-import com.example.pro_diction.databinding.SyllableDetailItemBinding
+import com.example.pro_diction.databinding.SyllableItemBinding
 
-class SyllableDetailAdapter (private val dataList: MutableList<ConsonantDto>) :
-    RecyclerView.Adapter<SyllableDetailAdapter.SyllableDetailViewHolder>() {
-    private lateinit var binding: SyllableDetailItemBinding
+class SyllableAdapter (private val dataList: MutableList<ConsonantDto>) :
+    RecyclerView.Adapter<SyllableAdapter.SyllableViewHolder>() {
+    private lateinit var binding: SyllableItemBinding
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position:Int)
@@ -22,22 +23,23 @@ class SyllableDetailAdapter (private val dataList: MutableList<ConsonantDto>) :
         itemClickListener = onItemClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllableDetailViewHolder {
-        binding = SyllableDetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SyllableDetailViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SyllableViewHolder {
+        binding = SyllableItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SyllableViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SyllableDetailViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SyllableViewHolder, position: Int) {
         val item = dataList[position]
 
         holder.bind(item)
     }
 
-    inner class SyllableDetailViewHolder(val binding: SyllableDetailItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SyllableViewHolder(val binding: SyllableItemBinding) : RecyclerView.ViewHolder(binding.root) {
         var syllableBtn : Button = binding.btnSyllable
 
         init {
             binding.btnSyllable.setOnClickListener{
+                Log.e("btn", "true")
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
                     itemClickListener.onItemClick(binding.btnSyllable, pos)
