@@ -1,9 +1,13 @@
 package com.pro_diction.server.domain.test.entity;
 
 import com.pro_diction.server.domain.member.entity.Member;
+import com.pro_diction.server.domain.model.Stage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -12,6 +16,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Test")
 @Entity
 public class Test {
@@ -20,13 +25,25 @@ public class Test {
     @Column(name = "test_id")
     private Long id;
 
-    @NotNull
-    private LocalDate date;
+    @CreatedDate
+    private LocalDate createdDate;
+
+    @LastModifiedDate
+    private LocalDate modifiedDate;
 
     @NotNull
-    private Integer score;
+    @Enumerated(EnumType.STRING)
+    private Stage stage;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Test(Member member) {
+        this.member = member;
+    }
+
+    public void update(Stage stage) {
+        this.stage = stage;
+    }
 }

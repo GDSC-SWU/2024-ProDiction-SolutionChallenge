@@ -37,7 +37,13 @@ public enum ErrorCode {
     INVALID_ID_TOKEN(11002, HttpStatus.UNAUTHORIZED, "Invalid Code."),
 
     // Member Error
-    MEMBER_NOT_FOUND(12000, HttpStatus.UNAUTHORIZED, "Member not found.");
+    MEMBER_NOT_FOUND(12000, HttpStatus.BAD_REQUEST, "Member not found."),
+
+    // Study Error
+    STUDY_NOT_FOUND(13000, HttpStatus.NOT_FOUND, "Study Not found."),
+
+    // Test Error
+    INVALID_STAGE_NUM(14000, HttpStatus.BAD_REQUEST, "Invalid stage number.");
 
     private final Integer code;
     private final HttpStatus httpStatus;

@@ -26,4 +26,8 @@ public class Study {
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
     private SubCategory subCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_study_id")   // syllable 학습을 위한 재귀 관계
+    private Study parentStudy;
 }
