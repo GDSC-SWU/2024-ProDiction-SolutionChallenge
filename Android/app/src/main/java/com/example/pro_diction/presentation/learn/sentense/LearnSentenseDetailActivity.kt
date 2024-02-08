@@ -41,7 +41,7 @@ class LearnSentenseDetailActivity : AppCompatActivity() {
         sentenseDetailList.add(SentenseDetailDto("안녕하세요"))
         sentenseDetailList.add(SentenseDetailDto("성함이 어떻게 되시나요?"))
         sentenseDetailList.add(SentenseDetailDto("성함이 어떻게 되시나요? 성함이 어떻게 되시나요? 성함이 어떻게 되시나요?"))
-        sentenseDetailList.add(SentenseDetailDto("성함이 어떻게 되시나요?"))
+        sentenseDetailList.add(SentenseDetailDto("성함이 어떻게 되시나요? 안녕하세요? 만나서 반가워요. 저는 글을 길게 쓰면 어떻게 될지 테스트 중입니다."))
         sentenseDetailList.add(SentenseDetailDto("안녕하세요"))
         sentenseDetailList.add(SentenseDetailDto("성함이 어떻게 되시나요?"))
         sentenseDetailList.add(SentenseDetailDto("안녕하세요"))
