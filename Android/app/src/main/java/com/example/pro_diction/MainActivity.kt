@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.bottomNavigationView.itemIconTintList = null
         setBottomNavigationView()
 
         // 앱 초기 실행 시 홈화면으로 설정
