@@ -58,7 +58,7 @@
 
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btn_comm_stt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test"
@@ -66,15 +66,37 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/tv_stt"
+        android:id="@+id/tv_comm_stt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text=""
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="@+id/btn"
-        app:layout_constraintBottom_toBottomOf="@+id/btn"
-        app:layout_constraintStart_toEndOf="@+id/btn"
+        app:layout_constraintTop_toTopOf="@+id/btn_comm_stt"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_comm_stt"
+        app:layout_constraintStart_toEndOf="@+id/btn_comm_stt"
         android:layout_marginStart="20dp"/>
+
+    <EditText
+        android:id="@+id/edit_comm_tts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_comm_tts"
+        android:layout_marginBottom="100dp"
+        android:singleLine="true"
+        android:imeOptions="actionDone"/>
+    <Button
+        android:id="@+id/btn_comm_tts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tts"
+        app:layout_constraintStart_toEndOf="@+id/edit_comm_tts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_comm_tts"
+        app:layout_constraintTop_toTopOf="@+id/edit_comm_tts"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,25 +16,33 @@
 package com.example.pro_diction.presentation.comm
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsClient.getPackageName
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pro_diction.R
 import com.example.pro_diction.databinding.FragmentCommBinding
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.gun0912.tedpermission.PermissionListener
@@ -80,11 +88,16 @@ class CommFragment : Fragment(),
 
     // stt
     lateinit var speechRecognizer: SpeechRecognizer
+
+    // tts
+    private lateinit var tts: TextToSpeech
+    var isFirst = true
+
     var recodeStr: String = ""
         set(value) {
             field = value
             // TextView에 변경된 recodeStr 값을 설정
-            fragmentCommBinding.tvStt.text = value
+            fragmentCommBinding.tvCommStt.text = value
         }
 
     override fun onResume() {
@@ -139,6 +152,7 @@ class CommFragment : Fragment(),
         _fragmentCommBinding =
             FragmentCommBinding.inflate(inflater, container, false)
 
+        // permission
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
                 //setupStreamingModePipeline()
@@ -160,11 +174,19 @@ class CommFragment : Fragment(),
             .setPermissions(*REQUIRED_PERMISSIONS)
             .check()
 
-        fragmentCommBinding.btn.setOnClickListener {
+        // stt
+        fragmentCommBinding.btnCommStt.setOnClickListener {
             startVoiceRecording()
-            fragmentCommBinding.tvStt.text = recodeStr
+            fragmentCommBinding.tvCommStt.text = recodeStr
         }
-        fragmentCommBinding.tvStt.text = recodeStr
+        fragmentCommBinding.tvCommStt.text = recodeStr
+
+        // tts
+        initTTS()
+        // tts 버튼 & edit text
+        fragmentCommBinding.btnCommTts.setOnClickListener {
+            speakOut(fragmentCommBinding.editCommTts.text.toString())
+        }
 
         return fragmentCommBinding.root
     }
@@ -503,4 +525,31 @@ class CommFragment : Fragment(),
         override fun onEvent(eventType: Int, params: Bundle?) {
         }
     }
+
+    // android tts TextToSpeech
+    private fun initTTS() {
+        tts = TextToSpeech(requireContext(), textToSpeechListener)
+    }
+
+    private val textToSpeechListener: TextToSpeech.OnInitListener = TextToSpeech.OnInitListener {
+        if(isFirst) {
+            isFirst = false
+            return@OnInitListener
+        }
+        if (it == TextToSpeech.SUCCESS) {
+            val result = tts.setLanguage(Locale.KOREA)
+            if (result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA) {
+                // 지원하지 않는 언어거나, 없는 언어일때
+            } else {
+                // 정상 인식 되었을 때 실행
+            }
+        }
+    }
+    private fun speakOut(text: String) {
+        tts.setPitch(1F)
+        tts.setSpeechRate(1F)
+        tts.speak(text, TextToSpeech.QUEUE_ADD, null, "id1")
+        Toast.makeText(requireContext(), "재생 중..", Toast.LENGTH_SHORT).show()
+    }
+
 }

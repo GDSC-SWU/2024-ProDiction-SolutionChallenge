@@ -1,5 +1,6 @@
 package com.example.pro_diction
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -146,6 +149,7 @@ class SttActivity : AppCompatActivity() {
         tts.setPitch(1F)
         tts.setSpeechRate(1F)
         tts.speak(text, TextToSpeech.QUEUE_ADD, null, "id1")
+        Toast.makeText(applicationContext, "재생 중..", Toast.LENGTH_SHORT).show()
     }
 
 }
