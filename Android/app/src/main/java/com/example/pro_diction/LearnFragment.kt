@@ -13,6 +13,7 @@ import com.example.pro_diction.databinding.FragmentLearnBinding
 import com.example.pro_diction.presentation.learn.LearnPhonemeActivity
 import com.example.pro_diction.presentation.learn.LearnSyllableActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.learn.word.LearnWordActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,6 +57,12 @@ class LearnFragment : Fragment() {
         // syllable 음절
         learnInflater.findViewById<ImageButton>(R.id.btn_learn_2).setOnClickListener {
             val intent = Intent(requireContext(), LearnSyllableActivity::class.java)
+            startActivity(intent)
+        }
+
+        // word 단어
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_3).setOnClickListener {
+            val intent = Intent(requireContext(), LearnWordActivity::class.java)
             startActivity(intent)
         }
 
