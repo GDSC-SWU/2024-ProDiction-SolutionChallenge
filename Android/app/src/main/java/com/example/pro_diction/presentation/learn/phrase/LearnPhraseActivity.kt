@@ -56,7 +56,7 @@ class LearnPhraseActivity : AppCompatActivity() {
         })
 
         // floating action button 플로팅 버튼 연결
-        val fab: FloatingActionButton = findViewById(R.id.fab_word)
+        val fab: FloatingActionButton = findViewById(R.id.fab_phrase)
         fab.setOnClickListener {
             recyclerview.smoothScrollToPosition(0)
         }
