@@ -6,16 +6,21 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import java.util.Locale
 
 class SttActivity : AppCompatActivity() {
     lateinit var speechRecognizer: SpeechRecognizer
     lateinit var recodeStr: String
+    private lateinit var tts: TextToSpeech
+    var isFirst = true
     // permissions
     private val REQUIRED_PERMISSIONS = mutableListOf(
         android.Manifest.permission.RECORD_AUDIO).toTypedArray()
@@ -45,11 +50,21 @@ class SttActivity : AppCompatActivity() {
             .setPermissions(*REQUIRED_PERMISSIONS)
             .check()
 
+        // sst 버튼
         var btn_sst = findViewById<Button>(R.id.btn_sst)
         btn_sst.setOnClickListener {
             startVoiceRecording()
         }
+
+        initTTS()
+        // tts 버튼 & edit text
+        var btn_tts = findViewById<Button>(R.id.btn_tts)
+        var edit_tts = findViewById<EditText>(R.id.edit_tts)
+        btn_tts.setOnClickListener {
+            speakOut(edit_tts.text.toString())
+        }
     }
+    // sst
     private fun startVoiceRecording() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, packageName)
@@ -106,6 +121,31 @@ class SttActivity : AppCompatActivity() {
 
         override fun onEvent(eventType: Int, params: Bundle?) {
         }
+    }
+
+    // tts
+    private fun initTTS() {
+        tts = TextToSpeech(this, textToSpeechListener)
+    }
+
+    private val textToSpeechListener: TextToSpeech.OnInitListener = TextToSpeech.OnInitListener {
+        if(isFirst) {
+            isFirst = false
+            return@OnInitListener
+        }
+        if (it == TextToSpeech.SUCCESS) {
+            val result = tts.setLanguage(Locale.KOREA)
+            if (result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA) {
+                // 지원하지 않는 언어거나, 없는 언어일때
+            } else {
+                // 정상 인식 되었을 때 실행
+            }
+        }
+    }
+    private fun speakOut(text: String) {
+        tts.setPitch(1F)
+        tts.setSpeechRate(1F)
+        tts.speak(text, TextToSpeech.QUEUE_ADD, null, "id1")
     }
 
 }
