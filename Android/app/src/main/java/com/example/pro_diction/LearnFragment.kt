@@ -13,6 +13,7 @@ import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeActivity
 import com.example.pro_diction.presentation.learn.syllable.LearnSyllableActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.phrase.LearnPhraseActivity
+import com.example.pro_diction.presentation.learn.sentense.LearnSentenseActivity
 import com.example.pro_diction.presentation.learn.word.LearnWordActivity
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,6 +77,12 @@ class LearnFragment : Fragment() {
         // phrase 구
         learnInflater.findViewById<ImageButton>(R.id.btn_learn_4).setOnClickListener {
             val intent = Intent(requireContext(), LearnPhraseActivity::class.java)
+            startActivity(intent)
+        }
+
+        // sentense 문장
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_5).setOnClickListener {
+            val intent = Intent(requireContext(), LearnSentenseActivity::class.java)
             startActivity(intent)
         }
 

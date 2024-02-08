@@ -73,10 +73,10 @@ class PhraseAdapter (private val dataList: MutableList<PhraseDto>) :
             }
 
         }
-        fun bind(word: PhraseDto) {
-            tvPhraseMain.text = word.phraseTitle
-            btnPhrase1.text = word.phraseList[0]
-            btnPhrase2.text = word.phraseList[1]
+        fun bind(phrase: PhraseDto) {
+            tvPhraseMain.text = phrase.phraseTitle
+            btnPhrase1.text = phrase.phraseList[0]
+            btnPhrase2.text = phrase.phraseList[1]
 
             /*
             view.setOnClickListener {

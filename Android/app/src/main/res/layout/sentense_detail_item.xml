@@ -6,12 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="15dp">
     <Button
-        android:id="@+id/btn_phrase_detail"
+        android:id="@+id/btn_sentense_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="귀여운 강아지"
+        tools:text="안녕하세요"
         android:textAlignment="textStart"
         android:background="@drawable/btn_background_round_border"
         android:textColor="@color/main"

@@ -28,6 +28,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.learn.sentense.LearnSentenseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.sentense.LearnSentenseActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.learn.phrase.LearnPhraseDetailActivity"
             android:exported="false" />
         <activity
