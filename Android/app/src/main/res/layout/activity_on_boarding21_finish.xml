@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.onboarding.OnBoarding2_1FinishActivity"
+    android:background="@color/white"
+    android:layout_marginHorizontal="30dp" >
+
+    <TextView
+        android:id="@+id/tv_onboarding_2_title_1_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/onboarding_2_title"
+        android:textColor="@color/font"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="75dp" />
+    <TextView
+        android:id="@+id/tv_onboarding_2_sub_1_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Level.1"
+        android:textColor="@color/sub1"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_onboarding_2_title_1_finish"
+        app:layout_constraintStart_toStartOf="@+id/tv_onboarding_2_title_1_finish"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_onboarding_2_sub_1_finish"
+        app:layout_constraintBottom_toTopOf="@+id/btn_onboarding_2_1_finish"
+        android:layout_marginVertical="10dp">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    <Button
+        android:id="@+id/btn_onboarding_2_1_finish"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/onboarding_2_1_btn_finish"
+        android:textColor="@color/sub3"
+        android:textSize="17sp"
+        android:background="@drawable/bg_background_round_on"
+        android:enabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="30dp"
+        android:textAllCaps="false" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

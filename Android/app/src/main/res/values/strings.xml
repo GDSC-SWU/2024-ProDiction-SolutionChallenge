@@ -1,3 +1,83 @@
 <resources>
     <string name="app_name">Pro-Diction</string>
+    <string name="SERVER_CLIENT_ID">1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com</string>
+    <string name="sign_in">Continue with Google</string>
+    <string name="login_text1">For your proper diction</string>
+    <string name="login_text2">바름 [Pro - Diction]</string>
+    <string name="BASE_URL">aaaaa</string>
+    <string name="onboarding_1_title">Please enter your age.</string>
+    <string name="onboarding_1_sub">recommendations for frequently used words to make learning more fun!</string>
+    <string name="onboarding_1_btn">Next</string>
+    <string name="skip"><u>Skip></u></string>
+    <string name="onboarding_2_title">Skill test</string>
+    <string name="onboarding_2_sub">Take the test and receive a recommendation for a level that matches your skills.</string>
+    <string name="onboarding_2_btn">Take the Test</string>
+    <string name="onboarding_2_1_btn_text">After pressing the Icon, read it!</string>
+    <string name="onboarding_2_1_btn_finish">View Level</string>
+    <string name="onboarding_finish">Report</string>
+    <string name="onboarding_finish_btn">Start</string>
+    <string name="learn_sub">Learn at a level that suits you!</string>
+    <string name="learn_search">Search for pronunciation</string>
+    <string name="learn_1">Phoneme</string>
+    <string name="learn_2">Syllable</string>
+    <string name="learn_3">Word</string>
+    <string name="learn_4">Phrase</string>
+    <string name="learn_5">Sentense</string>
+    <string name="consonant">Consonant</string>
+    <string name="vowels">Vowels</string>
+    <string name="syllable_sub">Change your vowels</string>
+    <string name="retest"><u>레벨 테스트 하러 가기></u></string>
+    <string name="word_list">단어장</string>
+    <string name="support">지원</string>
+    <string name="center">107 손말이음센터</string>
+    <string name="language_setting">언어 설정</string>
+    <string name="my">개인정보</string>
+    <string name="logout">로그아웃</string>
+    <string name="delete_account">회원 탈퇴</string>
+    <string name="now">현재</string>
+    <string name="level">단계입니다.</string>
+    <string name="media_url_mp4_v1">https://storage.googleapis.com/prodiction-bucket/diction_video_v1/</string>
+    <string name="media_url_mp4_v2">https://storage.googleapis.com/prodiction-bucket/diction_video_v2/</string>
+    <string name="center_sub">전화 이용이 어려운 청각 또는 언어장애인이 자유롭게 전화를 통한 의사소통을 가능하게 해 주는 실시간 통신중계서비스 입니다.</string>
+    <string name="call">전화 연결하기</string>
+
+    <!-- gesture -->
+
+    <string name="media_pipe">MediaPipe</string>
+
+    <string name="alt_bottom_sheet_chevron">Bottom sheet expandable indicator</string>
+
+    <string name="alt_bottom_sheet_max_results_button_minus">Decreasing
+        maximum recognized results button</string>
+    <string name="alt_bottom_sheet_max_results_button_plus">Increasing maximum recognized results
+        button</string>
+    <string name="alt_bottom_sheet_threshold_button_minus">Decreasing
+        threshold of recognized hand gesture results button</string>
+    <string name="alt_bottom_sheet_threshold_button_plus">Increasing
+        threshold of recognized hand gesture results button</string>
+    <string name="alt_bottom_sheet_thread_button_minus">Decrease the number of threads used</string>
+    <string name="alt_bottom_sheet_thread_button_plus">Increase the number of threads used</string>
+    <string name="menu_camera">Camera</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="tv_gallery_placeholder">Click + to add an image or a video
+        to begin running the gesture recognizer.</string>
+
+    <string name="label_inference_time">Inference Time</string>
+    <string name="label_fps">Frames per Second</string>
+    <string name="label_hand_detection_confidence_threshold">Detection
+        Threshold</string>
+    <string name="label_hand_tracking_confidence_threshold">Tracking
+        Threshold</string>
+    <string name="label_hand_presence_confidence_threshold">Presence
+        Threshold</string>
+    <string name="label_delegate">Delegate</string>
+
+    <string-array name="delegate_spinner_titles">
+        <item>CPU</item>
+        <item>GPU</item>
+    </string-array>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
