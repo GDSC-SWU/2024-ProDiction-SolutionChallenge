@@ -16,6 +16,8 @@ class Utils (context: Context) {
     private val prefsEditor = prefs.edit()
     // private var instance: Utils? = null
 
+    // stage
+    private val STAGE = 1
 
     /*
     companion object {
@@ -80,6 +82,14 @@ class Utils (context: Context) {
         prefsEditor.remove(REFRESH_TOKEN)
         prefsEditor.putBoolean("LOGGED_IN", false)
 
+    }
+
+    fun setStage(stage: Int) {
+        prefsEditor.putInt("STAGE", stage).apply()
+    }
+
+    fun getStage() : Int {
+        return prefs.getInt("STAGE", 1)
     }
 
     fun clearToken() {

@@ -40,6 +40,11 @@
     <string name="media_url_mp4_v2">https://storage.googleapis.com/prodiction-bucket/diction_video_v2/</string>
     <string name="center_sub">전화 이용이 어려운 청각 또는 언어장애인이 자유롭게 전화를 통한 의사소통을 가능하게 해 주는 실시간 통신중계서비스 입니다.</string>
     <string name="call">전화 연결하기</string>
+    <string name="your_pron">Your pronunciation video</string>
+    <string name="correct_pron">Correct pronunciation video</string>
+    <string name="view_level">View Level</string>
+    <string name="you_are">You are on the</string>
+    <string name="next_level">Next Level</string>
 
     <!-- gesture -->
 

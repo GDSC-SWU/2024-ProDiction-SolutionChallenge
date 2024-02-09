@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="20dp"
+    android:layout_marginHorizontal="30dp">
+
+    <TextView
+        android:id="@+id/tv_onboarding_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="가"
+        android:textSize="17sp"
+        android:textColor="@color/main" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/tv_onboarding_result"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_onboarding_percent"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        tools:progress="40" />
+
+    <TextView
+        android:id="@+id/tv_onboarding_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40%"
+        android:textColor="@color/main"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/progress_bar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

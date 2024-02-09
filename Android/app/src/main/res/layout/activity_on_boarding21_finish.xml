@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.onboarding.OnBoarding2_1FinishActivity"
-    android:background="@color/white"
-    android:layout_marginHorizontal="30dp" >
+    android:background="@color/white" >
 
     <TextView
         android:id="@+id/tv_onboarding_2_title_1_finish"
@@ -18,7 +17,8 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="75dp" />
+        android:layout_marginTop="75dp"
+        android:layout_marginStart="30dp"/>
     <TextView
         android:id="@+id/tv_onboarding_2_sub_1_finish"
         android:layout_width="wrap_content"
@@ -32,23 +32,26 @@
         android:layout_marginTop="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_onboarding_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_onboarding_2_sub_1_finish"
-        app:layout_constraintBottom_toTopOf="@+id/btn_onboarding_2_1_finish"
-        android:layout_marginVertical="10dp">
-
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constrainedHeight="true"
+        android:layout_marginTop="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/onboarding_result_item"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
 
     <Button
         android:id="@+id/btn_onboarding_2_1_finish"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/onboarding_2_1_btn_finish"
+        tools:text="@string/next_level"
         android:textColor="@color/sub3"
         android:textSize="17sp"
         android:background="@drawable/bg_background_round_on"
