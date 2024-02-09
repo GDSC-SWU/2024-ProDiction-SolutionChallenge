@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @ToString
 @Builder
@@ -19,4 +21,7 @@ public class Category {
 
     @NotNull
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<SubCategory> childrenSubCategory;
 }

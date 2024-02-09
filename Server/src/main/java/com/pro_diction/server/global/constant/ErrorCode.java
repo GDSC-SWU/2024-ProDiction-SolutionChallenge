@@ -40,7 +40,9 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(12000, HttpStatus.BAD_REQUEST, "Member not found."),
 
     // Study Error
-    STUDY_NOT_FOUND(13000, HttpStatus.NOT_FOUND, "Study Not found."),
+    STUDY_NOT_FOUND(13000, HttpStatus.BAD_REQUEST, "Study not found."),
+    CATEGORY_NOT_FOUND(13001, HttpStatus.BAD_REQUEST, "Category not found."),
+    CATEGORY_HAS_NOT_FINAL_CONSONANT(13002, HttpStatus.BAD_REQUEST, "This category has not final consonant."),
 
     // Test Error
     INVALID_STAGE_NUM(14000, HttpStatus.BAD_REQUEST, "Invalid stage number.");
