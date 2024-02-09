@@ -7,16 +7,21 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.App
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.dto.OnBoardingResultDto
 import com.example.pro_diction.presentation.learn.word.LearnWordDetailActivity
 import com.example.pro_diction.presentation.learn.word.WordAdapter
+import retrofit2.Call
+import retrofit2.Response
 
 class OnBoarding2_1FinishActivity : AppCompatActivity() {
     private var finish = false
+    private var postStage = ApiPool.postStage
     // testId 리스트로 만들고 점수와 함께 전달하기
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,10 +75,24 @@ class OnBoarding2_1FinishActivity : AppCompatActivity() {
 
         btnNext.setOnClickListener {
             if (finish == true) {
-                val intent = Intent(this@OnBoarding2_1FinishActivity, OnBoardingFinishActivity::class.java)
-                startActivity(intent)
                 // 서버에 단계 저장  App.prefs.getStage()
-                
+                postStage.postStage(App.prefs.getStage()).enqueue(object : retrofit2.Callback<Int> {
+                    override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                        if (response.isSuccessful) {
+                            response.body()?.let {
+                                Log.e("stage", response.body().toString())
+                                val intent = Intent(this@OnBoarding2_1FinishActivity, OnBoardingFinishActivity::class.java)
+                                startActivity(intent)
+                            }
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Int>, t: Throwable) {
+                        Toast.makeText(this@OnBoarding2_1FinishActivity , "단계를 저장하지 못했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                })
+
             } else {
                 // 다음 단계로 이동
                 App.prefs.setStage(App.prefs.getStage()+1)
