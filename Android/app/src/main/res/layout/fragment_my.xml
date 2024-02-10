@@ -385,4 +385,12 @@
         app:layout_constraintStart_toEndOf="@+id/btn_t"
         android:text="stt" />
 
+    <Button
+        android:id="@+id/btn_t_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_t_stt"
+        android:text="record" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

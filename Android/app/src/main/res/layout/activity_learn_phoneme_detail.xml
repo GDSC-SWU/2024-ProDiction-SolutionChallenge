@@ -31,7 +31,7 @@
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
         android:maxLines="2"
-        android:paddingHorizontal="2dp"/>
+        android:paddingHorizontal="20dp"/>
 
     <ImageView
         android:id="@+id/iv_video1"
@@ -56,6 +56,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/btn_video2"
         android:scaleType="fitCenter"/>
+
+    <Button
+        android:id="@+id/btnStartRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="start"
+        />
+    <Button
+        android:id="@+id/btnStopRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="End"
+        />
     
 
 </androidx.constraintlayout.widget.ConstraintLayout>
