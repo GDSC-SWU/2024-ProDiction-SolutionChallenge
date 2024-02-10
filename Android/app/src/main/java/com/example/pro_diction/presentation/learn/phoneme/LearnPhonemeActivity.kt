@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.phoneme
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,8 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.pro_diction.R
+import com.example.pro_diction.presentation.learn.LearnPhonemeVowelsFragment
+import com.example.pro_diction.presentation.learn.SearchActivity
 import com.google.android.material.tabs.TabLayout
 
 class LearnPhonemeActivity : AppCompatActivity() {

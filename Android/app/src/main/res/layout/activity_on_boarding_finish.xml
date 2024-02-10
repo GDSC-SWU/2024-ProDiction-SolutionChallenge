@@ -9,16 +9,6 @@
     android:paddingHorizontal="30dp" >
 
     <TextView
-        android:id="@+id/tv_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/skip"
-        android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp" />
-
-    <TextView
         android:id="@+id/tv_onboarding_finish_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

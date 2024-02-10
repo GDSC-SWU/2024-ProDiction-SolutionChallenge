@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.learn.LearnSyllableActivity">
+    tools:context=".presentation.learn.syllable.LearnSyllableActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_phoneme"
@@ -52,14 +52,18 @@
         android:id="@+id/rv_syllable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.0"
         app:spanCount="3"
         tools:listitem="@layout/syllable_item"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="100dp"/>
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

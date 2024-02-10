@@ -28,6 +28,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.learn.sentense.LearnSentenseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.sentense.LearnSentenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.phrase.LearnPhraseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.phrase.LearnPhraseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.word.LearnWordDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.word.LearnWordActivity"
+            android:exported="false" />
+        <activity
             android:name=".SttActivity"
             android:exported="false" />
         <activity
@@ -43,19 +61,19 @@
             android:name=".presentation.my.MyWordActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.learn.LearnSyllableDetailActivity"
+            android:name=".presentation.learn.syllable.LearnSyllableDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.learn.LearnPhonemeDetailActivity"
+            android:name=".presentation.learn.phoneme.LearnPhonemeDetailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.learn.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.learn.LearnSyllableActivity"
+            android:name=".presentation.learn.syllable.LearnSyllableActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.learn.LearnPhonemeActivity"
+            android:name=".presentation.learn.phoneme.LearnPhonemeActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnBoardingFinishActivity"
@@ -68,9 +86,6 @@
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnBoarding2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".LearnDetailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnBoarding1Activity"

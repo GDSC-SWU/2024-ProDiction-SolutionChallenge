@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import androidx.databinding.DataBindingUtil
 import com.example.pro_diction.databinding.FragmentLearnBinding
-import com.example.pro_diction.presentation.learn.LearnPhonemeActivity
-import com.example.pro_diction.presentation.learn.LearnSyllableActivity
+import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeActivity
+import com.example.pro_diction.presentation.learn.syllable.LearnSyllableActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.learn.phrase.LearnPhraseActivity
+import com.example.pro_diction.presentation.learn.sentense.LearnSentenseActivity
+import com.example.pro_diction.presentation.learn.word.LearnWordActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +48,14 @@ class LearnFragment : Fragment() {
         binding = FragmentLearnBinding.inflate(inflater, container, false,)
         // Inflate the layout for this fragment
         val learnInflater = inflater.inflate(R.layout.fragment_learn, container, false)
-        
+
+        // search button 검색
+        val search = learnInflater.findViewById<Button>(R.id.btn_search)
+        search.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
+        }
+
         // phoneme 음소
         learnInflater.findViewById<ImageButton>(R.id.btn_learn_1).setOnClickListener {
             val intent = Intent(requireContext(), LearnPhonemeActivity::class.java)
@@ -59,12 +68,25 @@ class LearnFragment : Fragment() {
             startActivity(intent)
         }
 
-        // search button 검색
-        val search = learnInflater.findViewById<Button>(R.id.btn_search)
-        search.setOnClickListener {
-            val intent = Intent(requireContext(), SearchActivity::class.java)
+        // word 단어
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_3).setOnClickListener {
+            val intent = Intent(requireContext(), LearnWordActivity::class.java)
             startActivity(intent)
         }
+
+        // phrase 구
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_4).setOnClickListener {
+            val intent = Intent(requireContext(), LearnPhraseActivity::class.java)
+            startActivity(intent)
+        }
+
+        // sentense 문장
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_5).setOnClickListener {
+            val intent = Intent(requireContext(), LearnSentenseActivity::class.java)
+            startActivity(intent)
+        }
+
+
         return learnInflater
     }
 

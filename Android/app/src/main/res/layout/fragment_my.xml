@@ -274,8 +274,8 @@
 
             <ImageView
                 android:id="@id/iv_center"
-                android:layout_width="20dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
                 app:layout_constraintTop_toTopOf="@+id/tv_center"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_center"
                 android:src="@drawable/ic_my_right"
@@ -301,8 +301,8 @@
 
             <ImageView
                 android:id="@id/iv_setting"
-                android:layout_width="20dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
                 app:layout_constraintTop_toTopOf="@+id/tv_setting"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_setting"
                 android:src="@drawable/ic_my_right"

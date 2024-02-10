@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.learn.LearnPhonemeDetailActivity">
+    tools:context=".presentation.learn.phoneme.LearnPhonemeDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_phoneme"
@@ -24,20 +24,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="100dp"
-        android:textSize="30sp"
+        android:textSize="27sp"
         android:textStyle="bold"
-        android:textColor="@color/font"/>
+        android:textColor="@color/font"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:paddingHorizontal="2dp"/>
 
     <ImageView
         android:id="@+id/iv_video1"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/iv_video2"
-        android:src="@drawable/btn_video1"
+        android:layout_marginTop="80dp"
         android:scaleType="fitCenter"
-        android:layout_marginTop="80dp" />
+        android:src="@drawable/btn_video1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_video2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.209" />
 
     <ImageView
         android:id="@+id/iv_video2"

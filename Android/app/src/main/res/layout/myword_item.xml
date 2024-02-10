@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="15dp">
+    <Button
+        android:id="@+id/btn_myword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="귀여운 강아지"
+        android:textAlignment="textStart"
+        android:background="@color/white"
+        android:textColor="@color/font"
+        android:textSize="14sp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="15dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

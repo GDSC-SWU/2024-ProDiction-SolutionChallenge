@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.phoneme
 
 import android.content.Intent
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.pro_diction.presentation.learn
+package com.example.pro_diction.presentation.learn.phoneme
 
 import android.util.Log
 import android.view.LayoutInflater

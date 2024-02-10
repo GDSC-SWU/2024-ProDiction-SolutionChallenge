@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.learn.LearnSyllableDetailActivity">
+    tools:context=".presentation.learn.syllable.LearnSyllableDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_phoneme"
@@ -48,6 +48,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_jong_null"
-        android:layout_marginTop="10dp" />
+        app:layout_constrainedHeight="true"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

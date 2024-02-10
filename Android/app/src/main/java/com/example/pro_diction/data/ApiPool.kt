@@ -5,6 +5,8 @@ import com.example.pro_diction.App
 import com.example.pro_diction.data.api.SignInApiService
 import com.example.pro_diction.data.API.API_TAG
 import com.example.pro_diction.data.api.OnBoardingAgeApiService
+import com.example.pro_diction.data.api.OnBoardingRandomApiService
+import com.example.pro_diction.data.api.OnBoardingStageApiService
 import com.example.pro_diction.data.api.TokenRefreshApiService
 import com.example.pro_diction.data.dto.ResponseSignInDto
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -22,6 +24,8 @@ object ApiPool {
     val getSignIn = RetrofitPool.retrofit.create(SignInApiService::class.java)
     val getTokenRefresh = RetrofitPool.retrofit.create(TokenRefreshApiService::class.java)
     val patchAge = RetrofitPool.retrofit.create(OnBoardingAgeApiService::class.java)
+    val getRandomTest = RetrofitPool.retrofit.create(OnBoardingRandomApiService::class.java)
+    val postStage = RetrofitPool.retrofit.create(OnBoardingStageApiService::class.java)
 }
 
 object RetrofitPool {
