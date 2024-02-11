@@ -1,9 +1,6 @@
 package com.pro_diction.server.domain.study.service;
 
-import com.pro_diction.server.domain.study.dto.StudyRequestDto;
-import com.pro_diction.server.domain.study.dto.StudyResponseDto;
-import com.pro_diction.server.domain.study.dto.SubCategoryRequestDto;
-import com.pro_diction.server.domain.study.dto.SubCategoryResponseDto;
+import com.pro_diction.server.domain.study.dto.*;
 import com.pro_diction.server.domain.study.entity.Category;
 import com.pro_diction.server.domain.study.entity.Study;
 import com.pro_diction.server.domain.study.entity.SubCategory;
@@ -11,9 +8,11 @@ import com.pro_diction.server.domain.study.exception.*;
 import com.pro_diction.server.domain.study.repository.CategoryRepository;
 import com.pro_diction.server.domain.study.repository.StudyRepository;
 import com.pro_diction.server.domain.study.repository.SubCategoryRepository;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,9 @@ public class StudyServiceImpl implements StudyService {
     private final StudyRepository studyRepository;
     private final CategoryRepository categoryRepository;
     private final SubCategoryRepository subCategoryRepository;
+
+    @Value("${PRODICTION_AI_API_URL}")
+    private String PRODICTION_AI_API_URL;
 
     @Override
     @Transactional(readOnly = true)
@@ -75,5 +77,28 @@ public class StudyServiceImpl implements StudyService {
                         .content(study.getContent())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DetailStudyResponseDto getDetailStudy(Long id) {
+        Study study = studyRepository.findById(id).orElseThrow(StudyNotFoundException::new);
+
+        return DetailStudyResponseDto.builder()
+                .studyId(study.getId())
+                .content(study.getContent())
+                .splitPronunciation(splitPronunciation(study.getPronunciation()))
+                .build();
+    }
+
+    private String splitPronunciation(String pronunciation) {
+        RestTemplate restTemplate = new RestTemplate();
+        String splitPronunciation = restTemplate.getForObject(PRODICTION_AI_API_URL + "/splitjamos/{pronunciation}", String.class, pronunciation);
+
+        if(splitPronunciation != null) {
+            return splitPronunciation.replace("\"", "");
+        } else {
+            throw new NullPointerException();
+        }
     }
 }

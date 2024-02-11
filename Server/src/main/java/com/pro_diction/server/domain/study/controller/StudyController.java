@@ -1,9 +1,6 @@
 package com.pro_diction.server.domain.study.controller;
 
-import com.pro_diction.server.domain.study.dto.StudyRequestDto;
-import com.pro_diction.server.domain.study.dto.StudyResponseDto;
-import com.pro_diction.server.domain.study.dto.SubCategoryRequestDto;
-import com.pro_diction.server.domain.study.dto.SubCategoryResponseDto;
+import com.pro_diction.server.domain.study.dto.*;
 import com.pro_diction.server.domain.study.service.StudyService;
 import com.pro_diction.server.global.common.ApiDataResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +23,15 @@ public class StudyController {
         return ApiDataResponseDto.of(studyService.getSubCategoryList(request));
     }
 
-    @GetMapping("/subcategory/study")
+    @GetMapping
     public ApiDataResponseDto<List<StudyResponseDto>> getStudyList(@RequestBody StudyRequestDto request) {
 
         return ApiDataResponseDto.of(studyService.getStudyList(request));
+    }
+
+    @GetMapping("/{id}")
+    public ApiDataResponseDto<DetailStudyResponseDto> getDetailStudy(@PathVariable Long id) {
+
+        return ApiDataResponseDto.of(studyService.getDetailStudy(id));
     }
 }
