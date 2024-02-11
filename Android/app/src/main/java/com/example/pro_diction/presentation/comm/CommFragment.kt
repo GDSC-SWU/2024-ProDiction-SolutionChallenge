@@ -152,6 +152,13 @@ class CommFragment : Fragment(),
         _fragmentCommBinding =
             FragmentCommBinding.inflate(inflater, container, false)
 
+        val rootLayout = fragmentCommBinding.root
+
+        // 화면 클릭 시 키보드 숨기기
+        rootLayout.setOnClickListener {
+            hideKeyboard()
+        }
+
         // permission
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -186,9 +193,33 @@ class CommFragment : Fragment(),
         // tts 버튼 & edit text
         fragmentCommBinding.btnCommTts.setOnClickListener {
             speakOut(fragmentCommBinding.editCommTts.text.toString())
+            // tts 버튼 말한 후 edit text 초기화
+            fragmentCommBinding.editCommTts.text.clear()
         }
 
-        return fragmentCommBinding.root
+        // keyboard 버튼
+        fragmentCommBinding.btnCommKeyboard.setOnClickListener {
+            // EditText에 포커스를 설정하여 키보드가 나타나도록 함
+            fragmentCommBinding.editCommTts.requestFocus()
+            showKeyboard()
+        }
+
+        return rootLayout
+    }
+
+    // 키보드 숨기기
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    // 키보드 보이기
+    private fun showKeyboard() {
+        // 키보드 매니저 가져오기
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // 키보드 나타내기
+        inputMethodManager.showSoftInput(fragmentCommBinding.editCommTts, InputMethodManager.SHOW_IMPLICIT)
     }
 
     @SuppressLint("MissingPermission")

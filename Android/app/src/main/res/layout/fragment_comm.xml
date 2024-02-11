@@ -158,4 +158,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/comm_bottom"
         app:layout_constraintTop_toTopOf="@+id/comm_bottom"/>
 
+    <ImageButton
+        android:id="@+id/btn_comm_keyboard"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="20dp"
+        android:background="#00ff0000"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_keyboard"
+        android:text="keyboard"
+        app:layout_constraintBottom_toBottomOf="@+id/comm_bottom"
+        app:layout_constraintEnd_toEndOf="@+id/comm_bottom"
+        app:layout_constraintTop_toTopOf="@+id/comm_bottom" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
