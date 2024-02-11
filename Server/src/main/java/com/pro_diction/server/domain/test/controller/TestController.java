@@ -28,7 +28,7 @@ public class TestController {
         return ApiDataResponseDto.of(testService.getTestStudyList(stage));
     }
 
-    @GetMapping
+    @PostMapping("/diction")
     public ApiDataResponseDto<TestResponseDto> test(@RequestPart MultipartFile multipartFile,
                                                     @RequestParam Long id) throws IOException {
 
