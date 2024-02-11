@@ -1,6 +1,8 @@
 package com.pro_diction.server.domain.study.service;
 
+import com.pro_diction.server.domain.study.dto.StudyRequestDto;
 import com.pro_diction.server.domain.study.dto.StudyResponseDto;
+import com.pro_diction.server.domain.study.dto.SubCategoryRequestDto;
 import com.pro_diction.server.domain.study.dto.SubCategoryResponseDto;
 import com.pro_diction.server.domain.study.entity.Category;
 import com.pro_diction.server.domain.study.entity.Study;
@@ -25,19 +27,19 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
-        if(categoryId != 2 && isFinalConsonant) throw new CategoryHasNotFinalConsonantException();
+    public List<SubCategoryResponseDto> getSubCategoryList(SubCategoryRequestDto request) {
+        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+        if(request.getCategoryId() != 2 && request.isFinalConsonant()) throw new CategoryHasNotFinalConsonantException();
 
         List<SubCategory> subCategoryList = category.getChildrenSubCategory();
 
         return subCategoryList.stream()
-                .filter(subCategory -> subCategory.isFinalConsonant() == isFinalConsonant)
+                .filter(subCategory -> subCategory.isFinalConsonant() == request.isFinalConsonant())
                 .map(subCategory -> SubCategoryResponseDto.builder()
                         .id(subCategory.getId())
                         .name(subCategory.getName())
                         .studyResponseDtoList(
-                                subCategory.getChildrenStudy().subList(0, Math.min(subCategory.getChildrenStudy().size(), studyCount))
+                                subCategory.getChildrenStudy().subList(0, Math.min(subCategory.getChildrenStudy().size(), request.getStudyCount()))
                                 .stream()
                                 .map(study -> StudyResponseDto.builder()
                                         .studyId(study.getId())
@@ -50,14 +52,14 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId) {
+    public List<StudyResponseDto> getStudyList(StudyRequestDto request) {
         List<Study> studyList;
 
-        if(subCategoryId != null && parentStudyId == null) {
-            SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(SubCategoryNotFoundException::new);
+        if(request.getSubCategoryId() != null && request.getParentStudyId() == null) {
+            SubCategory subCategory = subCategoryRepository.findById(request.getSubCategoryId()).orElseThrow(SubCategoryNotFoundException::new);
             studyList = subCategory.getChildrenStudy();
-        } else if(parentStudyId != null && subCategoryId == null) {
-            Study parentStudy = studyRepository.findById(parentStudyId).orElseThrow(StudyNotFoundException::new);
+        } else if(request.getParentStudyId() != null && request.getSubCategoryId() == null) {
+            Study parentStudy = studyRepository.findById(request.getParentStudyId()).orElseThrow(StudyNotFoundException::new);
             studyList = parentStudy.getChildrenStudy();
 
             if(parentStudy.getChildrenStudy().isEmpty()) {  // 받침 study의 부모 study가 아닌 경우

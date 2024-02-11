@@ -21,14 +21,14 @@ public class StudyController {
     private final StudyService studyService;
 
     @GetMapping("/subcategory")
-    public ApiDataResponseDto<List<SubCategoryResponseDto>> getSubCategoryList(@RequestBody SubCategoryRequestDto requestDto) {
+    public ApiDataResponseDto<List<SubCategoryResponseDto>> getSubCategoryList(@RequestBody SubCategoryRequestDto request) {
 
-        return ApiDataResponseDto.of(studyService.getSubCategoryList(requestDto.getCategoryId(), requestDto.isFinalConsonant(), requestDto.getStudyCount()));
+        return ApiDataResponseDto.of(studyService.getSubCategoryList(request));
     }
 
     @GetMapping("/subcategory/study")
-    public ApiDataResponseDto<List<StudyResponseDto>> getStudyList(@RequestBody StudyRequestDto requestDto) {
+    public ApiDataResponseDto<List<StudyResponseDto>> getStudyList(@RequestBody StudyRequestDto request) {
 
-        return ApiDataResponseDto.of(studyService.getStudyList(requestDto.getSubCategoryId(), requestDto.getParentStudyId()));
+        return ApiDataResponseDto.of(studyService.getStudyList(request));
     }
 }
