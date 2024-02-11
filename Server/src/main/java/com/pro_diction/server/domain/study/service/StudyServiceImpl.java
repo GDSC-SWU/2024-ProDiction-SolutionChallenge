@@ -25,7 +25,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant) {
+    public List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
         if(categoryId != 2 && isFinalConsonant) throw new CategoryHasNotFinalConsonantException();
 
@@ -36,6 +36,14 @@ public class StudyServiceImpl implements StudyService {
                 .map(subCategory -> SubCategoryResponseDto.builder()
                         .id(subCategory.getId())
                         .name(subCategory.getName())
+                        .studyResponseDtoList(
+                                subCategory.getChildrenStudy().subList(0, Math.min(subCategory.getChildrenStudy().size(), studyCount))
+                                .stream()
+                                .map(study -> StudyResponseDto.builder()
+                                        .studyId(study.getId())
+                                        .content(study.getContent())
+                                        .build())
+                                .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
     }

@@ -23,7 +23,7 @@ public class StudyController {
     @GetMapping("/subcategory")
     public ApiDataResponseDto<List<SubCategoryResponseDto>> getSubCategoryList(@RequestBody SubCategoryRequestDto requestDto) {
 
-        return ApiDataResponseDto.of(studyService.getSubCategoryList(requestDto.getCategoryId(), requestDto.isFinalConsonant()));
+        return ApiDataResponseDto.of(studyService.getSubCategoryList(requestDto.getCategoryId(), requestDto.isFinalConsonant(), requestDto.getStudyCount()));
     }
 
     @GetMapping("/subcategory/study")

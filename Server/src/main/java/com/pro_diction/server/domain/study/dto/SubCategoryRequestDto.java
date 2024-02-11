@@ -14,4 +14,7 @@ public class SubCategoryRequestDto {
 
     @NotNull
     private boolean isFinalConsonant;
+
+    @NotNull
+    private Integer studyCount;
 }

@@ -6,7 +6,7 @@ import com.pro_diction.server.domain.study.dto.SubCategoryResponseDto;
 import java.util.List;
 
 public interface StudyService {
-    List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant);
+    List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount);
 
     List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId);
 }
