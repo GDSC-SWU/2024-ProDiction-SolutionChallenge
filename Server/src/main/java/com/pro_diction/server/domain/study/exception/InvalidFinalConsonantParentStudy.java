@@ -1,0 +1,10 @@
+package com.pro_diction.server.domain.study.exception;
+
+import com.pro_diction.server.global.constant.ErrorCode;
+import com.pro_diction.server.global.exception.GeneralException;
+
+public class InvalidFinalConsonantParentStudy extends GeneralException {
+    public InvalidFinalConsonantParentStudy() {
+        super(ErrorCode.INVALID_FINAL_CONSONANT_PARENT_STUDY);
+    }
+}

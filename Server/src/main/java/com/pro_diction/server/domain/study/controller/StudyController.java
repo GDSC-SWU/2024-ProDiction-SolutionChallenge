@@ -1,5 +1,7 @@
 package com.pro_diction.server.domain.study.controller;
 
+import com.pro_diction.server.domain.study.dto.StudyRequestDto;
+import com.pro_diction.server.domain.study.dto.StudyResponseDto;
 import com.pro_diction.server.domain.study.dto.SubCategoryRequestDto;
 import com.pro_diction.server.domain.study.dto.SubCategoryResponseDto;
 import com.pro_diction.server.domain.study.service.StudyService;
@@ -22,5 +24,11 @@ public class StudyController {
     public ApiDataResponseDto<List<SubCategoryResponseDto>> getSubCategoryList(@RequestBody SubCategoryRequestDto requestDto) {
 
         return ApiDataResponseDto.of(studyService.getSubCategoryList(requestDto.getCategoryId(), requestDto.isFinalConsonant()));
+    }
+
+    @GetMapping("/subcategory/study")
+    public ApiDataResponseDto<List<StudyResponseDto>> getStudyList(@RequestBody StudyRequestDto requestDto) {
+
+        return ApiDataResponseDto.of(studyService.getStudyList(requestDto.getSubCategoryId(), requestDto.getParentStudyId()));
     }
 }
