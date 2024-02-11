@@ -74,7 +74,8 @@ public class StudyServiceImpl implements StudyService {
         return studyList.stream()
                 .map(study -> StudyResponseDto.builder()
                         .studyId(study.getId())
-                        .content(study.getContent())
+                        .content(request.getParentStudyId() == null ?
+                                study.getContent() : study.getSubCategory().getName())
                         .build())
                 .collect(Collectors.toList());
     }
