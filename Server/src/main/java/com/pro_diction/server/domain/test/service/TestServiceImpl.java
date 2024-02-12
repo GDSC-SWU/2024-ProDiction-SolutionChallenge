@@ -15,8 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +41,9 @@ public class TestServiceImpl implements TestService {
     @Value("${DICTION_TEST_API_KEY}")
     private String DICTION_TEST_API_KEY;
 
+    @Value("${PRODICTION_AI_API_URL}")
+    private String PRODICTION_AI_API_URL;
+
     @Override
     @Transactional(readOnly = true)
     public List<TestContentResponseDto> getTestStudyList(Integer stage) {
@@ -51,7 +59,6 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException {
         Study study = studyRepository.findById(id).orElseThrow(() -> new StudyNotFoundException());
         Double score = test(multipartFile, study.getPronunciation());
@@ -74,8 +81,32 @@ public class TestServiceImpl implements TestService {
         return stage;
     }
 
+    private MultipartFile removeNoise(MultipartFile file) {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(2000);
+        factory.setReadTimeout(2000);
+        RestTemplate restTemplate = new RestTemplate(factory);
+
+        // HTTP 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // 파일을 MultiValueMap에 추가
+        MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("file", file.getResource());
+
+        // Request Header, Body 요청 구성
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<MultipartFile> responseEntity = restTemplate.postForEntity(PRODICTION_AI_API_URL + "/noisereduce", requestEntity, MultipartFile.class);
+
+        return responseEntity.getBody();
+    }
+
     private Double test(MultipartFile file, String pronunciation) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(2000);
+        factory.setReadTimeout(2000);
+        RestTemplate restTemplate = new RestTemplate(factory);
         HttpHeaders httpHeaders = new HttpHeaders();
         String audioContents = null;
         Map<String, Object> request = new HashMap<>();
