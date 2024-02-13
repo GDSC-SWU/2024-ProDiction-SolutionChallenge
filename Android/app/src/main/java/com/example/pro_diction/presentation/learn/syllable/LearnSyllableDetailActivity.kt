@@ -3,21 +3,32 @@ package com.example.pro_diction.presentation.learn.syllable
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.HangulConverter
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
+import com.example.pro_diction.data.dto.CategoryResponseDto
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class LearnSyllableDetailActivity : AppCompatActivity() {
+    val getParentStudy = ApiPool.getParentStudy
+    var list: MutableList<StudyResponseDto> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_learn_syllable_detail)
@@ -30,54 +41,63 @@ class LearnSyllableDetailActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         // selected text
-        val item = intent.getStringExtra("item")
+        val studyId = intent.getStringExtra("studyId")
+        val content = intent.getStringExtra("content")
+
         val tv = findViewById<TextView>(R.id.textView)
-        tv.text = item
+        tv.text = content
 
         // recycler view
         val recyclerview = findViewById<RecyclerView>(R.id.rv_syllable_detail)
         val consonantList: MutableList<ConsonantDto> = mutableListOf()
-        consonantList.add(ConsonantDto("ㄱ"))
-        consonantList.add(ConsonantDto("ㄴ"))
-        consonantList.add(ConsonantDto("ㄷ"))
-        consonantList.add(ConsonantDto("ㄹ"))
-        consonantList.add(ConsonantDto("ㅁ"))
-        consonantList.add(ConsonantDto("ㅂ"))
-        consonantList.add(ConsonantDto("ㅅ"))
-        consonantList.add(ConsonantDto("ㅇ"))
-        consonantList.add(ConsonantDto("ㅈ"))
-        consonantList.add(ConsonantDto("ㅊ"))
-        consonantList.add(ConsonantDto("ㅋ"))
-        consonantList.add(ConsonantDto("ㅌ"))
-        consonantList.add(ConsonantDto("ㅍ"))
-        consonantList.add(ConsonantDto("ㅎ"))
-        consonantList.add(ConsonantDto("ㄲ"))
-        consonantList.add(ConsonantDto("ㅆ"))
-        consonantList.add(ConsonantDto("ㄳ"))
-        consonantList.add(ConsonantDto("ㄵ"))
-        consonantList.add(ConsonantDto("ㄶ"))
-        consonantList.add(ConsonantDto("ㄺ"))
-        consonantList.add(ConsonantDto("ㄻ"))
-        consonantList.add(ConsonantDto("ㄼ"))
-        consonantList.add(ConsonantDto("ㄽ"))
-        consonantList.add(ConsonantDto("ㄾ"))
-        consonantList.add(ConsonantDto("ㄿ"))
-        consonantList.add(ConsonantDto("ㅀ"))
-        consonantList.add(ConsonantDto("ㅄ"))
+        var adapter = SyllableDetailAdapter(list)
 
 
+        // api
+        getParentStudy.getParentStudyId(studyId?.toInt()!!).enqueue(object: retrofit2.Callback<BaseResponse<List<StudyResponseDto>>> {
+            override fun onResponse(
+                call: Call<BaseResponse<List<StudyResponseDto>>>,
+                response: Response<BaseResponse<List<StudyResponseDto>>>
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        Log.e("LearnSyllableDetail", response.toString())
+                        Log.e("LearnSyllableDetail", response.body()?.data.toString())
+                        response.body()?.data?.forEach { it ->
+                            list.add(it)
+                        }
 
-        val adapter = SyllableDetailAdapter(consonantList)
+                        //adapter = SyllableDetailAdapter(list)
+                        Log.e("LearnSyllableDetail", list.toString())
+                        recyclerview.adapter = adapter
+                        recyclerview.layoutManager = GridLayoutManager(this@LearnSyllableDetailActivity, 4)
+                    }else {
+                        Log.e("NotSuccessful", response.toString())
+                    }
 
-        recyclerview.adapter = adapter
-        recyclerview.layoutManager = GridLayoutManager(this, 4)
+                } else {
+                    response.body()?.let { Log.e("Response", it.toString()) }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse<List<StudyResponseDto>>>, t: Throwable) {
+                Toast.makeText(this@LearnSyllableDetailActivity , "서버 통신을 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
 
         // parser
-        val ja = consonantList
-        var result = ArrayList<String>()
+        // val ja = consonantList
+        // var result = ArrayList<String>()
+
+        adapter = SyllableDetailAdapter(list)
+        recyclerview.adapter = adapter
+        recyclerview.layoutManager = GridLayoutManager(this@LearnSyllableDetailActivity, 4)
 
 
         // onClick
+        val intent = Intent(this@LearnSyllableDetailActivity, LearnPhonemeDetailActivity::class.java)
         adapter.setOnItemClickListener(object: SyllableDetailAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 // result.clear()
@@ -86,16 +106,21 @@ class LearnSyllableDetailActivity : AppCompatActivity() {
                 //result.add(consonantList[position].item)
                 //tv.text = parser.assem(result)
                 // 종성 합치기
+
+                /*
                 val hangulChar = HangulConverter.joinHangulJongsung(item!!.get(0), consonantList[position].item[0])
                 val intent = Intent(this@LearnSyllableDetailActivity, LearnPhonemeDetailActivity::class.java)
                 intent.putExtra("item", hangulChar.toString())
+                startActivity(intent)*/
+
+                intent.putExtra("item", list[position].studyId.toString())
                 startActivity(intent)
+
             }
         })
 
         btnNull.setOnClickListener {
-            val intent = Intent(this@LearnSyllableDetailActivity, LearnPhonemeDetailActivity::class.java)
-            intent.putExtra("item", item)
+            intent.putExtra("item", studyId)
             startActivity(intent)
         }
     }

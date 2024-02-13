@@ -57,22 +57,19 @@
         android:src="@drawable/btn_video2"
         android:scaleType="fitCenter"/>
 
-    <Button
-        android:id="@+id/btnStartRecording"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/btn_record"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/btn_listen"
+        android:scaleType="centerCrop"
+        android:enabled="true"
+        android:background="#00ff0000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="start"
-        />
-    <Button
-        android:id="@+id/btnStopRecording"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="End"
-        />
+        android:layout_marginBottom="140dp" />
+
     
 
 </androidx.constraintlayout.widget.ConstraintLayout>

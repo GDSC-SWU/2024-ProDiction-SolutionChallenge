@@ -6,13 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.ResponseSignInDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.presentation.learn.phoneme.ConsonantAdapter
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +36,8 @@ class LearnPhonemeVowelsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var getSubCategory = ApiPool.getSubCategory
+    var list: MutableList<StudyResponseDto> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,37 +55,41 @@ class LearnPhonemeVowelsFragment : Fragment() {
         // recycler view
         val vowelsInflater = inflater.inflate(R.layout.fragment_learn_phoneme_vowels, container, false)
         val recyclerview = vowelsInflater.findViewById<RecyclerView>(R.id.rv_vowels)
-        val consonantList: MutableList<ConsonantDto> = mutableListOf()
-        consonantList.add(ConsonantDto("ㅏ"))
-        consonantList.add(ConsonantDto("ㅑ"))
-        consonantList.add(ConsonantDto("ㅓ"))
-        consonantList.add(ConsonantDto("ㅕ"))
-        consonantList.add(ConsonantDto("ㅗ"))
-        consonantList.add(ConsonantDto("ㅛ"))
-        consonantList.add(ConsonantDto("ㅜ"))
-        consonantList.add(ConsonantDto("ㅠ"))
-        consonantList.add(ConsonantDto("ㅡ"))
-        consonantList.add(ConsonantDto("ㅣ"))
-        consonantList.add(ConsonantDto("ㅐ"))
-        consonantList.add(ConsonantDto("ㅒ"))
-        consonantList.add(ConsonantDto("ㅔ"))
-        consonantList.add(ConsonantDto("ㅖ"))
-        consonantList.add(ConsonantDto("ㅚ"))
-        consonantList.add(ConsonantDto("ㅟ"))
-        consonantList.add(ConsonantDto("ㅢ"))
-        consonantList.add(ConsonantDto("ㅘ"))
-        consonantList.add(ConsonantDto("ㅝ"))
-        consonantList.add(ConsonantDto("ㅙ"))
-        consonantList.add(ConsonantDto("ㅞ"))
+        var adapter = ConsonantAdapter(list)
 
-        val adapter = ConsonantAdapter(consonantList)
+        getSubCategory.getSubCategory(2).enqueue(object:
+            Callback<BaseResponse<List<StudyResponseDto>>> {
+            override fun onResponse(
+                call: Call<BaseResponse<List<StudyResponseDto>>>,
+                response: Response<BaseResponse<List<StudyResponseDto>>>
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        response.body()?.data?.forEach { it ->
+                            list.add(it)
+                        }
+
+                        recyclerview.adapter = adapter
+                        recyclerview.layoutManager = GridLayoutManager(this@LearnPhonemeVowelsFragment.activity, 3)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse<List<StudyResponseDto>>>, t: Throwable) {
+                Toast.makeText(context, "server fail", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        // adapter
+        adapter = ConsonantAdapter(list)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = GridLayoutManager(this.activity, 3)
 
+        // button cick intent
         val intent = Intent(this.context, LearnPhonemeDetailActivity::class.java)
         adapter.setOnItemClickListener(object: ConsonantAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
-                intent.putExtra("item", consonantList[position].item)
+                intent.putExtra("item", list[position].studyId.toString())
                 startActivity(intent)
             }
         })

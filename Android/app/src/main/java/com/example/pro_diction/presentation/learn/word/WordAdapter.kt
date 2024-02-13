@@ -8,10 +8,11 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pro_diction.data.dto.CategoryResponseDto
 import com.example.pro_diction.data.dto.WordDto
 import com.example.pro_diction.databinding.WordItemBinding
 
-class WordAdapter (private val dataList: MutableList<WordDto>) :
+class WordAdapter (private val dataList: MutableList<CategoryResponseDto>) :
     RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
     private lateinit var binding: WordItemBinding
 
@@ -54,33 +55,33 @@ class WordAdapter (private val dataList: MutableList<WordDto>) :
             binding.tvWordMain.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnWordRight, pos)
+                    itemClickListener.onItemClick(binding.tvWordMain, pos)
                 }
             }
             binding.btnWord1.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnWordRight, pos)
+                    itemClickListener.onItemClick(binding.btnWord1, pos)
                 }
             }
             binding.btnWord2.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnWordRight, pos)
+                    itemClickListener.onItemClick(binding.btnWord2, pos)
                 }
             }
             binding.btnWord3.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnWordRight, pos)
+                    itemClickListener.onItemClick(binding.btnWord3, pos)
                 }
             }
         }
-        fun bind(word: WordDto) {
-            tvWordMain.text = word.wordTitle
-            btnWord1.text = word.wordList[0]
-            btnWord2.text = word.wordList[1]
-            btnWord3.text = word.wordList[2]
+        fun bind(categoryResponse: CategoryResponseDto) {
+            tvWordMain.text = categoryResponse.name
+            btnWord1.text = categoryResponse.studyResponseDtoList.get(0).content
+            btnWord2.text = categoryResponse.studyResponseDtoList.get(1).content
+            btnWord3.text = categoryResponse.studyResponseDtoList.get(2).content
 
             /*
             view.setOnClickListener {

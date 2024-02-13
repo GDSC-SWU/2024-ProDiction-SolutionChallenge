@@ -4,9 +4,14 @@ import android.util.Log
 import com.example.pro_diction.App
 import com.example.pro_diction.data.api.SignInApiService
 import com.example.pro_diction.data.API.API_TAG
+import com.example.pro_diction.data.api.CategoryApiService
 import com.example.pro_diction.data.api.OnBoardingAgeApiService
 import com.example.pro_diction.data.api.OnBoardingRandomApiService
 import com.example.pro_diction.data.api.OnBoardingStageApiService
+import com.example.pro_diction.data.api.OnBoardingTestApiService
+import com.example.pro_diction.data.api.ParentStudyApiService
+import com.example.pro_diction.data.api.StudyIdApiService
+import com.example.pro_diction.data.api.SubCategoryApiService
 import com.example.pro_diction.data.api.TokenRefreshApiService
 import com.example.pro_diction.data.dto.ResponseSignInDto
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -26,6 +31,11 @@ object ApiPool {
     val patchAge = RetrofitPool.retrofit.create(OnBoardingAgeApiService::class.java)
     val getRandomTest = RetrofitPool.retrofit.create(OnBoardingRandomApiService::class.java)
     val postStage = RetrofitPool.retrofit.create(OnBoardingStageApiService::class.java)
+    val getScore = RetrofitPool.retrofit.create(OnBoardingTestApiService::class.java)
+    val getCategory = RetrofitPool.retrofit.create(CategoryApiService::class.java)
+    val getSubCategory = RetrofitPool.retrofit.create(SubCategoryApiService::class.java)
+    val getParentStudy = RetrofitPool.retrofit.create(ParentStudyApiService::class.java)
+    val getStudyId = RetrofitPool.retrofit.create(StudyIdApiService::class.java)
 }
 
 object RetrofitPool {

@@ -8,13 +8,14 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pro_diction.data.dto.CategoryResponseDto
 import com.example.pro_diction.data.dto.PhraseDto
 import com.example.pro_diction.data.dto.WordDto
 import com.example.pro_diction.databinding.PhraseItemBinding
 import com.example.pro_diction.databinding.WordItemBinding
 import com.example.pro_diction.presentation.learn.word.WordAdapter
 
-class PhraseAdapter (private val dataList: MutableList<PhraseDto>) :
+class PhraseAdapter (private val dataList: MutableList<CategoryResponseDto>) :
     RecyclerView.Adapter<PhraseAdapter.PhraseViewHolder>() {
     private lateinit var binding: PhraseItemBinding
 
@@ -56,27 +57,27 @@ class PhraseAdapter (private val dataList: MutableList<PhraseDto>) :
             binding.tvPhraseMain.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnPhraseRight, pos)
+                    itemClickListener.onItemClick(binding.tvPhraseMain, pos)
                 }
             }
             binding.btnPhrase1.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnPhraseRight, pos)
+                    itemClickListener.onItemClick(binding.btnPhrase1, pos)
                 }
             }
             binding.btnPhrase2.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnPhraseRight, pos)
+                    itemClickListener.onItemClick(binding.btnPhrase2, pos)
                 }
             }
 
         }
-        fun bind(phrase: PhraseDto) {
-            tvPhraseMain.text = phrase.phraseTitle
-            btnPhrase1.text = phrase.phraseList[0]
-            btnPhrase2.text = phrase.phraseList[1]
+        fun bind(categoryResponse: CategoryResponseDto) {
+            tvPhraseMain.text = categoryResponse.name
+            btnPhrase1.text = categoryResponse.studyResponseDtoList.get(0).content
+            btnPhrase2.text = categoryResponse.studyResponseDtoList.get(1).content
 
             /*
             view.setOnClickListener {

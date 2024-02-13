@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -31,6 +32,10 @@ class VideoActivity : AppCompatActivity() {
 
         item = intent.getStringExtra("item")
         videoType = intent.getStringExtra("videoType")
+        Log.e("splitedItem", item.toString())
+        Log.e("videoType", videoType.toString())
+
+
         // tool bar
         val toolbar: Toolbar = findViewById(R.id.tb_phoneme)
         setSupportActionBar(toolbar)
@@ -67,23 +72,71 @@ class VideoActivity : AppCompatActivity() {
                 viewBinding.videoView.player = exoPlayer
                 if (videoType == "1") {
                     var baseUriV1 = getString(R.string.media_url_mp4_v1)
-                    var uri1 = baseUriV1 + item + ".mp4"
-                    val mediaItem = MediaItem.fromUri(uri1)
-                    exoPlayer.setMediaItem(mediaItem)
 
-                    var uri2 = baseUriV1 + item + ".mp4"
-                    val secondMediaItem = MediaItem.fromUri(uri2)
-                    exoPlayer.addMediaItem(secondMediaItem)
+                    item?.forEachIndexed { index, i ->
+                        if (index == 0) {
+                            var uri1 = baseUriV1 + i + ".mp4"
+                            Log.e("uri1", uri1)
+                            val mediaItem = MediaItem.fromUri(uri1)
+                            exoPlayer.setMediaItem(mediaItem)
+                        }
+                        else {
+                            var uri2 = baseUriV1 + i + ".mp4"
+                            Log.e("uri2", uri2)
+                            val secondMediaItem = MediaItem.fromUri(uri2)
+                            exoPlayer.addMediaItem(secondMediaItem)
+                            /*
+                            // 음절은 종성이 겹자음인지 검사 후 대치
+                            if (item!!.length == 3 && index == 2) {
+                                var jong = isDoubleJong(i.toString())
+                                var uri2 = baseUriV1 + jong + ".mp4"
+                                val secondMediaItem = MediaItem.fromUri(uri2)
+                                exoPlayer.addMediaItem(secondMediaItem)
+                                Log.e("uri2", uri2)
+                            }
+                            else {
+                                var uri2 = baseUriV1 + i + ".mp4"
+                                val secondMediaItem = MediaItem.fromUri(uri2)
+                                exoPlayer.addMediaItem(secondMediaItem)
+                                Log.e("uri2", uri2)
+                            }*/
+                        }
+                    }
+
                 }
                 else if (videoType == "2") {
                     var baseUriV2 = getString(R.string.media_url_mp4_v2)
-                    var uri1 = baseUriV2 + item + ".mp4"
-                    val mediaItem = MediaItem.fromUri(uri1)
-                    exoPlayer.setMediaItem(mediaItem)
 
-                    var uri2 = baseUriV2 + item + ".mp4"
-                    val secondMediaItem = MediaItem.fromUri(uri2)
-                    exoPlayer.addMediaItem(secondMediaItem)
+                    item?.forEachIndexed { index, i ->
+                        if (index == 0) {
+                            var uri1 = baseUriV2 + i + ".mp4"
+                            val mediaItem = MediaItem.fromUri(uri1)
+                            exoPlayer.setMediaItem(mediaItem)
+                            Log.e("uri1", uri1)
+                        }
+                        else {
+                            var uri2 = baseUriV2 + i + ".mp4"
+                            val secondMediaItem = MediaItem.fromUri(uri2)
+                            exoPlayer.addMediaItem(secondMediaItem)
+                            Log.e("uri2", uri2)
+                            /*
+                            // 음절은 종성이 겹자음인지 검사 후 대치
+                            if (item!!.length == 3 && index == 2) {
+                                var jong = isDoubleJong(i.toString())
+                                var uri2 = baseUriV2 + jong + ".mp4"
+                                val secondMediaItem = MediaItem.fromUri(uri2)
+                                exoPlayer.addMediaItem(secondMediaItem)
+                                Log.e("uri2", uri2)
+                            }
+                            else {
+                                var uri2 = baseUriV2 + i + ".mp4"
+                                val secondMediaItem = MediaItem.fromUri(uri2)
+                                exoPlayer.addMediaItem(secondMediaItem)
+                                Log.e("uri2", uri2)
+                            }*/
+                        }
+                    }
+
                 }
 
                 exoPlayer.playWhenReady = playWhenReady
@@ -140,5 +193,52 @@ class VideoActivity : AppCompatActivity() {
             release()
         }
         player = null
+    }
+
+    private fun isDoubleJong(string: String) : String {
+        // 모든 받침 포함? ㄱㄴㄷㄹㅁㅂㅇ
+        if (string == "ㄲ") {
+            return "ㄱ"
+        }
+        else if (string == "ㅆ"){
+            return "ㄷ"
+        }
+        else if (string == "ㄳ"){
+            return "ㄱ"
+        }
+        else if (string == "ㄵ"){
+            return "ㄴ"
+        }
+        else if (string == "ㄶ"){
+            return "ㄴ"
+        }
+        else if (string == "ㄺ"){
+            return "ㄱ"
+        }
+        else if (string == "ㄻ"){
+            return "ㅁ"
+        }
+        else if (string == "ㄼ"){
+            return "ㅂ"
+        }
+        else if (string == "ㄽ"){
+            return "ㄹ"
+        }
+        else if (string == "ㄾ"){
+            return "ㄹ"
+        }
+        else if (string == "ㄿ"){
+            return "ㅂ"
+        }
+        else if (string == "ㅀ"){
+            return "ㄹ"
+        }
+        else if (string == "ㅄ"){
+            return "ㅂ"
+        }
+        else {
+            return string
+        }
+
     }
 }

@@ -28,6 +28,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/ic_profile"
                 android:layout_marginTop="70dp"/>
+            <TextView
+                android:id="@+id/tv_nick"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                tools:text=""
+                android:autoSizeMinTextSize="5dp"
+                android:autoSizeStepGranularity="1dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:ellipsize="end"
+                app:layout_constraintStart_toStartOf="@+id/v_profile"
+                app:layout_constraintTop_toTopOf="@+id/v_profile"
+                app:layout_constraintEnd_toEndOf="@+id/v_profile"
+                app:layout_constraintBottom_toBottomOf="@+id/v_profile"/>
 
 
             <LinearLayout
