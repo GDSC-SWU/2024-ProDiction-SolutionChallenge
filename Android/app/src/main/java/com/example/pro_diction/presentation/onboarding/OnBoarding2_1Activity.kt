@@ -170,6 +170,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
                         question.text = testList[1]
                         now++
                         recordExist = false
+                        findViewById<TextView>(R.id.tv_record_before).visibility = View.VISIBLE
 
                     }
                     else if (now == 1) {
@@ -179,6 +180,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
                         question.text = testList[2]
                         now++
                         recordExist = false
+                        findViewById<TextView>(R.id.tv_record_before).visibility = View.VISIBLE
 
                     }
                     else if (now == 2) {
@@ -358,7 +360,6 @@ class OnBoarding2_1Activity : AppCompatActivity() {
         //findViewById<TextView>(R.id.messageTextView).visibility = View.VISIBLE
         //findViewById<Button>(R.id.pauseResumeRecordingButton).visibility = View.GONE
         //findViewById<Switch>(R.id.showAmplitudeSwitch).isChecked = false
-        findViewById<TextView>(R.id.tv_record_before).visibility = View.VISIBLE
         findViewById<ImageButton>(R.id.btn_onboarding_2_1).setImageDrawable(resources.getDrawable(R.drawable.btn_listen))
         Toast.makeText(this, "Recording completed", Toast.LENGTH_SHORT).show()
         //findViewById<Button>(R.id.button).text = "START"

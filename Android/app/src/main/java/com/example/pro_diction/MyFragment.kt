@@ -75,6 +75,27 @@ class MyFragment : Fragment() {
         // 닉네임 nick name
         myInflater.findViewById<TextView>(R.id.tv_nick).text = nick
 
+        var tvLevel = myInflater.findViewById<TextView>(R.id.tv_my_level)
+        // level
+        if (App.prefs.getStage() == 1) {
+            tvLevel.text = getString(R.string.learn_1)
+        }
+        else if (App.prefs.getStage() == 2) {
+            tvLevel.text = getString(R.string.learn_2)
+        }
+        else if (App.prefs.getStage() == 3) {
+            tvLevel.text = getString(R.string.learn_3)
+        }
+        else if (App.prefs.getStage() == 4) {
+            tvLevel.text = getString(R.string.learn_4)
+        }
+        else if (App.prefs.getStage() == 5) {
+            tvLevel.text = getString(R.string.learn_5)
+        }
+        else{
+            tvLevel.text = "-"
+        }
+
         // 로그아웃 버튼 logout button
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             signOut()
