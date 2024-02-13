@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import StreamingResponse
 from google.cloud import speech_v1p1beta1 as speech
 from google.cloud import texttospeech
 from google.oauth2 import service_account
@@ -10,6 +11,7 @@ import librosa
 import noisereduce as nr
 import numpy as np
 import soundfile as sf
+import requests
 
 app = FastAPI()
 
@@ -63,30 +65,32 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/noisereduce/")
-async def noisereduce(file: UploadFile = File(...)):
-    # 임시 파일 경로 설정
-    file_path = f"temp_{file.filename}"
-    # 파일 저장
-    with open(file_path, "wb") as f:
-        f.write(file.file.read())
+@app.get("/noisereduce")
+async def noisereduce(url: str):
+    # 다운로드할 파일의 URL과 로컬에 저장될 경로 지정
+    # file_url = "https://storage.googleapis.com/prodiction-bucket/%E3%84%B1.wav"
+    local_file_path = "downloaded_file.wav"
+
+    # 파일 다운로드 수행
+    download_file(url, local_file_path)
 
     # 오디오 파일 로드
-    audio, sr = sf.read(file_path)
-
-    # 잡음 제거
-    reduced_noise = nr.reduce_noise(audio, sr)
+    audio, sr = sf.read(local_file_path)
 
     # 출력 파일 이름 설정
     output_file = "noise_reduced.wav"
+
+    # 잡음 제거
+    try:
+        reduced_noise = nr.reduce_noise(audio, sr)
+    except np.core._exceptions._ArrayMemoryError as e:
+        print("메모리 오류", e)
+        reduced_noise = denoise_audio(local_file_path)
+
     # 잡음이 제거된 파일 저장
     sf.write(output_file, reduced_noise, sr)
 
-    # 임시 파일 삭제
-    os.remove(file_path)
-
-    # 잡음이 제거된 wav 파일 반환
-    return FileResponse(output_file, media_type="audio/wav", filename=output_file)
+    return StreamingResponse(open(output_file, 'rb'), media_type="audio/wav")
 
 
 @app.post("/speechtotext/")
@@ -101,7 +105,10 @@ async def speechtotext_syllables(file: UploadFile = File(...)):
     with open(file_path, "wb") as f:
         f.write(file.file.read())
 
-    result = process_audio(file_path, amplitude_threshold=0.05, merge_distance=0.2, front_padding=0.5, back_padding=0.5)
+    try:
+        result = process_audio(file_path, amplitude_threshold=0.05, merge_distance=0.2, front_padding=0.5, back_padding=0.5)
+    except IndexError as e:
+        result = "No speech to detect"
 
     # 파일 삭제 (옵션)
     os.remove(file_path)
@@ -142,6 +149,16 @@ async def splitjamos(text: str):
     return split_syllables(text)
 
 
+def download_file(url, file_path):
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(file_path, 'wb') as f:
+            f.write(response.content)
+        print("File downloaded successfully.")
+    else:
+        print("Failed to download the file.")
+
+
 def process_audio_file(file: UploadFile):
     client = speech.SpeechClient(credentials=credentials)
     content = file.file.read()
@@ -150,7 +167,7 @@ def process_audio_file(file: UploadFile):
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=44100,
+        sample_rate_hertz=11025,
         language_code="ko-KR",
         enable_word_confidence=True,
     )
@@ -170,7 +187,7 @@ def process_audio_file(file: UploadFile):
         # )
         return alternative.transcript
     else:
-        return "No speech detected."
+        return "-"
 
 
 def process_audio_file_syllable(file_path):
@@ -184,7 +201,7 @@ def process_audio_file_syllable(file_path):
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=44100,
+        sample_rate_hertz=11025,
         language_code="ko-KR",
         enable_word_confidence=True,
     )
@@ -204,7 +221,7 @@ def process_audio_file_syllable(file_path):
         # )
         return alternative.transcript
     else:
-        return "No speech detected"
+        return "-"
 
 
 def is_hangul_syllable(c):
@@ -512,6 +529,7 @@ def process_audio(input_path, amplitude_threshold=0.1, merge_distance=0.5, front
     # 찾은 덩어리를 기준으로 오디오를 자르기
     cut_segments = cut_audio_segments(reduced_noise, merged_segments, front_padding, back_padding)
 
+    error_flag = 0
     syllables_recognized = ""
 
     # 자른 음성 파일 저장
@@ -529,10 +547,46 @@ def process_audio(input_path, amplitude_threshold=0.1, merge_distance=0.5, front
         # 수정된 오디오를 파일로 저장
         modified_audio.export(output_path, format="wav")
 
-        syllables_recognized += process_audio_file_syllable(output_path)
-        syllables_recognized += " "
+        recognized_syllable = process_audio_file_syllable(output_path)
+        if len(recognized_syllable) > 1:
+            error_flag = 1
+
+        syllables_recognized += recognized_syllable
 
         # 파일 삭제 (옵션)
         os.remove(output_path)
 
+        if error_flag == 1:
+            syllables_recognized = "too fast"
+
     return syllables_recognized
+
+
+def denoise_audio(audio_path):
+    # 오디오 파일 불러오기
+    audio, sr = librosa.load(audio_path, sr=None)
+
+    # 스펙트로그램 계산
+    spectrogram = np.abs(librosa.stft(audio))
+
+    # 스펙트로그램을 기반으로 노이즈 마스크 생성
+    noise_mask = np.mean(spectrogram, axis=1) < 0.01
+
+    # 노이즈 마스크를 이용하여 스펙트로그램 수정
+    denoised_spectrogram = spectrogram.copy()
+    denoised_spectrogram[noise_mask] = 0
+
+    # 수정된 스펙트로그램을 이용하여 음성 데이터 복원
+    denoised_audio = librosa.istft(denoised_spectrogram)
+
+    return denoised_audio
+
+
+def download_file(url, file_path):
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(file_path, 'wb') as f:
+            f.write(response.content)
+        print("File downloaded successfully.")
+    else:
+        print("Failed to download the file.")
