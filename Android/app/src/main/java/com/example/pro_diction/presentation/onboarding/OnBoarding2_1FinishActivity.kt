@@ -64,6 +64,9 @@ class OnBoarding2_1FinishActivity : AppCompatActivity() {
             btnNext.text = getString(R.string.view_level)
             finish = true
         }
+        else {
+            btnNext.text = getString(R.string.next_level)
+        }
         
         // 총 점수 합이 60을 넘지 못한 경우
         if (done == true) {
@@ -71,6 +74,9 @@ class OnBoarding2_1FinishActivity : AppCompatActivity() {
             finish = true
             Log.e("btnNext.text", btnNext.text.toString())
             Log.e("getString(R.string.view_level)", getString(R.string.view_level))
+        }
+        else {
+            btnNext.text = getString(R.string.next_level)
         }
 
         btnNext.setOnClickListener {

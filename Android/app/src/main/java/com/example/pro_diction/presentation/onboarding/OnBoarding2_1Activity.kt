@@ -7,14 +7,20 @@ import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.core.view.isVisible
 import com.example.pro_diction.App
 import com.example.pro_diction.MainActivity
+import com.example.pro_diction.MainActivity2
 import com.example.pro_diction.MediaRecorderActivity
 import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
@@ -22,6 +28,9 @@ import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.RandomTestDto
 import com.example.pro_diction.data.dto.TestScoreDto
 import com.example.pro_diction.presentation.learn.phrase.LearnPhraseDetailActivity
+import com.github.squti.androidwaverecorder.RecorderState
+import com.github.squti.androidwaverecorder.WaveRecorder
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.LogFactory.release
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -32,91 +41,37 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
-private const val LOG_TAG = "AudioRecordTest"
-private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
 class OnBoarding2_1Activity : AppCompatActivity() {
-    var stage = App.prefs.getStage()// 현재 레벨
+    var stage = App.prefs.getStage()// now stage
     private val getRandomTestService = ApiPool.getRandomTest
     var testList : MutableList<String> = mutableListOf()
     var testIdList : MutableList<Int> = mutableListOf()
-    private var now = 0  // 레벨에서 현재 몇 번째 문제인지
-    private var total : Float = 0.0f  // 총합 점수 (300점 만점에 60점 이상이면 테스트 지속)
-    private var done = false  // (60점 이하면 테스트 중지)
+    private var now = 0  // question number in this level
+    private var total : Float = 0.0f  // total score
+    private var done = false  // if total < 60 => test done
     var testScoreList: MutableList<Float> = mutableListOf()
-
-    // media record
-    private var fileName: String = ""
-
-    private var recordButton: MediaRecorderActivity.RecordButton? = null
-    private var recorder: MediaRecorder? = null
-
-    private var playButton: MediaRecorderActivity.PlayButton? = null
-    private var player: MediaPlayer? = null
-
-    // Requesting permission to RECORD_AUDIO
-    private var permissionToRecordAccepted = false
-    private var permissions: Array<String> = arrayOf(android.Manifest.permission.RECORD_AUDIO)
 
     // test api
     private val getScoreService = ApiPool.getScore
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionToRecordAccepted = if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
-            grantResults[0] == PackageManager.PERMISSION_GRANTED
-        } else {
-            false
-        }
-        if (!permissionToRecordAccepted) finish()
-    }
 
-    private fun onRecord(start: Boolean) = if (start) {
-        startRecording()
-    } else {
-        stopRecording()
-    }
+    // audio record
+    private val PERMISSIONS_REQUEST_RECORD_AUDIO = 77
 
-    private fun startRecording() {
-        recorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            setOutputFile(fileName)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+    private lateinit var waveRecorder: WaveRecorder
+    private lateinit var filePath: String
+    private var isRecording = false
+    private var isPaused = false
 
-            try {
-                prepare()
-            } catch (e: IOException) {
-                Log.e(LOG_TAG, "prepare() failed")
-            }
-
-            start()
-        }
-    }
-
-    private fun stopRecording() {
-        recorder?.apply {
-            stop()
-            release()
-        }
-        recorder = null
-    }
+    var recordExist = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_on_boarding21)
 
-        // media record
-        fileName = "${externalCacheDir?.absolutePath}/audiorecordtest.wav"
-        Log.e("filename", fileName)
-        var mStartRecording = true
-        var recordExist = false
-
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
 
         // skip button
         var btnSkip = findViewById<TextView>(R.id.tv_skip)
@@ -132,6 +87,19 @@ class OnBoarding2_1Activity : AppCompatActivity() {
         var btnNext = findViewById<ImageView>(R.id.btn_next_record)
 
         stage = App.prefs.getStage()
+
+        // audio
+        filePath = externalCacheDir?.absolutePath + "/audioFile.wav"
+
+        waveRecorder = WaveRecorder(filePath)
+
+        waveRecorder.onStateChangeListener = {
+            when (it) {
+                RecorderState.RECORDING -> startRecording()
+                RecorderState.STOP -> stopRecording()
+                RecorderState.PAUSE -> pauseRecording()
+            }
+        }
 
         // api
         getRandomTestService.getRandomTest(stage).enqueue(object : retrofit2.Callback<BaseResponse<List<RandomTestDto>>> {
@@ -161,92 +129,103 @@ class OnBoarding2_1Activity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<BaseResponse<List<RandomTestDto>>>, t: Throwable) {
-                t.message?.let { Log.e("error", it) } ?: "서버통신 실패(응답값 x)"
+                t.message?.let { Log.e("error", it) } ?: "server error"
             }
         })
 
-        //
+        // record button
         recordBtn.setOnClickListener {
-            recordExist = true
-
-            // 백에 testIdList[0], wav 보내고 점수 저장 / 이걸 성공시 다음 실행
-            onRecord(mStartRecording)
-            when (mStartRecording) {
-                true -> {
-                    recordBtn.setImageResource(R.drawable.btn_listening)
-                    tvRecord.isVisible = false
-                    btnNext.isVisible = false
+            if (!isRecording) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.RECORD_AUDIO
+                    )
+                    != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.RECORD_AUDIO),
+                        PERMISSIONS_REQUEST_RECORD_AUDIO
+                    )
+                } else {
+                    waveRecorder.startRecording()
                 }
-                false -> {
-                    recordBtn.setImageResource(R.drawable.btn_listen)
-                    tvRecord.isVisible = true
-                    btnNext.isVisible = true
-                }
+            } else {
+                waveRecorder.stopRecording()
             }
-            mStartRecording = !mStartRecording
 
         }
 
+        waveRecorder.noiseSuppressorActive = true
+
         btnNext.setOnClickListener {
-            if (recordExist == true) {
-                if (now == 0) {
+            if (isRecording == false) {
+                if (recordExist == true) {
+                    if (now == 0) {
 
-                    testScoreList.clear()
+                        testScoreList.clear()
 
-                    uploadFile(0) // test score GET
+                        uploadFile(0)
 
-                    // 백에 testIdList[0], wav 보내고 점수 저장 / 이걸 성공시 다음 실행
-                    question.text = testList[1]
-                    now++
+                        question.text = testList[1]
+                        now++
+                        recordExist = false
 
-                }
-                else if (now == 1) {
-
-                    uploadFile(1)
-
-                    // 백에 testIdList[1], wav 보내고 점수 저장 / 이걸 성공시 다음 실행
-                    question.text = testList[2]
-                    now++
-
-                }
-                else if (now == 2) {
-
-                    uploadFile(2)
-
-                    // 백에 testIdList[2], wav 보내고 점수 저장 / 이걸 성공시 다음 실행
-                    // 점수 다 더해줌 계산
-                    total = testScoreList[0] + testScoreList[1] + testScoreList[2]
-                    if (total >= 60.0) {
-                        stage++
-                        done = false
-                        // ai 돌리고 점수 저장
                     }
-                    else {
-                        stage++
-                        done = true
+                    else if (now == 1) {
+
+                        uploadFile(1)
+
+                        question.text = testList[2]
+                        now++
+                        recordExist = false
+
                     }
-                    val intent = Intent(this@OnBoarding2_1Activity, OnBoarding2_1FinishActivity::class.java)
-                    App.prefs.setStage(stage-1) // stage 저장
-                    // 각 단어 전달
-                    intent.putExtra("test0", testList[0])
-                    intent.putExtra("test1", testList[1])
-                    intent.putExtra("test2", testList[2])
-                    // 각각의 점수도 전달 합니다잉
-                    intent.putExtra("testScore0", testScoreList[0].toString())
-                    intent.putExtra("testScore1", testScoreList[1].toString())
-                    intent.putExtra("testScore2", testScoreList[2].toString())
-                    intent.putExtra("done", done)
-                    Log.e("done intent", done.toString())
-                    startActivity(intent)
+                    else if (now == 2) {
 
-                    now = 0 // 여기서 저장해도 남아있나..? 아니면 객체 하나 만들어서 저장해주자 레벨도 같이 저장해도 될듯?
+                        uploadFileCallback(2, object : UploadFileCallback {
+                            override fun onUploadFileCompleted() {
 
+                                // total score
+                                total = testScoreList[0] + testScoreList[1] + testScoreList[2]
+                                if (total >= 60.0) {
+                                    stage++
+                                    done = false
+                                }
+                                else {
+                                    stage++
+                                    done = true
+                                }
+                                val intent = Intent(this@OnBoarding2_1Activity, OnBoarding2_1FinishActivity::class.java)
+                                App.prefs.setStage(stage-1) // stage save
+                                // test name intent
+                                intent.putExtra("test0", testList[0])
+                                intent.putExtra("test1", testList[1])
+                                intent.putExtra("test2", testList[2])
+                                // test score intent
+                                intent.putExtra("testScore0", testScoreList[0].toString())
+                                intent.putExtra("testScore1", testScoreList[1].toString())
+                                intent.putExtra("testScore2", testScoreList[2].toString())
+                                intent.putExtra("done", done)
+                                Log.e("done intent", done.toString())
+                                startActivity(intent)
+
+                                now = 0
+                            }
+                        })
+
+
+
+                    }
                 }
+                else {
+                    Toast.makeText(this@OnBoarding2_1Activity, "Please record it!", Toast.LENGTH_SHORT).show()
+                }
+
             }
             else {
-                Toast.makeText(this@OnBoarding2_1Activity, "Please record it!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@OnBoarding2_1Activity, "You cannot switch screens while recording.", Toast.LENGTH_SHORT).show()
             }
-
         }
 
     }
@@ -287,36 +266,153 @@ class OnBoarding2_1Activity : AppCompatActivity() {
     }
 
     private fun uploadFile(i: Int) {
-        val file = File(fileName)
-
-        val requestBody = RequestBody.create("audio/wav".toMediaTypeOrNull(), file)
+        val file = File(filePath)
+        val requestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
         val fileToUpload = MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
         val filename = RequestBody.create("text/plain".toMediaTypeOrNull(), file.name)
 
-        getScoreService.getScore(testIdList[i], fileToUpload).enqueue(object : Callback<BaseResponse<TestScoreDto>> {
-            override fun onResponse(call: Call<BaseResponse<TestScoreDto>>, response: Response<BaseResponse<TestScoreDto>>) {
+        getScoreService.getScore(testIdList[i], fileToUpload).enqueue(object: Callback<BaseResponse<TestScoreDto>> {
+            override fun onResponse(
+                call: Call<BaseResponse<TestScoreDto>>,
+                response: Response<BaseResponse<TestScoreDto>>
+            ) {
                 if (response != null) {
                     if (response.isSuccessful) {
-                        Log.e("response.body()", response.body().toString())
-                        Toast.makeText(applicationContext, response.message(), Toast.LENGTH_SHORT).show()
-                    } else {
+                        Log.e("response", response.toString())
+                        response.body()?.data?.let { it?.score?.let { it1 -> testScoreList.add(it1) } }
+                    }
+                    else {
                         Toast.makeText(applicationContext, response.body().toString(), Toast.LENGTH_SHORT).show()
                     }
-                } else {
+                }
+                else {
                     response.body()?.let { Log.v("Response", it.toString()) }
                 }
+
             }
 
             override fun onFailure(call: Call<BaseResponse<TestScoreDto>>, t: Throwable) {
-                t.message?.let { Log.e("error", it) } ?: "서버통신 실패(응답값 x)"
+                Log.e("response", t.toString())
             }
         })
+
     }
+
+    private fun uploadFileCallback(i: Int,  callback: UploadFileCallback) {
+        val file = File(filePath)
+        val requestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
+        val fileToUpload = MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
+        val filename = RequestBody.create("text/plain".toMediaTypeOrNull(), file.name)
+
+        getScoreService.getScore(testIdList[i], fileToUpload).enqueue(object: Callback<BaseResponse<TestScoreDto>> {
+            override fun onResponse(
+                call: Call<BaseResponse<TestScoreDto>>,
+                response: Response<BaseResponse<TestScoreDto>>
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        Log.e("response", response.toString())
+                        response.body()?.data?.let { it?.score?.let { it1 -> testScoreList.add(it1) } }
+
+                        callback.onUploadFileCompleted()
+                    }
+                    else {
+                        Toast.makeText(applicationContext, response.body().toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    response.body()?.let { Log.v("Response", it.toString()) }
+                }
+
+            }
+
+            override fun onFailure(call: Call<BaseResponse<TestScoreDto>>, t: Throwable) {
+                Log.e("response", t.toString())
+            }
+        })
+
+    }
+
+    interface UploadFileCallback {
+        fun onUploadFileCompleted()
+    }
+
+    private fun startRecording() {
+        Log.d(OnBoarding2_1Activity.TAG, waveRecorder.audioSessionId.toString())
+        isRecording = true
+        isPaused = false
+        //findViewById<TextView>(R.id.messageTextView).visibility = View.GONE
+        //findViewById<TextView>(R.id.recordingTextView).text = "Recording..."
+        findViewById<TextView>(R.id.tv_record_before).visibility = View.INVISIBLE
+        findViewById<ImageButton>(R.id.btn_onboarding_2_1).setImageDrawable(resources.getDrawable(R.drawable.btn_listening))
+        //findViewById<Button>(R.id.pauseResumeRecordingButton).text = "PAUSE"
+        //findViewById<Button>(R.id.pauseResumeRecordingButton).visibility = View.VISIBLE
+        //findViewById<TextView>(R.id.noiseSuppressorSwitch).isEnabled = false
+        recordExist = true
+    }
+
+    private fun stopRecording() {
+        isRecording = false
+        isPaused = false
+        //findViewById<TextView>(R.id.recordingTextView).visibility = View.GONE
+        //findViewById<TextView>(R.id.messageTextView).visibility = View.VISIBLE
+        //findViewById<Button>(R.id.pauseResumeRecordingButton).visibility = View.GONE
+        //findViewById<Switch>(R.id.showAmplitudeSwitch).isChecked = false
+        findViewById<TextView>(R.id.tv_record_before).visibility = View.VISIBLE
+        findViewById<ImageButton>(R.id.btn_onboarding_2_1).setImageDrawable(resources.getDrawable(R.drawable.btn_listen))
+        Toast.makeText(this, "Recording completed", Toast.LENGTH_SHORT).show()
+        //findViewById<Button>(R.id.button).text = "START"
+        //findViewById<TextView>(R.id.noiseSuppressorSwitch).isEnabled = true
+
+
+    }
+
+    private fun pauseRecording() {
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSIONS_REQUEST_RECORD_AUDIO -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    waveRecorder.startRecording()
+                }
+                return
+            }
+
+            else -> {
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
+    private fun formatTimeUnit(timeInMilliseconds: Long): String {
+        return try {
+            String.format(
+                Locale.getDefault(),
+                "%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(timeInMilliseconds),
+                TimeUnit.MILLISECONDS.toSeconds(timeInMilliseconds) - TimeUnit.MINUTES.toSeconds(
+                    TimeUnit.MILLISECONDS.toMinutes(timeInMilliseconds)
+                )
+            )
+        } catch (e: Exception) {
+            "00:00"
+        }
+    }
+/*
     override fun onStop() {
         super.onStop()
         recorder?.release()
         recorder = null
         player?.release()
         player = null
-    }
+    }*/
 }
