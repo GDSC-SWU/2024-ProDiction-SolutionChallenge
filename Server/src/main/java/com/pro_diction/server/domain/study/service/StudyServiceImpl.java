@@ -65,7 +65,7 @@ public class StudyServiceImpl implements StudyService {
             studyList = parentStudy.getChildrenStudy();
 
             if(parentStudy.getChildrenStudy().isEmpty()) {  // 받침 study의 부모 study가 아닌 경우
-                throw new InvalidFinalConsonantParentStudy();
+                throw new InvalidFinalConsonantParentStudyException();
             }
         } else {    // subCategoryId, parentStudyId의 값이 모두 있거나 모두 없는 경우
             throw new OnlyOneParameterAllowedException();
