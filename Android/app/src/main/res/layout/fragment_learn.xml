@@ -116,7 +116,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btn_learn_1_r" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_learn_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_1"
@@ -153,6 +153,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btn_learn_2_r" />
 
             <TextView
+                android:id="@+id/tv_learn_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_2"
@@ -189,6 +190,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btn_learn_3_r" />
 
             <TextView
+                android:id="@+id/tv_learn_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_3"
@@ -226,6 +228,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btn_learn_4_r" />
 
             <TextView
+                android:id="@+id/tv_learn_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_4"
@@ -262,6 +265,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btn_learn_5_r" />
 
             <TextView
+                android:id="@+id/tv_learn_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_5"

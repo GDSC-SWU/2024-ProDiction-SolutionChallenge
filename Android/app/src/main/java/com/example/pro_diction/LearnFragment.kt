@@ -61,9 +61,17 @@ class LearnFragment : Fragment() {
             val intent = Intent(requireContext(), LearnPhonemeActivity::class.java)
             startActivity(intent)
         }
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_1_l).setOnClickListener {
+            val intent = Intent(requireContext(), LearnPhonemeActivity::class.java)
+            startActivity(intent)
+        }
 
         // syllable 음절
         learnInflater.findViewById<ImageButton>(R.id.btn_learn_2_r).setOnClickListener {
+            val intent = Intent(requireContext(), LearnSyllableActivity::class.java)
+            startActivity(intent)
+        }
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_2_l).setOnClickListener {
             val intent = Intent(requireContext(), LearnSyllableActivity::class.java)
             startActivity(intent)
         }
@@ -73,15 +81,27 @@ class LearnFragment : Fragment() {
             val intent = Intent(requireContext(), LearnWordActivity::class.java)
             startActivity(intent)
         }
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_3_l).setOnClickListener {
+            val intent = Intent(requireContext(), LearnWordActivity::class.java)
+            startActivity(intent)
+        }
 
         // phrase 구
         learnInflater.findViewById<ImageButton>(R.id.btn_learn_4_r).setOnClickListener {
             val intent = Intent(requireContext(), LearnPhraseActivity::class.java)
             startActivity(intent)
         }
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_4_l).setOnClickListener {
+            val intent = Intent(requireContext(), LearnPhraseActivity::class.java)
+            startActivity(intent)
+        }
 
         // sentense 문장
         learnInflater.findViewById<ImageButton>(R.id.btn_learn_5_r).setOnClickListener {
+            val intent = Intent(requireContext(), LearnSentenseActivity::class.java)
+            startActivity(intent)
+        }
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_5_l).setOnClickListener {
             val intent = Intent(requireContext(), LearnSentenseActivity::class.java)
             startActivity(intent)
         }
