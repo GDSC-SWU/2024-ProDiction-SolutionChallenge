@@ -129,6 +129,12 @@ class MyFragment : Fragment() {
             startActivity(recordIntent)
         }
 
+        // record
+        val recordTIntent = Intent(this.context, MainActivity2::class.java)
+        myInflater.findViewById<Button>(R.id.btn_t_record_2).setOnClickListener {
+            startActivity(recordTIntent)
+        }
+
         return myInflater
     }
 

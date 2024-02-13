@@ -17,6 +17,6 @@ interface OnBoardingTestApiService {
     @POST("/api/v1/test/diction")
     fun getScore(
         @Query("id") id: Int,
-        @Part("multipartFile") multipartFile : RequestBody
+        @Part multipartFile : MultipartBody.Part
     ): Call<BaseResponse<TestScoreDto>>
 }

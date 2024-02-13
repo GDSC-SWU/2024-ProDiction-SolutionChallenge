@@ -289,11 +289,11 @@ class OnBoarding2_1Activity : AppCompatActivity() {
     private fun uploadFile(i: Int) {
         val file = File(fileName)
 
-        val requestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
+        val requestBody = RequestBody.create("audio/wav".toMediaTypeOrNull(), file)
         val fileToUpload = MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
         val filename = RequestBody.create("text/plain".toMediaTypeOrNull(), file.name)
 
-        getScoreService.getScore(testIdList[i], requestBody).enqueue(object : Callback<BaseResponse<TestScoreDto>> {
+        getScoreService.getScore(testIdList[i], fileToUpload).enqueue(object : Callback<BaseResponse<TestScoreDto>> {
             override fun onResponse(call: Call<BaseResponse<TestScoreDto>>, response: Response<BaseResponse<TestScoreDto>>) {
                 if (response != null) {
                     if (response.isSuccessful) {
