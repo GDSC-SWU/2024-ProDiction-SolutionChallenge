@@ -57,31 +57,31 @@ class LearnFragment : Fragment() {
         }
 
         // phoneme 음소
-        learnInflater.findViewById<ImageButton>(R.id.btn_learn_1).setOnClickListener {
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_1_r).setOnClickListener {
             val intent = Intent(requireContext(), LearnPhonemeActivity::class.java)
             startActivity(intent)
         }
 
         // syllable 음절
-        learnInflater.findViewById<ImageButton>(R.id.btn_learn_2).setOnClickListener {
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_2_r).setOnClickListener {
             val intent = Intent(requireContext(), LearnSyllableActivity::class.java)
             startActivity(intent)
         }
 
         // word 단어
-        learnInflater.findViewById<ImageButton>(R.id.btn_learn_3).setOnClickListener {
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_3_r).setOnClickListener {
             val intent = Intent(requireContext(), LearnWordActivity::class.java)
             startActivity(intent)
         }
 
         // phrase 구
-        learnInflater.findViewById<ImageButton>(R.id.btn_learn_4).setOnClickListener {
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_4_r).setOnClickListener {
             val intent = Intent(requireContext(), LearnPhraseActivity::class.java)
             startActivity(intent)
         }
 
         // sentense 문장
-        learnInflater.findViewById<ImageButton>(R.id.btn_learn_5).setOnClickListener {
+        learnInflater.findViewById<ImageButton>(R.id.btn_learn_5_r).setOnClickListener {
             val intent = Intent(requireContext(), LearnSentenseActivity::class.java)
             startActivity(intent)
         }
