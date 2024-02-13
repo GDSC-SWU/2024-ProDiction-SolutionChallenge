@@ -29,19 +29,19 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SubCategoryResponseDto> getSubCategoryList(SubCategoryRequestDto request) {
-        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
-        if(request.getCategoryId() != 2 && request.isFinalConsonant()) throw new CategoryHasNotFinalConsonantException();
+    public List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        if(categoryId != 2 && isFinalConsonant) throw new CategoryHasNotFinalConsonantException();
 
         List<SubCategory> subCategoryList = category.getChildrenSubCategory();
 
         return subCategoryList.stream()
-                .filter(subCategory -> subCategory.isFinalConsonant() == request.isFinalConsonant())
+                .filter(subCategory -> subCategory.isFinalConsonant() == isFinalConsonant)
                 .map(subCategory -> SubCategoryResponseDto.builder()
                         .id(subCategory.getId())
                         .name(subCategory.getName())
                         .studyResponseDtoList(
-                                subCategory.getChildrenStudy().subList(0, Math.min(subCategory.getChildrenStudy().size(), request.getStudyCount()))
+                                subCategory.getChildrenStudy().subList(0, Math.min(subCategory.getChildrenStudy().size(), studyCount))
                                 .stream()
                                 .map(study -> StudyResponseDto.builder()
                                         .studyId(study.getId())
@@ -54,18 +54,18 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<StudyResponseDto> getStudyList(StudyRequestDto request) {
+    public List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId) {
         List<Study> studyList;
 
-        if(request.getSubCategoryId() != null && request.getParentStudyId() == null) {
-            SubCategory subCategory = subCategoryRepository.findById(request.getSubCategoryId()).orElseThrow(SubCategoryNotFoundException::new);
+        if(subCategoryId != null && parentStudyId == null) {
+            SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(SubCategoryNotFoundException::new);
             studyList = subCategory.getChildrenStudy();
-        } else if(request.getParentStudyId() != null && request.getSubCategoryId() == null) {
-            Study parentStudy = studyRepository.findById(request.getParentStudyId()).orElseThrow(StudyNotFoundException::new);
+        } else if(parentStudyId != null && subCategoryId == null) {
+            Study parentStudy = studyRepository.findById(parentStudyId).orElseThrow(StudyNotFoundException::new);
             studyList = parentStudy.getChildrenStudy();
 
             if(parentStudy.getChildrenStudy().isEmpty()) {  // 받침 study의 부모 study가 아닌 경우
-                throw new InvalidFinalConsonantParentStudy();
+                throw new InvalidFinalConsonantParentStudyException();
             }
         } else {    // subCategoryId, parentStudyId의 값이 모두 있거나 모두 없는 경우
             throw new OnlyOneParameterAllowedException();
@@ -74,7 +74,7 @@ public class StudyServiceImpl implements StudyService {
         return studyList.stream()
                 .map(study -> StudyResponseDto.builder()
                         .studyId(study.getId())
-                        .content(request.getParentStudyId() == null ?
+                        .content(parentStudyId == null ?
                                 study.getContent() : study.getSubCategory().getName())
                         .build())
                 .collect(Collectors.toList());

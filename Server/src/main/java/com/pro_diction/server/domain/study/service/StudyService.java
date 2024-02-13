@@ -5,9 +5,9 @@ import com.pro_diction.server.domain.study.dto.*;
 import java.util.List;
 
 public interface StudyService {
-    List<SubCategoryResponseDto> getSubCategoryList(SubCategoryRequestDto request);
+    List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount);
 
-    List<StudyResponseDto> getStudyList(StudyRequestDto request);
+    List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId);
 
     DetailStudyResponseDto getDetailStudy(Long id);
 }
