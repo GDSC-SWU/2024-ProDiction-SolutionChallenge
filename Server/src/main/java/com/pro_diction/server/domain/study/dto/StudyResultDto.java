@@ -9,9 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class StudyResultDto {
     private Long studyId;
-    private String content;
-    private String pronunciation;
-    private String splitPronunciation;
     private Double score;
     private String sttResult;
     private String splitSttResult;
