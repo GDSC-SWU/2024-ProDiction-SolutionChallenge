@@ -4,8 +4,6 @@ plugins {
 
     id ("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 
-    // Google services 플러그인
-    //id("com.google.gms.google-services")
 }
 
 
@@ -45,15 +43,9 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
-    }
-
-    // 뷰 바인딩 사용
-    buildFeatures {
-        viewBinding = true
         mlModelBinding = true
     }
 }
-
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
