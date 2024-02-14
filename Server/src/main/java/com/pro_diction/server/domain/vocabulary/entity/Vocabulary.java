@@ -1,8 +1,8 @@
 package com.pro_diction.server.domain.vocabulary.entity;
 
 import com.pro_diction.server.domain.member.entity.Member;
-import com.pro_diction.server.domain.study.entity.Category;
 import com.pro_diction.server.domain.study.entity.Study;
+import com.pro_diction.server.domain.vocabulary.dto.SaveVocabularyResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,16 +20,18 @@ public class Vocabulary {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(optional = true)     // 카테고리가 기타일 경우 존재하지 않을 수 있다.
+    @ManyToOne
     @JoinColumn(name = "study_id")
     private Study study;
 
-    private String content;     // 카테고리가 기타인 경우 존재한다.
+    public SaveVocabularyResponseDto toResponse() {
+        return SaveVocabularyResponseDto.builder()
+                .vocabularyId(getId())
+                .studyId(getStudy().getId())
+                .memberId(getMember().getId())
+                .build();
+    }
 }

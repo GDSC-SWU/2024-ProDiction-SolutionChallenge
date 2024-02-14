@@ -48,7 +48,11 @@ public enum ErrorCode {
     CATEGORY_HAS_NOT_FINAL_CONSONANT(13005, HttpStatus.BAD_REQUEST, "This category has not final consonant."),
 
     // Test Error
-    INVALID_STAGE_NUM(14000, HttpStatus.BAD_REQUEST, "Invalid stage number.");
+    INVALID_STAGE_NUM(14000, HttpStatus.BAD_REQUEST, "Invalid stage number."),
+
+    // Vocabulary Error
+    VOCABULARY_NOT_FOUND(15000, HttpStatus.BAD_REQUEST, "Vocabulary not found."),
+    DUPLICATED_VOCABULARY(15001, HttpStatus.BAD_REQUEST, "Vocabulary is duplicated.");
 
     private final Integer code;
     private final HttpStatus httpStatus;
