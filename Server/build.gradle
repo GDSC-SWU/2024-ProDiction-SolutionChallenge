@@ -34,6 +34,8 @@ dependencies {
 	testImplementation 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'junit:junit:4.13.1'
+	implementation 'org.springframework.cloud:spring-cloud-gcp-starter:1.2.8.RELEASE'
+	implementation 'org.springframework.cloud:spring-cloud-gcp-storage:1.2.8.RELEASE'
 }
 
 tasks.named('test') {
