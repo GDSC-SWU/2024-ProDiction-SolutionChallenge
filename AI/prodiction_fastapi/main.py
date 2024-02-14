@@ -66,39 +66,45 @@ async def root():
 
 
 @app.get("/noisereduce")
-async def noisereduce(url: str):
+async def noisereduce(file_name: str):
     # 다운로드할 파일의 URL과 로컬에 저장될 경로 지정
     # file_url = "https://storage.googleapis.com/prodiction-bucket/%E3%84%B1.wav"
     local_file_path = "downloaded_file.wav"
 
+    file_url = "https://storage.googleapis.com/prodiction-bucket/" + file_name + ".wav"
     # 파일 다운로드 수행
-    download_file(url, local_file_path)
+    status_code = download_file(file_url, local_file_path)
 
-    # 오디오 파일 로드
-    audio, sr = sf.read(local_file_path)
+    if status_code == 200:
+        # 오디오 파일 로드
+        audio, sr = sf.read(local_file_path)
 
-    # 출력 파일 이름 설정
-    output_file = "noise_reduced.wav"
+        # 출력 파일 이름 설정
+        output_file = "noise_reduced.wav"
 
-    # 잡음 제거
-    try:
-        reduced_noise = nr.reduce_noise(audio, sr)
-    except np.core._exceptions._ArrayMemoryError as e:
-        print("메모리 오류", e)
-        reduced_noise = denoise_audio(local_file_path)
+        # 잡음 제거
+        try:
+            reduced_noise = nr.reduce_noise(audio, sr)
+        except np.core._exceptions._ArrayMemoryError as e:
+            print("메모리 오류")
+            reduced_noise = denoise_audio(local_file_path)
 
-    # 잡음이 제거된 파일 저장
-    sf.write(output_file, reduced_noise, sr)
+        # 잡음이 제거된 파일 저장
+        sf.write(output_file, reduced_noise, sr)
 
-    return StreamingResponse(open(output_file, 'rb'), media_type="audio/wav")
+        os.remove(local_file_path)
+
+        return StreamingResponse(open(output_file, 'rb'), media_type="audio/wav")
+    else:
+        return "Failed to download the file"
 
 
-@app.post("/speechtotext/")
+@app.post("/speechtotext")
 async def speechtotext(file: UploadFile = File(...)):
     return process_audio_file(file)
 
 
-@app.post("/speechtotext_syllables/")
+@app.post("/speechtotext_syllables")
 async def speechtotext_syllables(file: UploadFile = File(...)):
     # 파일 저장
     file_path = f"temp_{file.filename}"
@@ -108,22 +114,22 @@ async def speechtotext_syllables(file: UploadFile = File(...)):
     try:
         result = process_audio(file_path, amplitude_threshold=0.05, merge_distance=0.2, front_padding=0.5, back_padding=0.5)
     except IndexError as e:
-        result = "No speech to detect"
+        result = ""
 
     # 파일 삭제 (옵션)
     os.remove(file_path)
 
-    return result
+    return {"result": result, "result_splited": split_syllables(result)}
 
 
-@app.get("/texttospeech/{text}")
+@app.get("/texttospeech")
 async def text_to_speech(text: str):
     client = texttospeech.TextToSpeechClient(credentials=credentials)
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
     voice = texttospeech.VoiceSelectionParams(
         language_code="ko-KR",
-        name="ko-KR-Wavenet-D",
+        name="ko-KR-Standard-C",
         ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL,
     )
     audio_config = texttospeech.AudioConfig(
@@ -139,12 +145,12 @@ async def text_to_speech(text: str):
     return FileResponse(output_file, media_type="audio/wav")
 
 
-@app.get("/joinjamos/{text}")
+@app.get("/joinjamos")
 async def joinjamos(text: str):
     return join_jamos(text)
 
 
-@app.get("/splitjamos/{text}")
+@app.get("/splitjamos")
 async def splitjamos(text: str):
     return split_syllables(text)
 
@@ -187,7 +193,7 @@ def process_audio_file(file: UploadFile):
         # )
         return alternative.transcript
     else:
-        return "-"
+        return ""
 
 
 def process_audio_file_syllable(file_path):
@@ -518,16 +524,16 @@ def process_audio(input_path, amplitude_threshold=0.1, merge_distance=0.5, front
     audio, sr = librosa.load(input_path, sr=None)
 
     # 잡음 제거
-    reduced_noise = nr.reduce_noise(audio, sr)
+    # reduced_noise = nr.reduce_noise(audio, sr)
 
     # 일정 진폭 이상인 덩어리 찾기
-    high_amp_segments = find_high_amplitude_segments(reduced_noise, amplitude_threshold)
+    high_amp_segments = find_high_amplitude_segments(audio, amplitude_threshold)
 
     # 작은 덩어리들 합치기
     merged_segments = merge_segments([np.array([segment]) for segment in high_amp_segments], merge_distance)
 
     # 찾은 덩어리를 기준으로 오디오를 자르기
-    cut_segments = cut_audio_segments(reduced_noise, merged_segments, front_padding, back_padding)
+    cut_segments = cut_audio_segments(audio, merged_segments, front_padding, back_padding)
 
     error_flag = 0
     syllables_recognized = ""
@@ -588,5 +594,5 @@ def download_file(url, file_path):
         with open(file_path, 'wb') as f:
             f.write(response.content)
         print("File downloaded successfully.")
-    else:
-        print("Failed to download the file.")
+
+    return response.status_code
