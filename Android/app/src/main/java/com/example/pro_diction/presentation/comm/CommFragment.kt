@@ -24,6 +24,8 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,14 +42,20 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pro_diction.R
+import com.example.pro_diction.data.AiApiPool
 import com.example.pro_diction.databinding.FragmentCommBinding
+import com.google.android.play.integrity.internal.t
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -94,10 +102,14 @@ class CommFragment : Fragment(),
     private lateinit var tts: TextToSpeech
     var isFirst = true
 
-    // ml
+    // ai/ml
     var recogList: MutableList<String> = mutableListOf()
     var lastStr = ""
     var textList: MutableList<String> = mutableListOf()
+
+    // ai api
+    var joinJamos = AiApiPool.joinJamos
+    var splitJamos = AiApiPool.splitJamos
 
     fun getKoreanLetter(str: String): String {
         val koreanMap = mapOf(
@@ -131,7 +143,11 @@ class CommFragment : Fragment(),
             "ye" to "ㅖ",
             "oe" to "ㅚ",
             "wi" to "ㅟ",
-            "ui" to "ㅢ"
+            "ui" to "ㅢ",
+            "add" to "add",
+            "space" to "space",
+            "clear_one" to "clear_one",
+            "clear_all" to "clear_all"
         )
 
         return koreanMap[str] ?: ""
@@ -222,6 +238,7 @@ class CommFragment : Fragment(),
             FragmentCommBinding.inflate(inflater, container, false)
 
         val rootLayout = fragmentCommBinding.root
+        fragmentCommBinding.editCommTts.visibility = View.VISIBLE
 
         // 화면 클릭 시 키보드 숨기기
         rootLayout.setOnClickListener {
@@ -268,10 +285,46 @@ class CommFragment : Fragment(),
 
         // keyboard 버튼
         fragmentCommBinding.btnCommKeyboard.setOnClickListener {
+            fragmentCommBinding.editCommTts.visibility = View.VISIBLE
             // EditText에 포커스를 설정하여 키보드가 나타나도록 함
             fragmentCommBinding.editCommTts.requestFocus()
             showKeyboard()
         }
+
+        fragmentCommBinding.editCommTts.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun afterTextChanged(p0: Editable?) {
+                fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+
+                splitJamos.splitJamos(fragmentCommBinding.editCommTts.text.toString()).enqueue(object: Callback<String> {
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        if (response.isSuccessful) {
+                            if (response.body() != null && response.body() != "") {
+                                /*for (char in response.body().toString()) {
+                                    textList.add(char.toString())
+                                }*/
+                                if (response.body().toString() != textList.joinToString(separator = "")) {
+                                    textList.clear()
+                                    for (char in response.body().toString()) {
+                                        textList.add(char.toString())
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.e("error", t.toString())
+                    }
+                })
+            }
+        })
 
         // textList에 변경이 일어난 경우 textList의 글자를 string으로 바꾸고 api로 전달해서 받아온 다음에 edittext화면에 넣음
         // edittext에 클릭 발생한 경우 textList 비우기 + 에디트 텍스트 비우기. 그 다음에 testList가 비어있으면 클릭해도 에디트 텍스트 지우지 말기. 
@@ -531,6 +584,28 @@ class CommFragment : Fragment(),
     ) {
         activity?.runOnUiThread {
             if (_fragmentCommBinding != null) {
+                /*
+                val alreadyText = fragmentCommBinding.editCommTts.text
+                if (alreadyText != null && alreadyText.toString() != "") {
+                    splitJamos.splitJamos(alreadyText.toString()).enqueue(object: Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            if (response.isSuccessful) {
+                                if (response.body() != null && response.body() != "") {
+                                    for (char in response.body().toString()) {
+                                        textList.add(char.toString())
+                                    }
+                                }
+
+
+                            }
+                        }
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.e("error", t.toString())
+                        }
+                    })
+                }*/
+
                 // Show result of recognized gesture
                 val gestureCategories = resultBundle.results.first().gestures()
                 if (gestureCategories.isNotEmpty()) {
@@ -545,80 +620,105 @@ class CommFragment : Fragment(),
                         Log.e("str", str)
 
 
-                        if (recogList.size > 50) {
+                        if (recogList.size == 20) {
                             Log.e("recog", recogList[0])
                             if (lastStr == str) {
-                                Log.e("recogList1", recogList.toString())
+                                Log.e("recogList if (lastStr == str)", recogList.toString())
                                 lastStr = ""
 
                                 if (recogList[0] == "clear_all") {
                                     if (textList != null) {
                                         textList.clear()
+                                        fragmentCommBinding.editCommTts.setText("")
                                     } else {
 
                                     }
                                 } else if (recogList[0] == "add") {
+                                    Log.e("textList.size", textList.size.toString())
                                     if (textList.size >= 2) {
                                         var ja = addJa(
-                                            textList[textList.size - 2],
-                                            textList[textList.size - 1]
+                                            textList[textList.size - 1],
+                                            textList[textList.size - 2]
                                         )
+                                        Log.e("addJa", ja)
+                                        Log.e("textList[textList.size - 2]", textList[textList.size - 2])
+                                        Log.e("textList[textList.size - 1]", textList[textList.size - 1])
                                         if (ja != " ") {
+
                                             textList.removeAt(textList.size - 1)
-                                            textList.removeAt(textList.size - 2)
+                                            Log.e("textList[textList.size - 2]", textList[textList.size - 1])
+                                            textList.removeAt(textList.size - 1)
+                                            Log.e("textList[textList.size - 1]", textList[textList.size - 1])
+
                                             textList.add(ja)
+                                            joinJamos(textList)
                                         }
 
                                     } else {
 
                                     }
                                 } else if (recogList[0] == "clear_one") {
-                                    if (textList != null) {
+                                    if (textList != null && textList.size > 0) {
+                                        Log.e("if clear_one0", textList.size.toString())
                                         textList.removeAt(textList.size - 1)
+                                        Log.e("if clear_one1", textList.size.toString())
+                                        joinJamos(textList)
+                                        Log.e("if clear_one2", textList.toString())
                                     } else {
 
                                     }
                                 } else if (recogList[0] == "space") {
                                     textList.add(" ")
+                                    joinJamos(textList)
                                 } else {
+                                    Log.e("textList", textList.toString())
                                     textList.add(recogList[0])
+                                    Log.e("textList", textList.toString())
+                                    Log.e("recogList[0]", recogList[0].toString())
+                                    Log.e("textList", textList.toString())
+                                    joinJamos(textList)
                                     Log.e("textList", textList.toString())
                                     recogList.clear()
                                 }
-                            } else if (recogList.size == 0) {
-                                recogList.add(str)
-                                //Log.e("recogList2", recogList.toString())
-                                lastStr = str
-                            } else {
-                                recogList.clear()
-                                recogList.add(str)
-                                //Log.e("recogList3", recogList.toString())
-                                lastStr = str
                             }
+                            else {
+                                if (recogList.size == 0) {
+                                    recogList.add(str)
+                                    //Log.e("recogList2", recogList.toString())
+                                    lastStr = str
+                                }else {
+                                    recogList.clear()
+                                    recogList.add(str)
+                                    //Log.e("recogList3", recogList.toString())
+                                    lastStr = str
+                                }
+
+                            }
+                            recogList.clear()
                         }
                         else {
                             if (lastStr == str) {
                                 recogList.add(str)
                                 Log.e("recogList1", recogList.toString())
-                                lastStr = str
-                            }
-                            else if (recogList.size == 0) {
-                                recogList.add(str)
-                                Log.e("recogList2", recogList.toString())
+                                Log.e("textList1", textList.toString())
                                 lastStr = str
                             }
                             else {
-                                recogList.clear()
-                                recogList.add(str)
-                                Log.e("recogList3", recogList.toString())
-                                lastStr = str
+                                if (recogList.size == 0) {
+                                    recogList.add(str)
+                                    Log.e("recogList2", recogList.toString())
+                                    lastStr = str
+                                }
+                                else {
+                                    recogList.clear()
+                                    recogList.add(str)
+                                    Log.e("recogList3", recogList.toString())
+                                    Log.e("textList3", textList.toString())
+                                    lastStr = str
+                                }
+
                             }
                         }
-
-
-
-
-
                     }
 
                 } else {
@@ -636,14 +736,28 @@ class CommFragment : Fragment(),
                     RunningMode.LIVE_STREAM
                 )
 
-
-
                 // Force a redraw
                 fragmentCommBinding.overlay.invalidate()
             }
         }
     }
+    fun joinJamos(list: MutableList<String>) {
+        var text = list.joinToString(separator = "")
+        joinJamos.joinJamos(text).enqueue(object: Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    fragmentCommBinding.editCommTts.clearFocus()
+                    fragmentCommBinding.editCommTts.setText(response.body().toString())
+                } else {
+                    Log.e("joinJamos", response.toString())
+                }
+            }
 
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("joinJamos", t.toString())
+            }
+        })
+    }
     override fun onError(error: String, errorCode: Int) {
         activity?.runOnUiThread {
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
