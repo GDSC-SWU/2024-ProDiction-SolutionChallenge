@@ -51,7 +51,8 @@ public enum ErrorCode {
     INVALID_STAGE_NUM(14000, HttpStatus.BAD_REQUEST, "Invalid stage number."),
 
     // Vocabulary Error
-    DUPLICATED_VOCABULARY(15000, HttpStatus.BAD_REQUEST, "Vocabulary is duplicated.");
+    VOCABULARY_NOT_FOUND(15000, HttpStatus.BAD_REQUEST, "Vocabulary not found."),
+    DUPLICATED_VOCABULARY(15001, HttpStatus.BAD_REQUEST, "Vocabulary is duplicated.");
 
     private final Integer code;
     private final HttpStatus httpStatus;

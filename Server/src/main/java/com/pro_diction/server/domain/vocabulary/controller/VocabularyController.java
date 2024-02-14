@@ -18,10 +18,17 @@ import org.springframework.web.bind.annotation.*;
 public class VocabularyController {
     private final VocabularyService vocabularyService;
 
-    @PostMapping("/{id}")
-    public ApiDataResponseDto<SaveVocabularyResponseDto> saveVocabulary(@PathVariable @NotNull Long id,
+    @PostMapping("/{studyId}")
+    public ApiDataResponseDto<SaveVocabularyResponseDto> saveVocabulary(@PathVariable @NotNull Long studyId,
                                                                        @AuthenticationPrincipal ContextUser contextUser) {
 
-        return ApiDataResponseDto.of(vocabularyService.saveVocabulary(id, contextUser.getMember()));
+        return ApiDataResponseDto.of(vocabularyService.saveVocabulary(studyId, contextUser.getMember()));
+    }
+
+    @DeleteMapping("/{vocabularyId}")
+    public ApiDataResponseDto<SaveVocabularyResponseDto> deleteVocabulary(@PathVariable @NotNull Long vocabularyId,
+                                                                          @AuthenticationPrincipal ContextUser contextUser) {
+
+        return ApiDataResponseDto.of(vocabularyService.deleteVocabulary(vocabularyId, contextUser.getMember()));
     }
 }
