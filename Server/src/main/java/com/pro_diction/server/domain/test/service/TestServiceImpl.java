@@ -9,19 +9,13 @@ import com.pro_diction.server.domain.test.dto.*;
 import com.pro_diction.server.domain.test.entity.Test;
 import com.pro_diction.server.domain.test.exception.InvalidStageException;
 import com.pro_diction.server.domain.test.repository.TestRepository;
-import com.pro_diction.server.global.constant.ErrorCode;
-import com.pro_diction.server.global.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,27 +75,6 @@ public class TestServiceImpl implements TestService {
         return stage;
     }
 
-    private MultipartFile removeNoise(MultipartFile file) {
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(2000);
-        factory.setReadTimeout(2000);
-        RestTemplate restTemplate = new RestTemplate(factory);
-
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        // 파일을 MultiValueMap에 추가
-        MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("file", file.getResource());
-
-        // Request Header, Body 요청 구성
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<MultipartFile> responseEntity = restTemplate.postForEntity(PRODICTION_AI_API_URL + "/noisereduce", requestEntity, MultipartFile.class);
-
-        return responseEntity.getBody();
-    }
-
     private Double test(MultipartFile file, String pronunciation) throws IOException {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(2000);
@@ -132,8 +105,8 @@ public class TestServiceImpl implements TestService {
                 restTemplate.postForEntity(DICTION_TEST_API_URL, httpEntity, TestApiResponseDto.class).getBody();
         try {
             return Math.round(Double.valueOf(testApiResponseDto.getReturn_object().getScore()) / 5 * 100 * 10) / 10.0;
-        } catch (NullPointerException e) {
-            throw new GeneralException(ErrorCode.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return 0.0;
         }
     }
 }
