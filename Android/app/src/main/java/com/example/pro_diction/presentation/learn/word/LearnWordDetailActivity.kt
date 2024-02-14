@@ -7,18 +7,29 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.data.dto.WordDetailDto
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.ConsonantAdapter
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.protobuf.Api
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LearnWordDetailActivity : AppCompatActivity() {
+    var getSubCategory = ApiPool.getSubCategory
+    var list: MutableList<StudyResponseDto> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_learn_word_detail)
@@ -29,65 +40,57 @@ class LearnWordDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        // consonant setting 자음 설정
-        val main = intent.getStringExtra("main")
+        // consonant setting
+        val id = intent.getStringExtra("id")
+        val name = intent.getStringExtra("name")
         var tvMain = findViewById<TextView>(R.id.tv_word_detail_main)
-        tvMain.text = main
+        tvMain.text = name
 
         // recycler view
-        // main 이 뭔지에 따라서 리스트에 넣는 값이 달라짐
         val recyclerview = findViewById<RecyclerView>(R.id.rv_word_detail)
-        val wordDetailList: MutableList<WordDetailDto> = mutableListOf()
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
-        wordDetailList.add(WordDetailDto("가방"))
-        wordDetailList.add(WordDetailDto("가위"))
-        wordDetailList.add(WordDetailDto("가운데"))
-        wordDetailList.add(WordDetailDto("고라니"))
+        var adapter = WordDetailAdapter(list)
 
-        // 어댑터에 리스트 연결
-        val adapter = WordDetailAdapter(wordDetailList)
+        // api
+        if (id != null) {
+            getSubCategory.getSubCategory(id.toInt()).enqueue(object : Callback<BaseResponse<List<StudyResponseDto>>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<List<StudyResponseDto>>>,
+                    response: Response<BaseResponse<List<StudyResponseDto>>>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.data?.forEach { it ->
+                            list.add(it)
+                        }
+
+                        recyclerview.adapter = adapter
+                        recyclerview.layoutManager = GridLayoutManager(this@LearnWordDetailActivity, 3)
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<List<StudyResponseDto>>>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(this@LearnWordDetailActivity, "server fail", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        // adpater
+        adapter = WordDetailAdapter(list)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = GridLayoutManager(this@LearnWordDetailActivity, 3)
 
         val intent = Intent(this@LearnWordDetailActivity, LearnPhonemeDetailActivity::class.java)
-        // item 클릭 시 해당 음소 페이지로 연결
+        // button click intent
         adapter.setOnItemClickListener(object: WordDetailAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
-                intent.putExtra("item", wordDetailList[position].wordDetail)
+                intent.putExtra("item", list[position].studyId.toString())
                 startActivity(intent)
             }
         })
 
-        // floating action button 플로팅 버튼 연결
+        // floating action button
         val fab: FloatingActionButton = findViewById(R.id.fab_word_detail)
         fab.setOnClickListener {
             recyclerview.smoothScrollToPosition(0)
@@ -95,21 +98,21 @@ class LearnWordDetailActivity : AppCompatActivity() {
 
 
     }
-    // 툴바 메뉴 버튼 설정
+    // toolbar menu button
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
-    // 툴바 메뉴 클릭 됐을 때
+    // toolbar menu click
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> { // toolbar의 back키 눌렀을 때 동작
-                // 액티비티 이동
+            android.R.id.home -> { // toolbar back button
+                // activity move
                 finish()
                 return true
             }
-            R.id.menu_search -> { // 검색 버튼
+            R.id.menu_search -> { // search button
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
             }

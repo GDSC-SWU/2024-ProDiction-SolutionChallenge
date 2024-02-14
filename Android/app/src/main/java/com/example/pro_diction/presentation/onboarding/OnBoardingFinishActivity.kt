@@ -35,6 +35,7 @@ class OnBoardingFinishActivity : AppCompatActivity() {
 
         }
         tvResult.text = getString(R.string.you_are) + " '" + stage + "' !"
+        App.prefs.setLevel(stage)
 
         var btnStart = findViewById<Button>(R.id.btn_onboarding_finish)
         btnStart.setOnClickListener {

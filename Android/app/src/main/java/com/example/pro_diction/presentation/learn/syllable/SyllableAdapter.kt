@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.databinding.SyllableItemBinding
 
-class SyllableAdapter (private val dataList: MutableList<ConsonantDto>) :
+class SyllableAdapter (private val dataList: List<StudyResponseDto>) :
     RecyclerView.Adapter<SyllableAdapter.SyllableViewHolder>() {
     private lateinit var binding: SyllableItemBinding
 
@@ -46,8 +47,8 @@ class SyllableAdapter (private val dataList: MutableList<ConsonantDto>) :
                 }
             }
         }
-        fun bind(consonant: ConsonantDto) {
-            syllableBtn.text = consonant.item
+        fun bind(studyResponse: StudyResponseDto) {
+            syllableBtn.text = studyResponse.content
 
             /*
             view.setOnClickListener {

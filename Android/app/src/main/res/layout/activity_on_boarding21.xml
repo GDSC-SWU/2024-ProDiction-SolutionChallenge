@@ -57,7 +57,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.473"
+        android:paddingHorizontal="30dp"/>
 
     <ImageButton
         android:id="@+id/btn_onboarding_2_1"
@@ -72,6 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="140dp" />
     <TextView
+        android:id="@+id/tv_record_before"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/btn_onboarding_2_1"
@@ -81,6 +83,7 @@
         android:textColor="@color/main"
         android:textSize="16sp"/>
     <ImageView
+        android:id="@+id/btn_next_record"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/btn_next"

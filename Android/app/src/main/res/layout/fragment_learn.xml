@@ -58,7 +58,7 @@
                 android:textAllCaps="false"
                 android:textColor="#979797"
                 android:paddingStart="15dp"
-                android:textSize="14sp"/>
+                android:textSize="13sp"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -88,14 +88,15 @@
                 android:layout_marginStart="30dp"
                 android:text="@string/learn_sub"
                 android:textColor="@color/main"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_marginTop="25dp"/>
 
+
             <ImageButton
-                android:id="@+id/btn_learn_1"
+                android:id="@+id/btn_learn_1_r"
                 android:layout_width="350dp"
                 android:layout_height="95dp"
-                android:src="@drawable/btn_learn_1"
+                android:src="@drawable/btn_learn_1_r"
                 android:scaleType="fitCenter"
                 android:background="#00ff0000"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,113 +104,178 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_learn_sub"
                 android:layout_marginTop="15dp" />
 
+            <ImageButton
+                android:id="@+id/btn_learn_1_l"
+                android:layout_width="107dp"
+                android:layout_height="95dp"
+                android:src="@drawable/btn_learn_1_l"
+                android:scaleType="fitCenter"
+                android:background="#00ff0000"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_1_r"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_1_r"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_1_r" />
+
             <TextView
+                android:id="@+id/tv_learn_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_1"
                 android:textColor="@color/white"
-                android:textSize="19sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_1"
-                app:layout_constraintTop_toTopOf="@+id/btn_learn_1"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_1"
-                android:layout_marginStart="12dp"/>
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_1_l"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_1_l"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_1_l"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_1_l"/>
+
 
             <ImageButton
-                android:id="@+id/btn_learn_2"
+                android:id="@+id/btn_learn_2_r"
                 android:layout_width="350dp"
                 android:layout_height="95dp"
-                android:src="@drawable/btn_learn_2"
+                android:src="@drawable/btn_learn_2_r"
                 android:scaleType="fitCenter"
                 android:background="#00ff0000"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_1"
-                app:layout_constraintEnd_toEndOf="@+id/btn_learn_1"
-                app:layout_constraintTop_toBottomOf="@+id/btn_learn_1"
-                android:layout_marginTop="20dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_1_r"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_1_r"
+                app:layout_constraintTop_toBottomOf="@+id/btn_learn_1_r"
+                android:layout_marginTop="20dp" />
+
+            <ImageButton
+                android:id="@+id/btn_learn_2_l"
+                android:layout_width="107dp"
+                android:layout_height="95dp"
+                android:src="@drawable/btn_learn_1_l"
+                android:scaleType="fitCenter"
+                android:background="#00ff0000"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_2_r"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_2_r"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_2_r" />
 
             <TextView
+                android:id="@+id/tv_learn_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_2"
                 android:textColor="@color/white"
-                android:textSize="19sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_2"
-                app:layout_constraintTop_toTopOf="@+id/btn_learn_2"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_2"
-                android:layout_marginStart="20dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_2_l"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_2_l"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_2_l"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_2_l" />
+
 
             <ImageButton
-                android:id="@+id/btn_learn_3"
+                android:id="@+id/btn_learn_3_r"
                 android:layout_width="350dp"
                 android:layout_height="95dp"
-                android:src="@drawable/btn_learn_3"
+                android:src="@drawable/btn_learn_3_r"
                 android:scaleType="fitCenter"
                 android:background="#00ff0000"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_2"
-                app:layout_constraintEnd_toEndOf="@+id/btn_learn_2"
-                app:layout_constraintTop_toBottomOf="@+id/btn_learn_2"
-                android:layout_marginTop="20dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_2_r"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_2_r"
+                app:layout_constraintTop_toBottomOf="@+id/btn_learn_2_r"
+                android:layout_marginTop="20dp" />
+
+            <ImageButton
+                android:id="@+id/btn_learn_3_l"
+                android:layout_width="107dp"
+                android:layout_height="95dp"
+                android:src="@drawable/btn_learn_1_l"
+                android:scaleType="fitCenter"
+                android:background="#00ff0000"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_3_r"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_3_r"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_3_r" />
 
             <TextView
+                android:id="@+id/tv_learn_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_3"
                 android:textColor="@color/white"
-                android:textSize="19sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_3"
-                app:layout_constraintTop_toTopOf="@+id/btn_learn_3"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_3"
-                android:layout_marginStart="29dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_3_l"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_3_l"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_3_l"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_3_l" />
+
+
 
             <ImageButton
-                android:id="@+id/btn_learn_4"
+                android:id="@+id/btn_learn_4_r"
                 android:layout_width="350dp"
                 android:layout_height="95dp"
-                android:src="@drawable/btn_learn_4"
+                android:src="@drawable/btn_learn_4_r"
                 android:scaleType="fitCenter"
                 android:background="#00ff0000"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_3"
-                app:layout_constraintEnd_toEndOf="@+id/btn_learn_3"
-                app:layout_constraintTop_toBottomOf="@+id/btn_learn_3"
-                android:layout_marginTop="20dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_3_r"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_3_r"
+                app:layout_constraintTop_toBottomOf="@+id/btn_learn_3_r"
+                android:layout_marginTop="20dp" />
+
+            <ImageButton
+                android:id="@+id/btn_learn_4_l"
+                android:layout_width="107dp"
+                android:layout_height="95dp"
+                android:src="@drawable/btn_learn_1_l"
+                android:scaleType="fitCenter"
+                android:background="#00ff0000"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_4_r"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_4_r"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_4_r" />
 
             <TextView
+                android:id="@+id/tv_learn_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_4"
                 android:textColor="@color/white"
-                android:textSize="19sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_4"
-                app:layout_constraintTop_toTopOf="@+id/btn_learn_4"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_4"
-                android:layout_marginStart="22dp"/>
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_4_l"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_4_l"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_4_l"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_4_l" />
+
 
             <ImageButton
-                android:id="@+id/btn_learn_5"
+                android:id="@+id/btn_learn_5_r"
                 android:layout_width="350dp"
                 android:layout_height="95dp"
-                android:src="@drawable/btn_learn_5"
+                android:src="@drawable/btn_learn_5_r"
                 android:scaleType="fitCenter"
                 android:background="#00ff0000"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_4"
-                app:layout_constraintEnd_toEndOf="@+id/btn_learn_4"
-                app:layout_constraintTop_toBottomOf="@+id/btn_learn_4"
-                android:layout_marginTop="20dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_4_r"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_4_r"
+                app:layout_constraintTop_toBottomOf="@+id/btn_learn_4_r"
+                android:layout_marginTop="20dp" />
+
+            <ImageButton
+                android:id="@+id/btn_learn_5_l"
+                android:layout_width="107dp"
+                android:layout_height="95dp"
+                android:src="@drawable/btn_learn_1_l"
+                android:scaleType="fitCenter"
+                android:background="#00ff0000"
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_5_r"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_5_r"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_5_r" />
 
             <TextView
+                android:id="@+id/tv_learn_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/learn_5"
                 android:textColor="@color/white"
-                android:textSize="19sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/btn_learn_5"
-                app:layout_constraintTop_toTopOf="@+id/btn_learn_5"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_5"
-                android:layout_marginStart="13dp"/>
+                app:layout_constraintStart_toStartOf="@+id/btn_learn_5_l"
+                app:layout_constraintTop_toTopOf="@+id/btn_learn_5_l"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_learn_5_l"
+                app:layout_constraintEnd_toEndOf="@+id/btn_learn_5_l"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

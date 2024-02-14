@@ -10,41 +10,16 @@ class Utils (context: Context) {
     private val REFRESH_TOKEN = "Refresh_Token"
     private val LOGGED_IN = false
     private val LOGGED_IN_BEFORE = false
-    // private val mContext: Context = context.applicationContext
-    // private val prefs: SharedPreferences
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
     private val prefsEditor = prefs.edit()
-    // private var instance: Utils? = null
 
     // stage
     private val STAGE = 1
 
-    /*
-    companion object {
-        // private const val PREFS = "prefs"
-        // private const val ACCESS_TOKEN = "Access_Token"
-        // private const val REFRESH_TOKEN = "Refresh_Token"
-        private var instance: Utils? = null
+    // level
+    private var LEVEL = ""
 
-        @Synchronized
-        fun init(context: Context): Utils {
-            if (instance == null) {
-                instance = Utils(context)
-            }
-            return instance!!
-        }
 
-    }*/
-/*
-    var accessToken: String?
-        get() = prefs.getString(ACCESS_TOKEN, "")
-        set(value) = prefsEditor.putString(ACCESS_TOKEN, value).apply()
-
-    var refreshToken: String?
-        get() = prefs.getString(REFRESH_TOKEN, "")
-        set(value) = prefsEditor.putString(REFRESH_TOKEN, value).apply()
-
-*/
     fun setAccessToken(value: String) {
         prefsEditor.putString(ACCESS_TOKEN, value).apply()
     }
@@ -92,6 +67,13 @@ class Utils (context: Context) {
         return prefs.getInt("STAGE", 1)
     }
 
+    fun setLevel(level: String) {
+        prefsEditor.putString("LEVEL", level)
+    }
+
+    fun getLevel() : String {
+        return prefs.getString("LEVEL", "").toString()
+    }
     fun clearToken() {
         prefsEditor.clear().apply()
     }

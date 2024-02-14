@@ -2,15 +2,23 @@ package com.example.pro_diction.presentation.learn.phoneme
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +34,8 @@ class LearnPhonemeConsonantFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var getSubCategory = ApiPool.getSubCategory
+    var list: MutableList<StudyResponseDto> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,42 +53,47 @@ class LearnPhonemeConsonantFragment : Fragment() {
         // recycler view
         val consonantInflater = inflater.inflate(R.layout.fragment_learn_phoneme_consonant, container, false)
         val recyclerview = consonantInflater.findViewById<RecyclerView>(R.id.rv_consonant)
-        val consonantList: MutableList<ConsonantDto> = mutableListOf()
-        consonantList.add(ConsonantDto("ㄱ"))
-        consonantList.add(ConsonantDto("ㄴ"))
-        consonantList.add(ConsonantDto("ㄷ"))
-        consonantList.add(ConsonantDto("ㄹ"))
-        consonantList.add(ConsonantDto("ㅁ"))
-        consonantList.add(ConsonantDto("ㅂ"))
-        consonantList.add(ConsonantDto("ㅅ"))
-        consonantList.add(ConsonantDto("ㅇ"))
-        consonantList.add(ConsonantDto("ㅈ"))
-        consonantList.add(ConsonantDto("ㅊ"))
-        consonantList.add(ConsonantDto("ㅋ"))
-        consonantList.add(ConsonantDto("ㅌ"))
-        consonantList.add(ConsonantDto("ㅍ"))
-        consonantList.add(ConsonantDto("ㅎ"))
-        consonantList.add(ConsonantDto("ㄲ"))
-        consonantList.add(ConsonantDto("ㄸ"))
-        consonantList.add(ConsonantDto("ㅃ"))
-        consonantList.add(ConsonantDto("ㅆ"))
-        consonantList.add(ConsonantDto("ㅉ"))
-        // 어댑터에 리스트 연결
-        val adapter = ConsonantAdapter(consonantList)
+        var adapter = ConsonantAdapter(list)
+
+        // api
+        getSubCategory.getSubCategory(1).enqueue(object: Callback<BaseResponse<List<StudyResponseDto>>> {
+            override fun onResponse(
+                call: Call<BaseResponse<List<StudyResponseDto>>>,
+                response: Response<BaseResponse<List<StudyResponseDto>>>
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        response.body()?.data?.forEach { it ->
+                            list.add(it)
+                        }
+
+                        recyclerview.adapter = adapter
+                        recyclerview.layoutManager = GridLayoutManager(this@LearnPhonemeConsonantFragment.activity, 3)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse<List<StudyResponseDto>>>, t: Throwable) {
+                Toast.makeText(context, "server fail", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        // adapter
+        adapter = ConsonantAdapter(list)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = GridLayoutManager(this.activity, 3)
-        
+
+        // button click intent
         val intent = Intent(this.context, LearnPhonemeDetailActivity::class.java)
-        // item 클릭 시 해당 음소 페이지로 연결
         adapter.setOnItemClickListener(object: ConsonantAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
-                intent.putExtra("item", consonantList[position].item)
+                intent.putExtra("item", list[position].studyId.toString())
                 startActivity(intent)
             }
         })
      
 
-        // floating action button 플로팅 버튼 연결
+        // floating action button
         val fab: FloatingActionButton = consonantInflater.findViewById(R.id.fab_phoneme)
         fab.setOnClickListener {
             recyclerview.smoothScrollToPosition(0)

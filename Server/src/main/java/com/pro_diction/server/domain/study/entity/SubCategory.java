@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @ToString
 @Builder
@@ -19,7 +21,13 @@ public class SubCategory {
 
     private String name;
 
+    @NotNull
+    private boolean isFinalConsonant;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "subCategory")
+    private List<Study> childrenStudy;
 }

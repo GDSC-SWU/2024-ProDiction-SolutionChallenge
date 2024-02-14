@@ -8,11 +8,12 @@ import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.data.dto.PhraseDetailDto
 import com.example.pro_diction.data.dto.SentenseDetailDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.databinding.PhraseDetailItemBinding
 import com.example.pro_diction.databinding.SentenseDetailItemBinding
 import com.example.pro_diction.presentation.learn.phrase.PhraseDetailAdapter
 
-class SentenseDetailAdapter (private val dataList: MutableList<SentenseDetailDto>) :
+class SentenseDetailAdapter (private val dataList: MutableList<StudyResponseDto>) :
     RecyclerView.Adapter<SentenseDetailAdapter.SentenseDetailViewHolder>() {
     private lateinit var binding: SentenseDetailItemBinding
 
@@ -49,8 +50,8 @@ class SentenseDetailAdapter (private val dataList: MutableList<SentenseDetailDto
                 }
             }
         }
-        fun bind(sentenseDetail: SentenseDetailDto) {
-            sentenseDetailBtn.text = sentenseDetail.sentenseDetail
+        fun bind(studyResponse: StudyResponseDto) {
+            sentenseDetailBtn.text = studyResponse.content
         }
     }
 

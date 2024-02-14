@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TestScoreDto(
     @SerialName("studyId") val studyId: Int,
-    @SerialName("score") val score: Double
+    @SerialName("score") val score: Float
 )

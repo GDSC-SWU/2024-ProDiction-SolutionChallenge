@@ -23,7 +23,8 @@
 
         <include
             android:id="@+id/bottom_sheet_layout"
-            layout="@layout/info_bottom_sheet" />
+            layout="@layout/info_bottom_sheet"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_results"
@@ -36,14 +37,16 @@
             android:padding="16dp"
             app:layout_anchor="@id/bottom_sheet_layout"
             app:layout_anchorGravity="top"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:visibility="gone" />
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="#007F8B"
             app:layout_anchor="@id/recyclerview_results"
-            app:layout_anchorGravity="bottom" />
+            app:layout_anchorGravity="bottom"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tvResult"
