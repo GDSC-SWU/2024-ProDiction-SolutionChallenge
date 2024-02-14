@@ -35,9 +35,6 @@ public class TestServiceImpl implements TestService {
     @Value("${DICTION_TEST_API_KEY}")
     private String DICTION_TEST_API_KEY;
 
-    @Value("${PRODICTION_AI_API_URL}")
-    private String PRODICTION_AI_API_URL;
-
     @Override
     @Transactional(readOnly = true)
     public List<TestContentResponseDto> getTestStudyList(Integer stage) {
