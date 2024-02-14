@@ -130,24 +130,31 @@ public class StudyServiceImpl implements StudyService {
     }
 
     private SttResultDto sttPronunciation(MultipartFile file) {
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(2000);
-        factory.setReadTimeout(2000);
-        RestTemplate restTemplate = new RestTemplate(factory);
+        try {
+            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+            factory.setConnectTimeout(2000);
+            factory.setReadTimeout(2000);
+            RestTemplate restTemplate = new RestTemplate(factory);
 
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            // HTTP 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        // 파일을 MultiValueMap에 추가
-        MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("file", file.getResource());
+            // 파일을 MultiValueMap에 추가
+            MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
+            requestBody.add("file", file.getResource());
 
-        // Request Header, Body 요청 구성
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<SttResultDto> responseEntity =
-                restTemplate.postForEntity(PRODICTION_AI_API_URL + "/speechtotext_syllables", requestEntity, SttResultDto.class);
+            // Request Header, Body 요청 구성
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+            ResponseEntity<SttResultDto> responseEntity =
+                    restTemplate.postForEntity(PRODICTION_AI_API_URL + "/speechtotext_syllables", requestEntity, SttResultDto.class);
 
-        return responseEntity.getBody();
+            return responseEntity.getBody();
+        } catch (Exception e) {
+            return SttResultDto.builder()
+                    .result(e.getMessage())
+                    .result_splited(e.getMessage())
+                    .build();
+        }
     }
 }
