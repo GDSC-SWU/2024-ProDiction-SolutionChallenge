@@ -37,6 +37,7 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsClient.getPackageName
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
@@ -93,6 +94,74 @@ class CommFragment : Fragment(),
     private lateinit var tts: TextToSpeech
     var isFirst = true
 
+    // ml
+    var recogList: MutableList<String> = mutableListOf()
+    var lastStr = ""
+    var textList: MutableList<String> = mutableListOf()
+
+    fun getKoreanLetter(str: String): String {
+        val koreanMap = mapOf(
+            "giyeok" to "ㄱ",
+            "nieun" to "ㄴ",
+            "digeut" to "ㄷ",
+            "rieul" to "ㄹ",
+            "mieum" to "ㅁ",
+            "bieup" to "ㅂ",
+            "siot" to "ㅅ",
+            "ieung" to "ㅇ",
+            "jieut" to "ㅈ",
+            "chieut" to "ㅊ",
+            "kieuk" to "ㅋ",
+            "tieut" to "ㅌ",
+            "pieup" to "ㅍ",
+            "hieut" to "ㅎ",
+            "a" to "ㅏ",
+            "ya" to "ㅑ",
+            "eo" to "ㅓ",
+            "yeo" to "ㅕ",
+            "o" to "ㅗ",
+            "yo" to "ㅛ",
+            "u" to "ㅜ",
+            "yu" to "ㅠ",
+            "eu" to "ㅡ",
+            "i" to "ㅣ",
+            "ae" to "ㅐ",
+            "yae" to "ㅒ",
+            "e" to "ㅔ",
+            "ye" to "ㅖ",
+            "oe" to "ㅚ",
+            "wi" to "ㅟ",
+            "ui" to "ㅢ"
+        )
+
+        return koreanMap[str] ?: ""
+    }
+
+    fun addJa (s1: String, s2: String) : String {
+        return when {
+            s1 == "ㄱ" && s2 == "ㄱ" -> "ㄲ"
+            s1 == "ㄷ" && s2 == "ㄷ" -> "ㄸ"
+            s1 == "ㅂ" && s2 == "ㅂ" -> "ㅃ"
+            s1 == "ㅅ" && s2 == "ㅅ" -> "ㅆ"
+            s1 == "ㅈ" && s2 == "ㅈ" -> "ㅉ"
+            s1 == "ㅅ" && s2 == "ㄱ" -> "ㄳ"
+            s1 == "ㅈ" && s2 == "ㄴ" -> "ㄵ"
+            s1 == "ㅎ" && s2 == "ㄴ" -> "ㄶ"
+            s1 == "ㄱ" && s2 == "ㄹ" -> "ㄺ"
+            s1 == "ㅁ" && s2 == "ㄹ" -> "ㄻ"
+            s1 == "ㅂ" && s2 == "ㄹ" -> "ㄼ"
+            s1 == "ㅅ" && s2 == "ㄹ" -> "ㄽ"
+            s1 == "ㅌ" && s2 == "ㄹ" -> "ㄾ"
+            s1 == "ㅍ" && s2 == "ㄹ" -> "ㄿ"
+            s1 == "ㅎ" && s2 == "ㄹ" -> "ㅀ"
+            s1 == "ㅅ" && s2 == "ㅂ" -> "ㅄ"
+            s1 == "ㅏ" && s2 == "ㅗ" -> "ㅘ"
+            s1 == "ㅐ" && s2 == "ㅗ" -> "ㅙ"
+            s1 == "ㅓ" && s2 == "ㅜ" -> "ㅝ"
+            s1 == "ㅔ" && s2 == "ㅜ" -> "ㅞ"
+            else -> " " // 처리하지 않은 경우 빈 문자 반환
+        }
+    }
     var recodeStr: String = ""
         set(value) {
             field = value
@@ -204,6 +273,9 @@ class CommFragment : Fragment(),
             showKeyboard()
         }
 
+        // textList에 변경이 일어난 경우 textList의 글자를 string으로 바꾸고 api로 전달해서 받아온 다음에 edittext화면에 넣음
+        // edittext에 클릭 발생한 경우 textList 비우기 + 에디트 텍스트 비우기. 그 다음에 testList가 비어있으면 클릭해도 에디트 텍스트 지우지 말기. 
+        // 키보드 버튼도 마찬가지
         return rootLayout
     }
 
@@ -465,6 +537,90 @@ class CommFragment : Fragment(),
                     gestureRecognizerResultAdapter.updateResults(
                         gestureCategories.first()
                     )
+                    val firstGesture = gestureCategories.first()
+                    if (gestureCategories.first()?.first()?.categoryName() != null && gestureCategories.first()?.first()?.categoryName() != "") {
+                        val category = gestureCategories.first()?.first()?.categoryName()?: null
+                        Log.e("category", category.toString())
+                        val str = getKoreanLetter(category.toString())
+                        Log.e("str", str)
+
+
+                        if (recogList.size > 50) {
+                            Log.e("recog", recogList[0])
+                            if (lastStr == str) {
+                                Log.e("recogList1", recogList.toString())
+                                lastStr = ""
+
+                                if (recogList[0] == "clear_all") {
+                                    if (textList != null) {
+                                        textList.clear()
+                                    } else {
+
+                                    }
+                                } else if (recogList[0] == "add") {
+                                    if (textList.size >= 2) {
+                                        var ja = addJa(
+                                            textList[textList.size - 2],
+                                            textList[textList.size - 1]
+                                        )
+                                        if (ja != " ") {
+                                            textList.removeAt(textList.size - 1)
+                                            textList.removeAt(textList.size - 2)
+                                            textList.add(ja)
+                                        }
+
+                                    } else {
+
+                                    }
+                                } else if (recogList[0] == "clear_one") {
+                                    if (textList != null) {
+                                        textList.removeAt(textList.size - 1)
+                                    } else {
+
+                                    }
+                                } else if (recogList[0] == "space") {
+                                    textList.add(" ")
+                                } else {
+                                    textList.add(recogList[0])
+                                    Log.e("textList", textList.toString())
+                                    recogList.clear()
+                                }
+                            } else if (recogList.size == 0) {
+                                recogList.add(str)
+                                //Log.e("recogList2", recogList.toString())
+                                lastStr = str
+                            } else {
+                                recogList.clear()
+                                recogList.add(str)
+                                //Log.e("recogList3", recogList.toString())
+                                lastStr = str
+                            }
+                        }
+                        else {
+                            if (lastStr == str) {
+                                recogList.add(str)
+                                Log.e("recogList1", recogList.toString())
+                                lastStr = str
+                            }
+                            else if (recogList.size == 0) {
+                                recogList.add(str)
+                                Log.e("recogList2", recogList.toString())
+                                lastStr = str
+                            }
+                            else {
+                                recogList.clear()
+                                recogList.add(str)
+                                Log.e("recogList3", recogList.toString())
+                                lastStr = str
+                            }
+                        }
+
+
+
+
+
+                    }
+
                 } else {
                     gestureRecognizerResultAdapter.updateResults(emptyList())
                 }
@@ -479,6 +635,8 @@ class CommFragment : Fragment(),
                     resultBundle.inputImageWidth,
                     RunningMode.LIVE_STREAM
                 )
+
+
 
                 // Force a redraw
                 fragmentCommBinding.overlay.invalidate()
