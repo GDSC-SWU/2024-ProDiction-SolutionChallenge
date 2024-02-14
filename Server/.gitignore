@@ -41,6 +41,3 @@ out/
 
 ### Secret ###
 application.properties
-
-### GCS ###
-apt-cubist-411212-be837d893971.json

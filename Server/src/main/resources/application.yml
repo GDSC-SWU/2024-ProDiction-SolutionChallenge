@@ -17,12 +17,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  cloud:
-    gcp:
-      storage:
-        credentials:
-          location: classpath:apt-cubist-411212-be837d893971.json
-        project-id: ${GCP_PROJECT_ID}
 
 # GOOGLE LOGIN SECURITY
 google:
