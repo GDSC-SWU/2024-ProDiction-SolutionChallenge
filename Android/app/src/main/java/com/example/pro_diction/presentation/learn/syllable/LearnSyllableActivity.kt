@@ -3,23 +3,40 @@ package com.example.pro_diction.presentation.learn.syllable
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.HangulConverter
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
+import com.example.pro_diction.data.dto.CategoryDto
+import com.example.pro_diction.data.dto.CategoryResponseDto
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.presentation.learn.SearchActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LearnSyllableActivity : AppCompatActivity() {
     var ja: MutableList<ConsonantDto> = mutableListOf()
     var resultList: MutableList<ConsonantDto> = mutableListOf()
+    val getCategory = ApiPool.getCategory // api
+    val list: MutableList<CategoryResponseDto> = mutableListOf()
+    var itemList: MutableList<StudyResponseDto> = mutableListOf()
+    var studtList: MutableList<StudyResponseDto> = mutableListOf()
+    val getSubCategory = ApiPool.getSubCategory // api
+    var studyList: MutableList<StudyResponseDto> = mutableListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,135 +48,116 @@ class LearnSyllableActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
+        // spinner
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val spinnerList = mutableListOf<String>()
+
         // recycler view
-        //val consonantInflater = inflater.inflate(R.layout.fragment_learn_phoneme_consonant, container, false)
         val recyclerview = findViewById<RecyclerView>(R.id.rv_syllable)
-        val consonantList: MutableList<ConsonantDto> = mutableListOf()
-        consonantList.add(ConsonantDto("ㄱ"))
-        consonantList.add(ConsonantDto("ㄴ"))
-        consonantList.add(ConsonantDto("ㄷ"))
-        consonantList.add(ConsonantDto("ㄹ"))
-        consonantList.add(ConsonantDto("ㅁ"))
-        consonantList.add(ConsonantDto("ㅂ"))
-        consonantList.add(ConsonantDto("ㅅ"))
-        consonantList.add(ConsonantDto("ㅇ"))
-        consonantList.add(ConsonantDto("ㅈ"))
-        consonantList.add(ConsonantDto("ㅊ"))
-        consonantList.add(ConsonantDto("ㅋ"))
-        consonantList.add(ConsonantDto("ㅌ"))
-        consonantList.add(ConsonantDto("ㅍ"))
-        consonantList.add(ConsonantDto("ㅎ"))
-        consonantList.add(ConsonantDto("ㄲ"))
-        consonantList.add(ConsonantDto("ㄸ"))
-        consonantList.add(ConsonantDto("ㅃ"))
-        consonantList.add(ConsonantDto("ㅆ"))
-        consonantList.add(ConsonantDto("ㅉ"))
-        val adapter = SyllableAdapter(consonantList)
+
+        // api
+        getCategory.getCategory(2, false, 0).enqueue(object: Callback<BaseResponse<List<CategoryResponseDto>>> {
+            override fun onResponse(
+                call: Call<BaseResponse<List<CategoryResponseDto>>>,
+                response: Response<BaseResponse<List<CategoryResponseDto>>>
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        Log.e("isSuccessful response", response.body().toString())
+                        Log.e("isSuccessful   response.body()", response.body()?.data?.get(0)?.id.toString())
+
+                        response.body()?.data?.forEach { it ->
+                            list.add(it)
+                            spinnerList.add(it.name)
+                        }
+
+                        // spinner vowels
+                        val spinnerAdapter = ArrayAdapter(this@LearnSyllableActivity, android.R.layout.simple_spinner_dropdown_item, spinnerList)
+                        spinner.adapter = spinnerAdapter
+                    } else {
+                        Log.e("NotSuccessful", response.toString())
+                    }
+                } else {
+                    response.body()?.let { Log.e("Response", it.toString()) }
+                }
+            }
+
+            override fun onFailure(
+                call: Call<BaseResponse<List<CategoryResponseDto>>>,
+                t: Throwable
+            ) {
+                Toast.makeText(this@LearnSyllableActivity , "서버 통신을 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        // recycler view adpater
+        val adapter = SyllableAdapter(studyList)
 
         recyclerview.adapter = adapter
         recyclerview.layoutManager = GridLayoutManager(this, 3)
 
         // parser
-        ja = consonantList
+        // ja = consonantList
         var result = ArrayList<String>()
 
 
+        Log.e("spinnerList", spinnerList.toString())
 
-        // spinner
-        val spinner = findViewById<Spinner>(R.id.spinner)
-        val items = resources.getStringArray(R.array.spinner_array)
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-
-        spinner.adapter = spinnerAdapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                when(p2) {
-                    0 -> {
-                        setList('ㅏ')
-                    }
-                    1 -> {
-                        setList('ㅑ')
-                    }
-                    2 -> {
-                        setList('ㅓ')
-                    }
-                    3 -> {
-                        setList('ㅕ')
-                    }
-                    4 -> {
-                        setList('ㅗ')
-                    }
-                    5 -> {
-                        setList('ㅛ')
-                    }
-                    6 -> {
-                        setList('ㅜ')
-                    }
-                    7 -> {
-                        setList('ㅠ')
-                    }
-                    8 -> {
-                        setList('ㅡ')
-                    }
-                    9 -> {
-                        setList('ㅣ')
-                    }
-                    10 -> {
-                        setList('ㅐ')
-                    }
-                    11 -> {
-                        setList('ㅒ')
-                    }
-                    12 -> {
-                        setList('ㅔ')
-                    }
-                    13 -> {
-                        setList('ㅖ')
-                    }
-                    14 -> {
-                        setList('ㅚ')
-                    }
-                    15 -> {
-                        setList('ㅟ')
-                    }
-                    16 -> {
-                        setList('ㅢ')
-                    }
-                    17 -> {
-                        setList('ㅘ')
-                    }
-                    18 -> {
-                        setList('ㅝ')
-                    }
-                    19 -> {
-                        setList('ㅙ')
-                    }
-                    20 -> {
-                        setList('ㅞ')
-                    }
+                // set items
+                // setList(p2)
+                val categoryId = list.get(p2).id
+                studyList.clear()
 
-                    else -> {
+
+                getSubCategory.getSubCategory(categoryId).enqueue(object: Callback<BaseResponse<List<StudyResponseDto>>>  {
+                    override fun onResponse(
+                        call: Call<BaseResponse<List<StudyResponseDto>>>,
+                        response: Response<BaseResponse<List<StudyResponseDto>>>
+                    ) {
+                        Log.e("response", response.body().toString())
+                        response.body()?.data?.forEach { it ->
+                            studyList.add(it)
+                        }
+                        recyclerview.adapter = adapter
+                        recyclerview.layoutManager = GridLayoutManager(this@LearnSyllableActivity, 3)
 
                     }
-                }
-                val adapter = SyllableAdapter(resultList)
+
+                    override fun onFailure(
+                        call: Call<BaseResponse<List<StudyResponseDto>>>,
+                        t: Throwable
+                    ) {
+                        TODO("Not yet implemented")
+                    }
+                })
+
+                // item recycler view adapter
+                val adapter = SyllableAdapter(studyList)
 
                 recyclerview.adapter = adapter
                 recyclerview.layoutManager = GridLayoutManager(this@LearnSyllableActivity, 3)
 
-                val intent = Intent(this@LearnSyllableActivity, LearnSyllableDetailActivity::class.java)
-                adapter.setOnItemClickListener(object: SyllableAdapter.OnItemClickListener {
-                    override fun onItemClick(view: View, position: Int) {
-                        intent.putExtra("item", resultList[position].item)
-                        startActivity(intent)
-                    }
-                })
+
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 spinner.setSelection(0)
             }
+
+
         }
+
+
+        val intent = Intent(this@LearnSyllableActivity, LearnSyllableDetailActivity::class.java)
+        adapter.setOnItemClickListener(object: SyllableAdapter.OnItemClickListener {
+            override fun onItemClick(view: View, position: Int) {
+                intent.putExtra("studyId", studyList[position].studyId.toString())
+                intent.putExtra("content", studyList[position].content.toString())
+                startActivity(intent)
+            }
+        })
         /*
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -213,13 +211,14 @@ class LearnSyllableActivity : AppCompatActivity() {
 
     }
 
+    /*
     fun setList(jungsung: Char) {
         resultList.clear()
         for (i in ja) {
             val hangulChar = HangulConverter.joinHangul(i.item[0], jungsung)
             resultList.add(ConsonantDto(hangulChar.toString()))
         }
-    }
+    }*/
 
 
     // 툴바 메뉴 버튼 설정

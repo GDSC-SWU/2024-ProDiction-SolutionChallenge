@@ -16,6 +16,7 @@ import com.example.pro_diction.presentation.my.CallActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
 import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
@@ -33,6 +34,7 @@ class MyFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var nick = ""
 
     private lateinit var binding: FragmentMyBinding
     var googleSignInClient: GoogleSignInClient?= null
@@ -54,6 +56,13 @@ class MyFragment : Fragment() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+
+        val account: GoogleSignInAccount? = this.context?.let {
+            GoogleSignIn.getLastSignedInAccount(
+                it
+            )
+        }
+        nick = account?.displayName.toString()
     }
 
     override fun onCreateView(
@@ -62,6 +71,30 @@ class MyFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val myInflater = inflater.inflate(R.layout.fragment_my, container, false)
+
+        // 닉네임 nick name
+        myInflater.findViewById<TextView>(R.id.tv_nick).text = nick
+
+        var tvLevel = myInflater.findViewById<TextView>(R.id.tv_my_level)
+        // level
+        if (App.prefs.getStage() == 1) {
+            tvLevel.text = getString(R.string.learn_1)
+        }
+        else if (App.prefs.getStage() == 2) {
+            tvLevel.text = getString(R.string.learn_2)
+        }
+        else if (App.prefs.getStage() == 3) {
+            tvLevel.text = getString(R.string.learn_3)
+        }
+        else if (App.prefs.getStage() == 4) {
+            tvLevel.text = getString(R.string.learn_4)
+        }
+        else if (App.prefs.getStage() == 5) {
+            tvLevel.text = getString(R.string.learn_5)
+        }
+        else{
+            tvLevel.text = "-"
+        }
 
         // 로그아웃 버튼 logout button
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
@@ -105,10 +138,22 @@ class MyFragment : Fragment() {
             startActivity(onIntent)
         }
 
-        // test 온보딩
+        // test stt
         val sttIntent = Intent(this.context, SttActivity::class.java)
         myInflater.findViewById<Button>(R.id.btn_t_stt).setOnClickListener {
             startActivity(sttIntent)
+        }
+
+        // record test
+        val recordIntent = Intent(this.context, AudioRecordActivity::class.java)
+        myInflater.findViewById<Button>(R.id.btn_t_record).setOnClickListener {
+            startActivity(recordIntent)
+        }
+
+        // record
+        val recordTIntent = Intent(this.context, MainActivity2::class.java)
+        myInflater.findViewById<Button>(R.id.btn_t_record_2).setOnClickListener {
+            startActivity(recordTIntent)
         }
 
         return myInflater

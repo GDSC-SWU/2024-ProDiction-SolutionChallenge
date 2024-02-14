@@ -4,8 +4,6 @@ plugins {
 
     id ("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 
-    // Google services 플러그인
-    //id("com.google.gms.google-services")
 }
 
 
@@ -45,15 +43,9 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
-    }
-
-    // 뷰 바인딩 사용
-    buildFeatures {
-        viewBinding = true
         mlModelBinding = true
     }
 }
-
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -174,6 +166,9 @@ dependencies {
     implementation ("com.google.android.exoplayer:exoplayer-core:2.19.1")
     implementation ("com.google.android.exoplayer:exoplayer-dash:2.19.1")
     implementation ("com.google.android.exoplayer:exoplayer-ui:2.19.1")
+
+    // wav recorder
+    implementation("com.github.squti:Android-Wave-Recorder:1.7.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

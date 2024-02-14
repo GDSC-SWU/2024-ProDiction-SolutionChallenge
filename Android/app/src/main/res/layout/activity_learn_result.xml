@@ -15,26 +15,154 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="힐링"
-        app:layout_constraintTop_toBottomOf="@id/tb_phoneme"
+        tools:text="The accuracy of pronunciation is"
+        android:paddingHorizontal="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_phoneme"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
+        android:textColor="@color/font"
         />
+
     <TextView
+        android:id="@+id/tv_your"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:text="@string/your_pron"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp" />
+        app:layout_constraintVertical_bias="0.213" />
+
+
+    <ImageView
+        android:id="@+id/iv_your_video1"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_video1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_your_video2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_your" />
+
+    <ImageView
+        android:id="@+id/iv_your_video2"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        app:layout_constraintStart_toEndOf="@id/iv_your_video1"
+        app:layout_constraintTop_toTopOf="@+id/iv_your_video1"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_your_video1"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/btn_video2"
+        android:scaleType="fitCenter"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_your_video1"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        tools:text="[    힐랑   ]"
+        android:textSize="12sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:text="@string/correct_pron"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp" />
+        app:layout_constraintVertical_bias="0.465" />
+
+    <ImageView
+        android:id="@+id/iv_correct_video1"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_video1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_correct_video2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_correct" />
+
+    <ImageView
+        android:id="@+id/iv_correct_video2"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        app:layout_constraintStart_toEndOf="@id/iv_correct_video1"
+        app:layout_constraintTop_toTopOf="@+id/iv_correct_video1"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_correct_video1"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/btn_video2"
+        android:scaleType="fitCenter"/>
+
+    <TextView
+        android:id="@+id/tv_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="표준 -- 발음"
+        android:textSize="8sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_correct_result"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_correct_result"
+        android:layout_marginStart="30dp" />
+
+
+    <TextView
+        android:id="@+id/tv_correct_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/tv_c"
+        app:layout_constraintTop_toBottomOf="@+id/iv_correct_video1"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="15dp"
+        tools:text="[    힐링   ]"
+        android:textSize="12sp"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/btn_retest"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:text="Re"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_background_round_on"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_correct_result"
+        app:layout_constraintEnd_toStartOf="@+id/btn_add"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:text="Add"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_background_round_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_correct_result"
+        app:layout_constraintStart_toEndOf="@+id/btn_retest"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:textAllCaps="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

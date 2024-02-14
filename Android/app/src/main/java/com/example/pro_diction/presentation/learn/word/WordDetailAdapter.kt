@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.data.dto.WordDetailDto
 import com.example.pro_diction.databinding.SyllableItemBinding
 import com.example.pro_diction.databinding.WordDetailItemBinding
 import com.example.pro_diction.presentation.learn.syllable.SyllableAdapter
 
-class WordDetailAdapter (private val dataList: MutableList<WordDetailDto>) :
+class WordDetailAdapter (private val dataList: MutableList<StudyResponseDto>) :
     RecyclerView.Adapter<WordDetailAdapter.WordDetailViewHolder>() {
     private lateinit var binding: WordDetailItemBinding
 
@@ -49,8 +50,8 @@ class WordDetailAdapter (private val dataList: MutableList<WordDetailDto>) :
                 }
             }
         }
-        fun bind(wordDetail: WordDetailDto) {
-            wordDetailBtn.text = wordDetail.wordDetail
+        fun bind(studyResponse: StudyResponseDto) {
+            wordDetailBtn.text = studyResponse.content
 
             /*
             view.setOnClickListener {

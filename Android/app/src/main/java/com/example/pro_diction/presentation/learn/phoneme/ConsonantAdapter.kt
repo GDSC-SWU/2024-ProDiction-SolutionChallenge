@@ -8,9 +8,10 @@ import android.widget.Button
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.data.dto.ConsonantDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.databinding.ConsonantItemBinding
 
-class ConsonantAdapter (private val dataList: MutableList<ConsonantDto>) :
+class ConsonantAdapter (private val dataList: MutableList<StudyResponseDto>) :
     RecyclerView.Adapter<ConsonantAdapter.ConsonantViewHolder>() {
     private lateinit var binding: ConsonantItemBinding
 
@@ -56,8 +57,8 @@ class ConsonantAdapter (private val dataList: MutableList<ConsonantDto>) :
                 }
             }
         }
-        fun bind(consonant: ConsonantDto) {
-            consonantBtn.text = consonant.item
+        fun bind(studyResponse: StudyResponseDto) {
+            consonantBtn.text = studyResponse.content
 
             /*
             view.setOnClickListener {

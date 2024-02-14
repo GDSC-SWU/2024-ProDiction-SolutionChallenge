@@ -7,19 +7,28 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.PhraseDetailDto
+import com.example.pro_diction.data.dto.StudyResponseDto
 import com.example.pro_diction.data.dto.WordDetailDto
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
 import com.example.pro_diction.presentation.learn.word.WordDetailAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LearnPhraseDetailActivity : AppCompatActivity() {
+    var getSubCategory = ApiPool.getSubCategory
+    var list: MutableList<StudyResponseDto> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_learn_phrase_detail)
@@ -30,48 +39,58 @@ class LearnPhraseDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        // consonant setting 자음 설정
-        val main = intent.getStringExtra("main")
+        // consonant setting
+        val id = intent.getStringExtra("id")
+        val name = intent.getStringExtra("name")
         var tvMain = findViewById<TextView>(R.id.tv_phrase_detail_main)
-        tvMain.text = main
+        tvMain.text = name
 
         // recycler view
-        // main 이 뭔지에 따라서 리스트에 넣는 값이 달라짐
         val recyclerview = findViewById<RecyclerView>(R.id.rv_phrase_detail)
-        val phraseDetailList: MutableList<PhraseDetailDto> = mutableListOf()
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
-        phraseDetailList.add(PhraseDetailDto("귀여운 강아지"))
-        phraseDetailList.add(PhraseDetailDto("가는 기차"))
+        var adapter = PhraseDetailAdapter(list)
 
+        // api
+        if (id != null) {
+            getSubCategory.getSubCategory(id.toInt()).enqueue(object :
+                Callback<BaseResponse<List<StudyResponseDto>>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<List<StudyResponseDto>>>,
+                    response: Response<BaseResponse<List<StudyResponseDto>>>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.data?.forEach { it ->
+                            list.add(it)
+                        }
 
-        // 어댑터에 리스트 연결
-        val adapter = PhraseDetailAdapter(phraseDetailList)
+                        recyclerview.adapter = adapter
+                        recyclerview.layoutManager = LinearLayoutManager(this@LearnPhraseDetailActivity)
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<List<StudyResponseDto>>>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(this@LearnPhraseDetailActivity, "server fail", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        // adpater
+        adapter = PhraseDetailAdapter(list)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(this@LearnPhraseDetailActivity)
 
         val intent = Intent(this@LearnPhraseDetailActivity, LearnPhonemeDetailActivity::class.java)
-        // item 클릭 시 해당 음소 페이지로 연결
+        // button click intent
         adapter.setOnItemClickListener(object: PhraseDetailAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
-                intent.putExtra("item", phraseDetailList[position].phraseDetail)
+                intent.putExtra("item", list[position].studyId.toString())
                 startActivity(intent)
             }
         })
 
-        // floating action button 플로팅 버튼 연결
+        // floating action button
         val fab: FloatingActionButton = findViewById(R.id.fab_phrase_detail)
         fab.setOnClickListener {
             recyclerview.smoothScrollToPosition(0)
@@ -79,21 +98,21 @@ class LearnPhraseDetailActivity : AppCompatActivity() {
 
 
     }
-    // 툴바 메뉴 버튼 설정
+    // toolbar menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
-    // 툴바 메뉴 클릭 됐을 때
+    // toolbar menu click
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> { // toolbar의 back키 눌렀을 때 동작
-                // 액티비티 이동
+            android.R.id.home -> { // toolbar back click
+                // activity move
                 finish()
                 return true
             }
-            R.id.menu_search -> { // 검색 버튼
+            R.id.menu_search -> { // search button
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
             }

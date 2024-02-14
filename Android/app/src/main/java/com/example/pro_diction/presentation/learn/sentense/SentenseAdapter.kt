@@ -8,13 +8,14 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pro_diction.data.dto.CategoryResponseDto
 import com.example.pro_diction.data.dto.PhraseDto
 import com.example.pro_diction.data.dto.SentenseDto
 import com.example.pro_diction.databinding.PhraseItemBinding
 import com.example.pro_diction.databinding.SentenseItemBinding
 import com.example.pro_diction.presentation.learn.phrase.PhraseAdapter
 
-class SentenseAdapter (private val dataList: MutableList<SentenseDto>) :
+class SentenseAdapter (private val dataList: MutableList<CategoryResponseDto>) :
     RecyclerView.Adapter<SentenseAdapter.SentenseViewHolder>() {
     private lateinit var binding: SentenseItemBinding
 
@@ -56,27 +57,27 @@ class SentenseAdapter (private val dataList: MutableList<SentenseDto>) :
             binding.tvSentenseMain.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnSentenseRight, pos)
+                    itemClickListener.onItemClick(binding.tvSentenseMain, pos)
                 }
             }
             binding.btnSentense1.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnSentenseRight, pos)
+                    itemClickListener.onItemClick(binding.btnSentense1, pos)
                 }
             }
             binding.btnSentense2.setOnClickListener{
                 val pos = adapterPosition
                 if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
-                    itemClickListener.onItemClick(binding.btnSentenseRight, pos)
+                    itemClickListener.onItemClick(binding.btnSentense2, pos)
                 }
             }
 
         }
-        fun bind(sentense: SentenseDto) {
-            tvSentenseMain.text = sentense.sentenseTitle
-            btnSentense1.text = sentense.sentenseList[0]
-            btnSentense2.text = sentense.sentenseList[1]
+        fun bind(categoyResponse: CategoryResponseDto) {
+            tvSentenseMain.text = categoyResponse.name
+            btnSentense1.text = categoyResponse.studyResponseDtoList.get(0).content
+            btnSentense2.text = categoyResponse.studyResponseDtoList.get(1).content
 
         }
     }
