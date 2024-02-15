@@ -22,13 +22,15 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping(value = "/login/oauth/google")
-    public void login(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws IOException, GeneralSecurityException {
+    public void login(@NotNull HttpServletRequest request,
+                      @NotNull HttpServletResponse response) throws IOException, GeneralSecurityException {
 
         memberService.checkIsUserAndRegister(request, response);
     }
 
     @PatchMapping
-    public Integer updateAge(@RequestParam Integer age, @AuthenticationPrincipal ContextUser contextUser) {
+    public Integer updateAge(@RequestParam Integer age,
+                             @AuthenticationPrincipal ContextUser contextUser) {
 
         return memberService.updateAge(age, contextUser.getMember());
     }

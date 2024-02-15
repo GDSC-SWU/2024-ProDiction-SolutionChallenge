@@ -4,8 +4,9 @@ import com.pro_diction.server.domain.member.dto.LoginResponseDto;
 import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
 import com.pro_diction.server.domain.model.TokenClaimVo;
-import com.pro_diction.server.global.constant.ErrorCode;
-import com.pro_diction.server.global.exception.GeneralException;
+import com.pro_diction.server.global.exception.auth.AccessTokenRequiredException;
+import com.pro_diction.server.global.exception.auth.InvalidTokenException;
+import com.pro_diction.server.global.exception.auth.RefreshTokenRequiredException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -80,7 +81,7 @@ public class JwtUtil {
 
         // member 조회
         return memberRepository.findById(((Number) payloads.get("memberId")).longValue())
-                .orElseThrow(() -> new GeneralException(ErrorCode.INVALID_TOKEN));
+                .orElseThrow((InvalidTokenException::new));
     }
 
     // Decode Request
@@ -91,9 +92,9 @@ public class JwtUtil {
 
         String headerValue = request.getHeader(header);
         if(isAccessToken && headerValue == null) {
-            throw new GeneralException(ErrorCode.ACCESS_TOKEN_REQUIRED);
+            throw new AccessTokenRequiredException();
         } else if(!isAccessToken && headerValue == null) {
-            throw new GeneralException(ErrorCode.REFRESH_TOKEN_REQUIRED);
+            throw new RefreshTokenRequiredException();
         }
 
         return decodeBearer(headerValue);
@@ -105,7 +106,7 @@ public class JwtUtil {
             final String BEARER = "Bearer ";
             return Arrays.stream(bearerToken.split(BEARER)).toList().get(1);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new GeneralException(ErrorCode.INVALID_TOKEN);
+            throw new InvalidTokenException();
         }
     }
 

@@ -7,8 +7,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.model.Role;
-import com.pro_diction.server.global.constant.ErrorCode;
-import com.pro_diction.server.global.exception.GeneralException;
+import com.pro_diction.server.global.exception.auth.InvalidIdTokenException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +32,7 @@ public class GoogleOAuthUtil {
         GoogleIdToken googleIdToken = verifier.verify(idToken);
 
         if (googleIdToken == null)
-            throw new GeneralException(ErrorCode.INVALID_ID_TOKEN);
+            throw new InvalidIdTokenException();
 
         GoogleIdToken.Payload payload = googleIdToken.getPayload();
 

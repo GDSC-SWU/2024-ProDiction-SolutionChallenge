@@ -1,8 +1,8 @@
 package com.pro_diction.server.domain.member.service;
 
 import com.pro_diction.server.domain.member.entity.Member;
+import com.pro_diction.server.domain.member.exception.IdTokenRequiredException;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
-import com.pro_diction.server.global.constant.ErrorCode;
 import com.pro_diction.server.global.exception.GeneralException;
 import com.pro_diction.server.global.util.GoogleOAuthUtil;
 import com.pro_diction.server.global.util.JwtUtil;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,14 +29,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void checkIsUserAndRegister(HttpServletRequest request, HttpServletResponse response) throws IOException, GeneralException, GeneralSecurityException {
         Member requestMember = googleOAuthUtil.authenticate(getIdToken(request));
-
-        Optional<Member> existingMemberOptional = memberRepository.findOneByGoogleEmail(requestMember.getGoogleEmail());
-
-        if (existingMemberOptional.isPresent()) {
-            requestMember = existingMemberOptional.get();
-        } else {
-            requestMember = memberRepository.save(requestMember);
-        }
+        Member member = memberRepository.findOneByGoogleEmail(requestMember.getGoogleEmail())
+                .orElse(requestMember);
+        requestMember = memberRepository.save(member);
 
         responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(requestMember));
     }
@@ -54,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
         String idToken = request.getHeader("id-token");
 
         if (idToken == null)
-            throw new GeneralException(ErrorCode.ID_TOKEN_REQUIRED);
+            throw new IdTokenRequiredException();
 
         return idToken;
     }
