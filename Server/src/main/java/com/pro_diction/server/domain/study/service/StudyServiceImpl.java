@@ -40,58 +40,12 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(CategoryNotFoundException::new);
-        if(categoryId != 2 && isFinalConsonant) throw new CategoryHasNotFinalConsonantException();
-
-        List<SubCategory> subCategoryList = category.getChildrenSubCategory();
-
-        return subCategoryList.stream()
-                .filter(subCategory -> subCategory.isFinalConsonant() == isFinalConsonant)
-                .map(subCategory -> SubCategoryResponseDto.builder()
-                        .id(subCategory.getId())
-                        .name(subCategory.getName())
-                        .studyResponseDtoList(
-                                subCategory.getChildrenStudy()
-                                        .subList(0, Math.min(subCategory.getChildrenStudy().size(), studyCount))
-                                .stream()
-                                .map(study -> StudyResponseDto.builder()
-                                        .studyId(study.getId())
-                                        .content(study.getContent())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId) {
-        List<Study> studyList;
-
-        if(subCategoryId != null && parentStudyId == null) {
-            SubCategory subCategory = subCategoryRepository.findById(subCategoryId)
-                    .orElseThrow(SubCategoryNotFoundException::new);
-            studyList = subCategory.getChildrenStudy();
-        } else if(parentStudyId != null && subCategoryId == null) {
-            Study parentStudy = studyRepository.findById(parentStudyId)
-                    .orElseThrow(StudyNotFoundException::new);
-            studyList = parentStudy.getChildrenStudy();
-
-            if(parentStudy.getChildrenStudy().isEmpty()) {  // 받침 study의 부모 study가 아닌 경우
-                throw new InvalidFinalConsonantParentStudyException();
-            }
-        } else {    // subCategoryId, parentStudyId의 값이 모두 있거나 모두 없는 경우
-            throw new OnlyOneParameterAllowedException();
-        }
+        List<Study> studyList = getStudyListBySubCategoryOrParentStudy(subCategoryId, parentStudyId);
 
         return studyList.stream()
-                .map(study -> StudyResponseDto.builder()
-                        .studyId(study.getId())
-                        .content(parentStudyId == null ?
-                                study.getContent() : study.getSubCategory().getName())
-                        .build())
+                .map(study -> StudyResponseDto.toResponse(study.getId(),
+                        parentStudyId == null ? study.getContent() : study.getSubCategory().getName()))
                 .collect(Collectors.toList());
     }
 
@@ -117,10 +71,33 @@ public class StudyServiceImpl implements StudyService {
         return StudyResultDto.toResponse(id, score, sttResultDto.getResult(), sttResultDto.getResult_splited());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, Integer studyCount) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(CategoryNotFoundException::new);
+
+        List<SubCategory> subCategoryList = category.getChildrenSubCategory();
+
+        return subCategoryList.stream()
+                .filter(subCategory -> !subCategory.isFinalConsonant())
+                .map(subCategory -> SubCategoryResponseDto.builder()
+                        .id(subCategory.getId())
+                        .name(subCategory.getName())
+                        .studyResponseDtoList(
+                                subCategory.getChildrenStudy()
+                                        .subList(0, Math.min(subCategory.getChildrenStudy().size(), studyCount))
+                                        .stream()
+                                        .map(study -> StudyResponseDto.toResponse(study.getId(), study.getContent()))
+                                        .collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     private String splitPronunciation(String pronunciation) {
         RestTemplate restTemplate = new RestTemplate();
         String splitPronunciation =
-                restTemplate.getForObject(PRODICTION_AI_API_URL + "/splitjamos/{pronunciation}", String.class, pronunciation);
+                restTemplate.getForObject(PRODICTION_AI_API_URL + "/splitjamos?text={pronunciation}", String.class, pronunciation);
 
         if(splitPronunciation != null) {
             return splitPronunciation.replace("\"", "");
@@ -130,24 +107,53 @@ public class StudyServiceImpl implements StudyService {
     }
 
     private SttResultDto sttPronunciation(MultipartFile file) {
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(2000);
-        factory.setReadTimeout(2000);
-        RestTemplate restTemplate = new RestTemplate(factory);
+        try {
+            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+            factory.setConnectTimeout(2000);
+            factory.setReadTimeout(2000);
+            RestTemplate restTemplate = new RestTemplate(factory);
 
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            // HTTP 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        // 파일을 MultiValueMap에 추가
-        MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("file", file.getResource());
+            // 파일을 MultiValueMap에 추가
+            MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
+            requestBody.add("file", file.getResource());
 
-        // Request Header, Body 요청 구성
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<SttResultDto> responseEntity =
-                restTemplate.postForEntity(PRODICTION_AI_API_URL + "/speechtotext_syllables", requestEntity, SttResultDto.class);
+            // Request Header, Body 요청 구성
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+            ResponseEntity<SttResultDto> responseEntity =
+                    restTemplate.postForEntity(PRODICTION_AI_API_URL + "/speechtotext_syllables", requestEntity, SttResultDto.class);
 
-        return responseEntity.getBody();
+            return responseEntity.getBody();
+        } catch (Exception e) {
+            return SttResultDto.builder()
+                    .result(e.getMessage())
+                    .result_splited(e.getMessage())
+                    .build();
+        }
+    }
+
+    private List<Study> getStudyListBySubCategoryOrParentStudy(Integer subCategoryId, Long parentStudyId) {
+        List<Study> studyList;
+
+        if (subCategoryId != null && parentStudyId == null) {
+            SubCategory subCategory = subCategoryRepository.findById(subCategoryId)
+                    .orElseThrow(SubCategoryNotFoundException::new);
+            studyList = subCategory.getChildrenStudy();
+        } else if (parentStudyId != null && subCategoryId == null) {
+            Study parentStudy = studyRepository.findById(parentStudyId)
+                    .orElseThrow(StudyNotFoundException::new);
+            studyList = parentStudy.getChildrenStudy();
+
+            if (parentStudy.getChildrenStudy().isEmpty()) {  // 받침 Study의 부모 Study가 아닌 경우
+                throw new InvalidFinalConsonantParentStudyException();
+            }
+        } else {    // subCategoryId, parentStudyId의 값이 모두 있거나 모두 없는 경우
+            throw new OnlyOneParameterAllowedException();
+        }
+
+        return studyList;
     }
 }
