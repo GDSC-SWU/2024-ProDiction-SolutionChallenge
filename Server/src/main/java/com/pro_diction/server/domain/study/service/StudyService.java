@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface StudyService {
-    List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, boolean isFinalConsonant, Integer studyCount);
+    List<SubCategoryResponseDto> getSubCategoryList(Integer categoryId, Integer studyCount);
 
     List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId);
 

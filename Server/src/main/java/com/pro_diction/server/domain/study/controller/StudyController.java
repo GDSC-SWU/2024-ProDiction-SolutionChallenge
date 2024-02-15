@@ -20,14 +20,6 @@ import java.util.List;
 public class StudyController {
     private final StudyService studyService;
 
-    @GetMapping("/subcategory")
-    public ApiDataResponseDto<List<SubCategoryResponseDto>> getSubCategoryList(@RequestParam @NotNull Integer categoryId,
-                                                                               @RequestParam @NotNull boolean isFinalConsonant,
-                                                                               @RequestParam @NotNull Integer studyCount) {
-
-        return ApiDataResponseDto.of(studyService.getSubCategoryList(categoryId, isFinalConsonant, studyCount));
-    }
-
     @GetMapping
     public ApiDataResponseDto<List<StudyResponseDto>> getStudyList(@RequestParam(required = false) Integer subCategoryId,
                                                                    @RequestParam(required = false) Long parentStudyId) {
@@ -46,5 +38,12 @@ public class StudyController {
                                                              @RequestPart @NotNull MultipartFile multipartFile) throws IOException {
 
         return ApiDataResponseDto.of(studyService.getStudyResult(multipartFile, studyId));
+    }
+
+    @GetMapping("/subcategory")
+    public ApiDataResponseDto<List<SubCategoryResponseDto>> getSubCategoryList(@RequestParam @NotNull Integer categoryId,
+                                                                               @RequestParam @NotNull Integer studyCount) {
+
+        return ApiDataResponseDto.of(studyService.getSubCategoryList(categoryId, studyCount));
     }
 }
