@@ -1,8 +1,13 @@
 package com.pro_diction.server.domain.member.service;
 
+import com.pro_diction.server.domain.member.dto.MemberResponseDto;
 import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.member.exception.IdTokenRequiredException;
+import com.pro_diction.server.domain.member.exception.MemberNotFoundException;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
+import com.pro_diction.server.domain.test.entity.Test;
+import com.pro_diction.server.domain.model.Stage;
+import com.pro_diction.server.domain.test.repository.TestRepository;
 import com.pro_diction.server.global.exception.GeneralException;
 import com.pro_diction.server.global.util.GoogleOAuthUtil;
 import com.pro_diction.server.global.util.JwtUtil;
@@ -20,8 +25,9 @@ import java.security.GeneralSecurityException;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    private final GoogleOAuthUtil googleOAuthUtil;
     private final MemberRepository memberRepository;
+    private final TestRepository testRepository;
+    private final GoogleOAuthUtil googleOAuthUtil;
     private final ResponseUtil responseUtil;
     private final JwtUtil jwtUtil;
 
@@ -33,6 +39,20 @@ public class MemberServiceImpl implements MemberService {
                 .orElseGet(() -> memberRepository.save(requestMember));
 
         responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(member));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MemberResponseDto getMyProfile(Member member) {
+        member = memberRepository.findById(member.getId()).orElseThrow(MemberNotFoundException::new);
+        String stage = testRepository.findOneByMember(member)
+                .map(Test::getStage)
+                .map(Stage::getTitle)
+                .orElse(null);
+
+        return MemberResponseDto.toResponse(
+                member.getId(), member.getGoogleNickname(), member.getGoogleProfile(), stage, member.getAge()
+        );
     }
 
     @Override
