@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,14 +29,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void checkIsUserAndRegister(HttpServletRequest request, HttpServletResponse response) throws IOException, GeneralException, GeneralSecurityException {
         Member requestMember = googleOAuthUtil.authenticate(getIdToken(request));
-
-        Optional<Member> existingMemberOptional = memberRepository.findOneByGoogleEmail(requestMember.getGoogleEmail());
-
-        if (existingMemberOptional.isPresent()) {
-            requestMember = existingMemberOptional.get();
-        } else {
-            requestMember = memberRepository.save(requestMember);
-        }
+        Member member = memberRepository.findOneByGoogleEmail(requestMember.getGoogleEmail())
+                .orElse(requestMember);
+        requestMember = memberRepository.save(member);
 
         responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(requestMember));
     }
