@@ -1,8 +1,8 @@
 package com.pro_diction.server.domain.member.service;
 
 import com.pro_diction.server.domain.member.entity.Member;
+import com.pro_diction.server.domain.member.exception.IdTokenRequiredException;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
-import com.pro_diction.server.global.constant.ErrorCode;
 import com.pro_diction.server.global.exception.GeneralException;
 import com.pro_diction.server.global.util.GoogleOAuthUtil;
 import com.pro_diction.server.global.util.JwtUtil;
@@ -54,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
         String idToken = request.getHeader("id-token");
 
         if (idToken == null)
-            throw new GeneralException(ErrorCode.ID_TOKEN_REQUIRED);
+            throw new IdTokenRequiredException();
 
         return idToken;
     }
