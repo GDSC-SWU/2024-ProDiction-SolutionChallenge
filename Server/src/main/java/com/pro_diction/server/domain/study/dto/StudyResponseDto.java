@@ -10,4 +10,14 @@ import lombok.*;
 public class StudyResponseDto {
     private Long studyId;
     private String content;
+
+    public static StudyResponseDto toResponse(
+            Long studyId,
+            String content
+    ) {
+        return StudyResponseDto.builder()
+                .studyId(studyId)
+                .content(content)
+                .build();
+    }
 }

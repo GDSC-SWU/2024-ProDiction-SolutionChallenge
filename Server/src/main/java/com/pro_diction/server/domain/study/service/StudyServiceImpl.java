@@ -56,10 +56,7 @@ public class StudyServiceImpl implements StudyService {
                                 subCategory.getChildrenStudy()
                                         .subList(0, Math.min(subCategory.getChildrenStudy().size(), studyCount))
                                 .stream()
-                                .map(study -> StudyResponseDto.builder()
-                                        .studyId(study.getId())
-                                        .content(study.getContent())
-                                        .build())
+                                .map(study -> StudyResponseDto.toResponse(study.getId(), study.getContent()))
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
@@ -68,30 +65,11 @@ public class StudyServiceImpl implements StudyService {
     @Override
     @Transactional(readOnly = true)
     public List<StudyResponseDto> getStudyList(Integer subCategoryId, Long parentStudyId) {
-        List<Study> studyList;
-
-        if(subCategoryId != null && parentStudyId == null) {
-            SubCategory subCategory = subCategoryRepository.findById(subCategoryId)
-                    .orElseThrow(SubCategoryNotFoundException::new);
-            studyList = subCategory.getChildrenStudy();
-        } else if(parentStudyId != null && subCategoryId == null) {
-            Study parentStudy = studyRepository.findById(parentStudyId)
-                    .orElseThrow(StudyNotFoundException::new);
-            studyList = parentStudy.getChildrenStudy();
-
-            if(parentStudy.getChildrenStudy().isEmpty()) {  // 받침 study의 부모 study가 아닌 경우
-                throw new InvalidFinalConsonantParentStudyException();
-            }
-        } else {    // subCategoryId, parentStudyId의 값이 모두 있거나 모두 없는 경우
-            throw new OnlyOneParameterAllowedException();
-        }
+        List<Study> studyList = getStudyListBySubCategoryOrParentStudy(subCategoryId, parentStudyId);
 
         return studyList.stream()
-                .map(study -> StudyResponseDto.builder()
-                        .studyId(study.getId())
-                        .content(parentStudyId == null ?
-                                study.getContent() : study.getSubCategory().getName())
-                        .build())
+                .map(study -> StudyResponseDto.toResponse(study.getId(),
+                        parentStudyId == null ? study.getContent() : study.getSubCategory().getName()))
                 .collect(Collectors.toList());
     }
 
@@ -117,10 +95,32 @@ public class StudyServiceImpl implements StudyService {
         return StudyResultDto.toResponse(id, score, sttResultDto.getResult(), sttResultDto.getResult_splited());
     }
 
+    private List<Study> getStudyListBySubCategoryOrParentStudy(Integer subCategoryId, Long parentStudyId) {
+        List<Study> studyList;
+
+        if (subCategoryId != null && parentStudyId == null) {
+            SubCategory subCategory = subCategoryRepository.findById(subCategoryId)
+                    .orElseThrow(SubCategoryNotFoundException::new);
+            studyList = subCategory.getChildrenStudy();
+        } else if (parentStudyId != null && subCategoryId == null) {
+            Study parentStudy = studyRepository.findById(parentStudyId)
+                    .orElseThrow(StudyNotFoundException::new);
+            studyList = parentStudy.getChildrenStudy();
+
+            if (parentStudy.getChildrenStudy().isEmpty()) {  // 받침 Study의 부모 Study가 아닌 경우
+                throw new InvalidFinalConsonantParentStudyException();
+            }
+        } else {    // subCategoryId, parentStudyId의 값이 모두 있거나 모두 없는 경우
+            throw new OnlyOneParameterAllowedException();
+        }
+
+        return studyList;
+    }
+
     private String splitPronunciation(String pronunciation) {
         RestTemplate restTemplate = new RestTemplate();
         String splitPronunciation =
-                restTemplate.getForObject(PRODICTION_AI_API_URL + "/splitjamos/{pronunciation}", String.class, pronunciation);
+                restTemplate.getForObject(PRODICTION_AI_API_URL + "/splitjamos?text={pronunciation}", String.class, pronunciation);
 
         if(splitPronunciation != null) {
             return splitPronunciation.replace("\"", "");
