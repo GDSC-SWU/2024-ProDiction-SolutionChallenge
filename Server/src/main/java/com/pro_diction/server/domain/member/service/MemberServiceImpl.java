@@ -30,10 +30,9 @@ public class MemberServiceImpl implements MemberService {
     public void checkIsUserAndRegister(HttpServletRequest request, HttpServletResponse response) throws IOException, GeneralException, GeneralSecurityException {
         Member requestMember = googleOAuthUtil.authenticate(getIdToken(request));
         Member member = memberRepository.findOneByGoogleEmail(requestMember.getGoogleEmail())
-                .orElse(requestMember);
-        requestMember = memberRepository.save(member);
+                .orElseGet(() -> memberRepository.save(requestMember));
 
-        responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(requestMember));
+        responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(member));
     }
 
     @Override
