@@ -4,6 +4,7 @@ import com.pro_diction.server.domain.member.dto.MemberResponseDto;
 import com.pro_diction.server.domain.member.service.MemberService;
 import com.pro_diction.server.domain.model.ContextUser;
 import com.pro_diction.server.global.common.ApiDataResponseDto;
+import com.pro_diction.server.global.common.ApiResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,12 @@ public class MemberController {
                       @NotNull HttpServletResponse response) throws IOException, GeneralSecurityException {
 
         memberService.checkIsUserAndRegister(request, response);
+    }
+
+    @DeleteMapping(value = "/logout/oauth/google")
+    public ApiResponseDto logout(@AuthenticationPrincipal ContextUser contextUser) {
+
+        return memberService.logout(contextUser.getMember());
     }
 
     @GetMapping
