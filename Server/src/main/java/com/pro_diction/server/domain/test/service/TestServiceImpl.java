@@ -41,6 +41,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException {
         Study study = studyRepository.findById(id).orElseThrow(StudyNotFoundException::new);
         Integer score = dictionTestUtil.test(multipartFile, study.getPronunciation());
