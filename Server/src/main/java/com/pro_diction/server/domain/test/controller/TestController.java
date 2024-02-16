@@ -23,10 +23,10 @@ import java.util.List;
 public class TestController {
     private final TestService testService;
 
-    @GetMapping("/study")
-    public ApiDataResponseDto<List<TestContentResponseDto>> getTestStudyList(@RequestParam Integer stage) {
+    @GetMapping("/{categoryId}")
+    public ApiDataResponseDto<List<TestContentResponseDto>> getTestStudyList(@PathVariable @NotNull Integer categoryId) {
 
-        return ApiDataResponseDto.of(testService.getTestStudyList(stage));
+        return ApiDataResponseDto.of(testService.getTestStudyList(categoryId));
     }
 
     @PostMapping("/diction/{studyId}")
