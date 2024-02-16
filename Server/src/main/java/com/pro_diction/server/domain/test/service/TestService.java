@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface TestService {
-    List<TestContentResponseDto> getTestStudyList(Integer stage);
+    List<TestContentResponseDto> getTestStudyList(Integer categoryId);
 
     TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException;
 

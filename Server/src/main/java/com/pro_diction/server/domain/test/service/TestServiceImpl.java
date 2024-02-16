@@ -28,9 +28,9 @@ public class TestServiceImpl implements TestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TestContentResponseDto> getTestStudyList(Integer stage) {
-        if (!(stage > 0 && stage < 6))   throw new InvalidStageException();
-        List<Study> studyList = studyRepository.getStudyByCategoryId(stage);
+    public List<TestContentResponseDto> getTestStudyList(Integer categoryId) {
+        if (!(categoryId > 0 && categoryId < 6))   throw new InvalidStageException();
+        List<Study> studyList = studyRepository.getStudyByCategoryId(categoryId);
 
         return studyList.stream()
                 .map(study -> TestContentResponseDto.builder()
@@ -41,9 +41,10 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException {
         Study study = studyRepository.findById(id).orElseThrow(StudyNotFoundException::new);
-        Double score = dictionTestUtil.test(multipartFile, study.getPronunciation());
+        Integer score = dictionTestUtil.test(multipartFile, study.getPronunciation());
 
         return TestResponseDto.builder()
                 .studyId(id)

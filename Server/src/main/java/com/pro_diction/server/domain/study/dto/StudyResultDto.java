@@ -9,19 +9,16 @@ import lombok.*;
 @AllArgsConstructor
 public class StudyResultDto {
     private Long studyId;
-    private Double score;
     private String sttResult;
     private String splitSttResult;
 
     public static StudyResultDto toResponse(
             Long studyId,
-            Double score,
             String sttResult,
             String splitSttResult
     ) {
         return StudyResultDto.builder()
                 .studyId(studyId)
-                .score(score)
                 .sttResult(sttResult)
                 .splitSttResult(splitSttResult)
                 .build();

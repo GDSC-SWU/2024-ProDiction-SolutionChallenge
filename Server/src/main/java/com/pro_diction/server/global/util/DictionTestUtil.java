@@ -24,7 +24,7 @@ public class DictionTestUtil {
     @Value("${DICTION_TEST_API_KEY}")
     private String DICTION_TEST_API_KEY;
 
-    public Double test(MultipartFile file, String pronunciation) throws IOException {
+    public Integer test(MultipartFile file, String pronunciation) throws IOException {
         try {
             SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
             factory.setConnectTimeout(3000);
@@ -54,9 +54,12 @@ public class DictionTestUtil {
             TestApiResponseDto testApiResponseDto =
                     restTemplate.postForEntity(DICTION_TEST_API_URL, httpEntity, TestApiResponseDto.class).getBody();
 
-            return Math.round(Double.valueOf(testApiResponseDto.getReturn_object().getScore()) / 5 * 100 * 10) / 10.0;
-        } catch (Exception e) { // 아예 다른 소리일 경우 timeout 발생
-            return 0.0;
+            // 백분율 형식으로 변환
+            double score = Math.round(Double.valueOf(testApiResponseDto.getReturn_object().getScore()) / 5 * 100 * 10) / 10.0;
+
+            return (int) score;
+        } catch (Exception e) { // 아예 다른 발음이거나 발음을 하지 않았을 경우 timeout 발생하므로 0점 반환
+            return 0;
         }
     }
 }

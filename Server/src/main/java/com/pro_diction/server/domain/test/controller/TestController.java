@@ -5,6 +5,7 @@ import com.pro_diction.server.domain.test.dto.TestContentResponseDto;
 import com.pro_diction.server.domain.test.dto.TestResponseDto;
 import com.pro_diction.server.domain.test.service.TestService;
 import com.pro_diction.server.global.common.ApiDataResponseDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,17 +23,17 @@ import java.util.List;
 public class TestController {
     private final TestService testService;
 
-    @GetMapping("/study")
-    public ApiDataResponseDto<List<TestContentResponseDto>> getTestStudyList(@RequestParam Integer stage) {
+    @GetMapping("/{categoryId}")
+    public ApiDataResponseDto<List<TestContentResponseDto>> getTestStudyList(@PathVariable @NotNull Integer categoryId) {
 
-        return ApiDataResponseDto.of(testService.getTestStudyList(stage));
+        return ApiDataResponseDto.of(testService.getTestStudyList(categoryId));
     }
 
-    @PostMapping("/diction")
-    public ApiDataResponseDto<TestResponseDto> test(@RequestPart MultipartFile multipartFile,
-                                                    @RequestParam Long id) throws IOException {
+    @PostMapping("/diction/{studyId}")
+    public ApiDataResponseDto<TestResponseDto> test(@RequestPart @NotNull MultipartFile multipartFile,
+                                                    @PathVariable @NotNull Long studyId) throws IOException {
 
-        return ApiDataResponseDto.of(testService.testDiction(multipartFile, id));
+        return ApiDataResponseDto.of(testService.testDiction(multipartFile, studyId));
     }
 
     @PostMapping

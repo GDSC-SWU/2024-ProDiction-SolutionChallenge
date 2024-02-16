@@ -8,7 +8,6 @@ import com.pro_diction.server.domain.study.exception.*;
 import com.pro_diction.server.domain.study.repository.CategoryRepository;
 import com.pro_diction.server.domain.study.repository.StudyRepository;
 import com.pro_diction.server.domain.study.repository.SubCategoryRepository;
-import com.pro_diction.server.global.util.DictionTestUtil;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -23,7 +22,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +31,6 @@ public class StudyServiceImpl implements StudyService {
     private final StudyRepository studyRepository;
     private final CategoryRepository categoryRepository;
     private final SubCategoryRepository subCategoryRepository;
-    private final DictionTestUtil dictionTestUtil;
 
     @Value("${PRODICTION_AI_API_URL}")
     private String PRODICTION_AI_API_URL;
@@ -57,18 +54,20 @@ public class StudyServiceImpl implements StudyService {
         return DetailStudyResponseDto.builder()
                 .studyId(study.getId())
                 .content(study.getContent())
+                .pronunciation(study.getPronunciation())
                 .splitPronunciation(splitPronunciation(study.getPronunciation()))
                 .build();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public StudyResultDto getStudyResult(MultipartFile multipartFile, Long id) throws IOException {
+    public StudyResultDto getStudyResult(MultipartFile multipartFile, Long id) {
         Study study = studyRepository.findById(id).orElseThrow(StudyNotFoundException::new);
-        Double score = dictionTestUtil.test(multipartFile, study.getPronunciation());
         SttResultDto sttResultDto = sttPronunciation(multipartFile);
 
-        return StudyResultDto.toResponse(id, score, sttResultDto.getResult(), sttResultDto.getResult_splited());
+        return StudyResultDto.toResponse(
+                study.getId(), sttResultDto.getResult(), sttResultDto.getResult_splited()
+        );
     }
 
     @Override
@@ -109,8 +108,8 @@ public class StudyServiceImpl implements StudyService {
     private SttResultDto sttPronunciation(MultipartFile file) {
         try {
             SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-            factory.setConnectTimeout(2000);
-            factory.setReadTimeout(2000);
+            factory.setConnectTimeout(10000);
+            factory.setReadTimeout(10000);
             RestTemplate restTemplate = new RestTemplate(factory);
 
             // HTTP 헤더 설정

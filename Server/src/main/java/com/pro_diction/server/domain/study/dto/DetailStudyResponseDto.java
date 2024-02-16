@@ -10,5 +10,6 @@ import lombok.*;
 public class DetailStudyResponseDto {
     private Long studyId;
     private String content;
+    private String pronunciation;
     private String splitPronunciation;
 }
