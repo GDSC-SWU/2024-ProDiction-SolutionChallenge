@@ -54,6 +54,7 @@ public class StudyServiceImpl implements StudyService {
         return DetailStudyResponseDto.builder()
                 .studyId(study.getId())
                 .content(study.getContent())
+                .pronunciation(study.getPronunciation())
                 .splitPronunciation(splitPronunciation(study.getPronunciation()))
                 .build();
     }
