@@ -1,9 +1,11 @@
 package com.pro_diction.server.global.util.filter;
 
+import com.pro_diction.server.domain.member.dto.LoginResponseDto;
 import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.model.ContextUser;
 import com.pro_diction.server.global.exception.GeneralException;
 import com.pro_diction.server.global.util.JwtUtil;
+import com.pro_diction.server.global.util.RedisUtil;
 import com.pro_diction.server.global.util.ResponseUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -22,12 +24,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.Duration;
 
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final ResponseUtil responseUtil;
+    private final RedisUtil redisUtil;
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
@@ -44,9 +48,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         // 토큰 재발급 요청이 올 경우
         if(uri.equals(TOKEN_REFRESH_API_URL)) {
             String refreshToken = jwtUtil.decodeHeader(false, request);
-            Member member = jwtUtil.getMember(refreshToken);
+            Member member = jwtUtil.validateRefreshToken(refreshToken);
+            LoginResponseDto loginResponseDto = jwtUtil.generateTokens(member);
+            redisUtil.setData("ID_" + member.getId(), loginResponseDto.getRefreshToken(), Duration.ofDays(14L).toMillis());
             saveAuthentication(member);
-            responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, jwtUtil.generateTokens(member));
+
+            responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, loginResponseDto);
 
             return;
         }

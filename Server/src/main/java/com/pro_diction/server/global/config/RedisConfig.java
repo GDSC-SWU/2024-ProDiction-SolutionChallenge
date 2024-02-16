@@ -29,11 +29,11 @@ public class RedisConfig {
         redisConfiguration.setPort(port);
         redisConfiguration.setPassword(password);
 
-        return  new LettuceConnectionFactory(redisConfiguration);
+        return new LettuceConnectionFactory(redisConfiguration);
     }
 
     @Bean
-    public RedisTemplate<String, String> redisTemplate() {
+    public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());

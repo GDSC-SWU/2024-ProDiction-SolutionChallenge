@@ -3,6 +3,7 @@ package com.pro_diction.server.global.config;
 import com.pro_diction.server.global.constant.ErrorCode;
 import com.pro_diction.server.global.handler.ExceptionHandlerFilter;
 import com.pro_diction.server.global.util.JwtUtil;
+import com.pro_diction.server.global.util.RedisUtil;
 import com.pro_diction.server.global.util.ResponseUtil;
 import com.pro_diction.server.global.util.filter.JwtAuthenticationProcessingFilter;
 import jakarta.servlet.ServletException;
@@ -32,6 +33,7 @@ import java.io.IOException;
 public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final ResponseUtil responseUtil;
+    private final RedisUtil redisUtil;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -50,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationProcessingFilter(jwtUtil, responseUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationProcessingFilter(jwtUtil, responseUtil, redisUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionHandlerFilter(responseUtil), JwtAuthenticationProcessingFilter.class)
                 .exceptionHandling((exceptionConfig) ->
                         exceptionConfig

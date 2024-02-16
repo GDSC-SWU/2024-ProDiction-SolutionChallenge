@@ -4,9 +4,7 @@ import com.pro_diction.server.domain.member.dto.LoginResponseDto;
 import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
 import com.pro_diction.server.domain.model.TokenClaimVo;
-import com.pro_diction.server.global.exception.auth.AccessTokenRequiredException;
-import com.pro_diction.server.global.exception.auth.InvalidTokenException;
-import com.pro_diction.server.global.exception.auth.RefreshTokenRequiredException;
+import com.pro_diction.server.global.exception.auth.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,6 +26,7 @@ import static io.jsonwebtoken.Jwts.parserBuilder;
 @Component
 public class JwtUtil {
     private final MemberRepository memberRepository;
+    private final RedisUtil redisUtil;
 
     @Value("${jwt.issuer}")
     private String ISSUER;
@@ -82,6 +81,28 @@ public class JwtUtil {
         // member 조회
         return memberRepository.findById(((Number) payloads.get("memberId")).longValue())
                 .orElseThrow((InvalidTokenException::new));
+    }
+
+    public Member validateRefreshToken(String token) throws ExpiredJwtException {
+        // 검증 및 payload 추출
+        Map<String, Object> payloads = parserBuilder()
+                .setSigningKey(getSigninKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        Member member = memberRepository.findById(((Number) payloads.get("memberId")).longValue())
+                .orElseThrow((InvalidTokenException::new));
+
+        String refreshToken = redisUtil.getData("ID_" + member.getId());
+
+        if(refreshToken == null) {
+            throw new LoginRequiredException();
+        }else if(!refreshToken.equals(token)) {
+            throw new AuthorizationFailedException();
+        }
+
+        return member;
     }
 
     // Decode Request
