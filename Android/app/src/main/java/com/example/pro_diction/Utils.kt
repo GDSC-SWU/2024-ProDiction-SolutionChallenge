@@ -19,6 +19,12 @@ class Utils (context: Context) {
     // level
     private var LEVEL = ""
 
+    // member id
+    private var MEMBER_ID: Int = 0
+    
+    // coach mark
+    private var COACH = false
+
 
     fun setAccessToken(value: String) {
         prefsEditor.putString(ACCESS_TOKEN, value).apply()
@@ -73,6 +79,22 @@ class Utils (context: Context) {
 
     fun getLevel() : String {
         return prefs.getString("LEVEL", "").toString()
+    }
+
+    fun setMemberId(id: Int) {
+        prefsEditor.putInt("MEMBER_ID", id)
+    }
+
+    fun getMenberId() : Int {
+        return prefs.getInt("MEMBER_ID", 0).toInt()
+    }
+
+    fun setCoach(coach: Boolean) {
+        prefsEditor.putBoolean("COACH", coach)
+    }
+
+    fun getCoach() : Boolean {
+        return prefs.getBoolean("COACH", false)
     }
     fun clearToken() {
         prefsEditor.clear().apply()

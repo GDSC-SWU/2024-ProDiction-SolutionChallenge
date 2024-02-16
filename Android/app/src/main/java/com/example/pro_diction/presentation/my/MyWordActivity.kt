@@ -1,5 +1,6 @@
 package com.example.pro_diction.presentation.my
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,18 +8,30 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.MyWordDto
 import com.example.pro_diction.data.dto.SentenseDetailDto
+import com.example.pro_diction.data.dto.WordApiDto
+import com.example.pro_diction.data.dto.WordListDto
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
 import com.example.pro_diction.presentation.learn.sentense.SentenseDetailAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MyWordActivity : AppCompatActivity() {
+    var getMyWord = ApiPool.getMyWord
+    var deleteMyWord = ApiPool.deleteMyWord
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_word)
@@ -55,15 +68,37 @@ class MyWordActivity : AppCompatActivity() {
             }
         }
         // recycler view
+        val mywordList: MutableList<WordListDto> = mutableListOf()
+        // 어댑터에 리스트 연결
+        val adapter = MyWordAdapter(mywordList)
         // main 이 뭔지에 따라서 리스트에 넣는 값이 달라짐
         val recyclerview = findViewById<RecyclerView>(R.id.rv_myword)
-        val mywordList: MutableList<MyWordDto> = mutableListOf()
-        mywordList.add(MyWordDto("단어"))
-        mywordList.add(MyWordDto("카카오톡"))
+        if (type != null) {
+            getMyWord.getWord(type.toInt()).enqueue(object: Callback<BaseResponse<List<WordListDto>>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<List<WordListDto>>>,
+                    response: Response<BaseResponse<List<WordListDto>>>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+
+                            response.body()!!.data?.forEach { it ->
+                                mywordList.add(it)
+                            }
+                            recyclerview.adapter = adapter
+                            recyclerview.layoutManager = LinearLayoutManager(this@MyWordActivity)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<List<WordListDto>>>, t: Throwable) {
+                    Log.e("error", t.toString())
+                }
+            })
+        }
 
 
         // 어댑터에 리스트 연결
-        val adapter = MyWordAdapter(mywordList)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = LinearLayoutManager(this@MyWordActivity)
 
@@ -71,8 +106,49 @@ class MyWordActivity : AppCompatActivity() {
         // item 클릭 시 해당 음소 페이지로 연결
         adapter.setOnItemClickListener(object: MyWordAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
-                intent.putExtra("item", mywordList[position].item)
+                intent.putExtra("item", mywordList[position].studyId.toString())
                 startActivity(intent)
+            }
+        })
+
+        adapter.setOnItemLongClickListener(object: MyWordAdapter.OnItemLongClickListener {
+            override fun onItemLongClick(view: View, position: Int) {
+                val builder = AlertDialog.Builder(this@MyWordActivity)
+                builder.setTitle("")
+                    .setMessage("정말 단어를 삭제하시겠습니까?")
+                    .setNegativeButton("취소",
+                        DialogInterface.OnClickListener { dialog, id ->
+
+
+                        })
+
+                    .setPositiveButton("삭제",
+                        DialogInterface.OnClickListener() { dialog, id ->
+                            deleteMyWord.deleteWord(mywordList[position].vocabularyId).enqueue(object: Callback<BaseResponse<WordApiDto>> {
+                                override fun onResponse(
+                                    call: Call<BaseResponse<WordApiDto>>,
+                                    response: Response<BaseResponse<WordApiDto>>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        if (response.body() != null) {
+                                            Log.e("voca id", response.body().toString())
+                                            Log.e("mywordList[position].vocabularyId", mywordList[position].vocabularyId.toString())
+                                            mywordList.removeAt(position)
+                                            adapter.notifyDataSetChanged() // 어댑터에게 데이터 변경을 알림
+                                        }
+                                    }
+                                }
+
+                                override fun onFailure(
+                                    call: Call<BaseResponse<WordApiDto>>,
+                                    t: Throwable
+                                ) {
+                                    Log.e("error", t.toString())
+                                }
+                            })
+
+                        })
+                builder.show()
             }
         })
 
@@ -98,4 +174,5 @@ class MyWordActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }

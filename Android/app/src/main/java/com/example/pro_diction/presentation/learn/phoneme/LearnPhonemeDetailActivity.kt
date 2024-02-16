@@ -9,12 +9,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.pro_diction.MediaRecorderActivity
 import com.example.pro_diction.R
@@ -23,9 +26,15 @@ import com.example.pro_diction.data.AiRetrofitPool
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.StudyItem
+import com.example.pro_diction.data.dto.TestResultDto
+import com.example.pro_diction.data.dto.TestScoreDto
 import com.example.pro_diction.databinding.ActivityLearnPhonemeDetailBinding
+import com.example.pro_diction.presentation.learn.LearnResultActivity
 import com.example.pro_diction.presentation.learn.SearchActivity
 import com.example.pro_diction.presentation.learn.VideoActivity
+import com.example.pro_diction.presentation.onboarding.OnBoarding2_1Activity
+import com.github.squti.androidwaverecorder.RecorderState
+import com.github.squti.androidwaverecorder.WaveRecorder
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -61,7 +70,7 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
     private var permissions: Array<String> = arrayOf(android.Manifest.permission.RECORD_AUDIO)
 
     // test api
-    private val getScoreService = ApiPool.getScore
+    private val postTestResult = ApiPool.postTestResult
 
     // stt syllable
     private val postSttSyllables = AiApiPool.sttSyllables
@@ -69,71 +78,83 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
     // study id api
     var getStudyId = ApiPool.getStudyId
 
+    // audio record
+    private val PERMISSIONS_REQUEST_RECORD_AUDIO = 77
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionToRecordAccepted = if (requestCode == com.example.pro_diction.presentation.learn.phoneme.REQUEST_RECORD_AUDIO_PERMISSION) {
-            grantResults[0] == PackageManager.PERMISSION_GRANTED
-        } else {
-            false
-        }
-        if (!permissionToRecordAccepted) finish()
-    }
+    private lateinit var waveRecorder: WaveRecorder
+    private lateinit var filePath: String
+    private var isRecording = false
+    private var isPaused = false
 
-    private fun onRecord(start: Boolean) = if (start) {
-        startRecording()
-    } else {
-        stopRecording()
-    }
+    var recordExist = false
 
-    private fun startRecording() {
-        recorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            setOutputFile(fileName)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+    lateinit var tv: TextView
 
-            try {
-                prepare()
-            } catch (e: IOException) {
-                Log.e(com.example.pro_diction.presentation.learn.phoneme.LOG_TAG, "prepare() failed")
-            }
 
-            start()
-        }
-    }
-
-    private fun stopRecording() {
-        recorder?.apply {
-            stop()
-            release()
-        }
-        recorder = null
-        postSttSyllables()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
 
+        var recordBtn = findViewById<ImageButton>(R.id.btn_record)
+
+
+        // audio
+        filePath = externalCacheDir?.absolutePath + "/audioFile.wav"
+
+        waveRecorder = WaveRecorder(filePath)
+        waveRecorder.noiseSuppressorActive = true // noise remove
+        //waveRecorder.waveConfig.sampleRate = 44100 // sample rate
+
+        waveRecorder.onStateChangeListener = {
+            when (it) {
+                RecorderState.RECORDING -> startRecording()
+                RecorderState.STOP -> stopRecording()
+                RecorderState.PAUSE -> pauseRecording()
+            }
+        }
+
+        // record button
+        recordBtn.setOnClickListener {
+            if (!isRecording) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.RECORD_AUDIO
+                    )
+                    != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.RECORD_AUDIO),
+                        PERMISSIONS_REQUEST_RECORD_AUDIO
+                    )
+                } else {
+                    waveRecorder.startRecording()
+                }
+            } else {
+                waveRecorder.stopRecording()
+            }
+
+        }
+
         // textview text
         item = intent.getStringExtra("item")
-        val tv = findViewById<TextView>(R.id.textView)
+        tv = findViewById<TextView>(R.id.textView)
         Log.e("item", item.toString())
 
         item?.toInt()?.let {
-            getStudyId.getStudyId(it).enqueue(object: Callback<BaseResponse<StudyItem>>{
+            getStudyId.getStudyId(it).enqueue(object : Callback<BaseResponse<StudyItem>> {
                 override fun onResponse(
                     call: Call<BaseResponse<StudyItem>>,
                     response: Response<BaseResponse<StudyItem>>
                 ) {
                     if (response.isSuccessful) {
                         tv.text = response.body()?.data?.content
-                        Log.e("response.body()?.data?.content", response.body()?.data?.content.toString())
+                        Log.e(
+                            "response.body()?.data?.content",
+                            response.body()?.data?.content.toString()
+                        )
                         Log.e("tv.text", tv.text.toString())
                         splitedItem = response.body()?.data?.splitPronunciation.toString()
                         Log.e("splitedItem", splitedItem)
@@ -141,10 +162,12 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<BaseResponse<StudyItem>>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    Log.e("error", t.toString())
                 }
             })
         }
+
+
 
 
         /*
@@ -190,34 +213,52 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
-        // media record
-        fileName = "${externalCacheDir?.absolutePath}/audiorecordtest.wav"
-        Log.e("filename", fileName)
-        var mStartRecording = true
+    }
+    fun uploadFile() {
+        val file = File(filePath)
+        val requestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
+        val fileToUpload = MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
+        val filename = RequestBody.create("text/plain".toMediaTypeOrNull(), file.name)
 
-        ActivityCompat.requestPermissions(this, permissions,
-            com.example.pro_diction.presentation.learn.phoneme.REQUEST_RECORD_AUDIO_PERMISSION
-        )
+        item?.let { postTestResult.postResult(it.toInt(),fileToUpload).enqueue(object : Callback<BaseResponse<TestResultDto>> {
+            override fun onResponse(
+                call: Call<BaseResponse<TestResultDto>>,
+                response: Response<BaseResponse<TestResultDto>>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        if (response.body()!!.data?.sttResult.toString() == "") {
+                            Toast.makeText(this@LearnPhonemeDetailActivity, "Please record again.", Toast.LENGTH_SHORT).show()
+                        }
+                        else if (response.body()!!.data?.sttResult.toString() == "too fast"){
+                            Toast.makeText(this@LearnPhonemeDetailActivity, "Please pronounce syllable by syllable slowly and clearly.", Toast.LENGTH_SHORT).show()
+                        }
+                        else if('-' in response.body()!!.data?.sttResult.toString()) {
+                            Toast.makeText(this@LearnPhonemeDetailActivity, "Please pronounce syllable by syllable slowly and clearly.", Toast.LENGTH_SHORT).show()
+                        }
+                        else if (response.body()!!.data?.sttResult.toString().contains("Read timed out")) {
+                            Toast.makeText(this@LearnPhonemeDetailActivity, "Timed out.", Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            val resultIntent = Intent(this@LearnPhonemeDetailActivity, LearnResultActivity::class.java)
+                            resultIntent.putExtra("score", response.body()!!.data?.score.toString())
+                            resultIntent.putExtra("sttResult", response.body()!!.data?.sttResult.toString())
+                            resultIntent.putExtra("splitSttResult", response.body()!!.data?.splitSttResult.toString())
+                            resultIntent.putExtra("studyId", response.body()!!.data?.studyId.toString())
+                            resultIntent.putExtra("name", tv.text)
+                            resultIntent.putExtra("splitedItem", splitedItem.toString())
+                            startActivity(resultIntent)
+                        }
 
-        // record
-        var btnRecord = findViewById<ImageButton>(R.id.btn_record)
-
-        btnRecord.setOnClickListener {
-
-            onRecord(mStartRecording)
-            when (mStartRecording) {
-                true -> {
-                    btnRecord.setImageResource(R.drawable.btn_listening)
-                }
-                false -> {
-                    btnRecord.setImageResource(R.drawable.btn_listen)
+                    }
                 }
             }
-            mStartRecording = !mStartRecording
 
+            override fun onFailure(call: Call<BaseResponse<TestResultDto>>, t: Throwable) {
+                Log.e("error", t.toString())
+            }
+        })
         }
-
-
     }
 
     fun postSttSyllables() {
@@ -251,6 +292,54 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun startRecording() {
+        //Log.d(OnBoarding2_1Activity.TAG, waveRecorder.audioSessionId.toString())
+        isRecording = true
+        isPaused = false
+
+        findViewById<TextView>(R.id.tv_learn_record_before).visibility = View.INVISIBLE
+        findViewById<ImageButton>(R.id.btn_record).setImageDrawable(resources.getDrawable(R.drawable.btn_listening))
+
+        recordExist = true
+    }
+
+    private fun stopRecording() {
+        isRecording = false
+        isPaused = false
+
+        findViewById<ImageButton>(R.id.btn_record).setImageDrawable(resources.getDrawable(R.drawable.btn_listen))
+        Toast.makeText(this, "Recording completed", Toast.LENGTH_SHORT).show()
+
+        if (isRecording == false) {
+            if (recordExist == true) {
+                uploadFile()
+            }
+        }
+    }
+
+    private fun pauseRecording() {
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSIONS_REQUEST_RECORD_AUDIO -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    waveRecorder.startRecording()
+                }
+                return
+            }
+
+            else -> {
+            }
+        }
+    }
+
+
     // 툴바 메뉴 버튼 설정
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -273,11 +362,12 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /*
     override fun onStop() {
         super.onStop()
         recorder?.release()
         recorder = null
         player?.release()
         player = null
-    }
+    }*/
 }

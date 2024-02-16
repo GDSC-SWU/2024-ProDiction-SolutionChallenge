@@ -29,6 +29,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.my.AgeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.my.LanguageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity2"
             android:exported="false" />
         <activity
@@ -114,8 +120,7 @@
         </activity>
         <activity
             android:name=".presentation.comm.CommFragment"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

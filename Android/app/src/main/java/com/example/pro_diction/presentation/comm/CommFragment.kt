@@ -46,6 +46,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pro_diction.App
 import com.example.pro_diction.R
 import com.example.pro_diction.data.AiApiPool
 import com.example.pro_diction.databinding.FragmentCommBinding
@@ -110,6 +111,9 @@ class CommFragment : Fragment(),
     // ai api
     var joinJamos = AiApiPool.joinJamos
     var splitJamos = AiApiPool.splitJamos
+
+    // coach done
+    var coachDone = App.prefs.getCoach()
 
     fun getKoreanLetter(str: String): String {
         val koreanMap = mapOf(
@@ -240,11 +244,6 @@ class CommFragment : Fragment(),
         val rootLayout = fragmentCommBinding.root
         fragmentCommBinding.editCommTts.visibility = View.VISIBLE
 
-        // 화면 클릭 시 키보드 숨기기
-        rootLayout.setOnClickListener {
-            hideKeyboard()
-        }
-
         // permission
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -267,12 +266,62 @@ class CommFragment : Fragment(),
             .setPermissions(*REQUIRED_PERMISSIONS)
             .check()
 
+
+        // coach mark
+        if (coachDone == false) {
+            fragmentCommBinding.coach1.visibility = View.VISIBLE
+            fragmentCommBinding.coach1.isClickable = true
+            fragmentCommBinding.editCommTts.visibility = View.INVISIBLE
+            fragmentCommBinding.ivCommProfile.visibility = View.INVISIBLE
+            fragmentCommBinding.ivCommStt.visibility = View.INVISIBLE
+
+        }
+        else {
+            fragmentCommBinding.coach1.visibility = View.GONE
+            fragmentCommBinding.coach1.isClickable = false
+            fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommProfile.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommStt.visibility = View.VISIBLE
+        }
+        fragmentCommBinding.coach1.setOnClickListener {
+            fragmentCommBinding.coach1.visibility = View.GONE
+            fragmentCommBinding.coach2.visibility = View.VISIBLE
+            fragmentCommBinding.coach2.isClickable = true
+        }
+        fragmentCommBinding.coach2.setOnClickListener {
+            fragmentCommBinding.coach2.visibility = View.GONE
+            fragmentCommBinding.coach3.visibility = View.VISIBLE
+            fragmentCommBinding.coach3.isClickable = true
+        }
+        fragmentCommBinding.coach3.setOnClickListener {
+            fragmentCommBinding.coach3.visibility = View.GONE
+            fragmentCommBinding.coach4.visibility = View.VISIBLE
+            fragmentCommBinding.coach4.isClickable = true
+        }
+        fragmentCommBinding.coach4.setOnClickListener {
+            fragmentCommBinding.coach4.visibility = View.GONE
+            coachDone = true
+            App.prefs.setCoach(coachDone)
+            fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommProfile.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommStt.visibility = View.VISIBLE
+        }
+
+        // 화면 클릭 시 키보드 숨기기
+        rootLayout.setOnClickListener {
+            hideKeyboard()
+        }
+
+
+
         // stt
         fragmentCommBinding.btnCommStt.setOnClickListener {
             startVoiceRecording()
             fragmentCommBinding.tvCommStt.text = recodeStr
+
         }
         fragmentCommBinding.tvCommStt.text = recodeStr
+
 
         // tts
         initTTS()

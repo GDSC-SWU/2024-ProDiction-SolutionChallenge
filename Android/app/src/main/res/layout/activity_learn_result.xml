@@ -18,13 +18,13 @@
         android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="The accuracy of pronunciation is"
+        tools:text=""
         android:paddingHorizontal="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tb_phoneme"
         android:layout_marginTop="30dp"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="@color/font"
         />
 
@@ -45,7 +45,7 @@
     <ImageView
         android:id="@+id/iv_your_video1"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         android:layout_marginTop="15dp"
         android:scaleType="fitCenter"
         android:src="@drawable/btn_video1"
@@ -56,7 +56,7 @@
     <ImageView
         android:id="@+id/iv_your_video2"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         app:layout_constraintStart_toEndOf="@id/iv_your_video1"
         app:layout_constraintTop_toTopOf="@+id/iv_your_video1"
         app:layout_constraintBottom_toBottomOf="@+id/iv_your_video1"
@@ -65,13 +65,14 @@
         android:scaleType="fitCenter"/>
 
     <TextView
+        android:id="@+id/tv_your_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_your_video1"
         app:layout_constraintTop_toBottomOf="@+id/iv_your_video1"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        tools:text="[    힐랑   ]"
+        tools:text="[     힐랑     ]"
         android:textSize="12sp"
         android:textColor="@color/black"/>
 
@@ -79,7 +80,7 @@
         android:id="@+id/tv_correct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="30dp"
         android:text="@string/correct_pron"
         android:textColor="@color/black"
         android:textSize="13sp"
@@ -91,7 +92,7 @@
     <ImageView
         android:id="@+id/iv_correct_video1"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         android:layout_marginTop="15dp"
         android:scaleType="fitCenter"
         android:src="@drawable/btn_video1"
@@ -102,7 +103,7 @@
     <ImageView
         android:id="@+id/iv_correct_video2"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         app:layout_constraintStart_toEndOf="@id/iv_correct_video1"
         app:layout_constraintTop_toTopOf="@+id/iv_correct_video1"
         app:layout_constraintBottom_toBottomOf="@+id/iv_correct_video1"
@@ -125,22 +126,24 @@
 
     <TextView
         android:id="@+id/tv_correct_result"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/tv_c"
         app:layout_constraintTop_toBottomOf="@+id/iv_correct_video1"
         android:layout_marginStart="3dp"
         android:layout_marginTop="15dp"
-        tools:text="[    힐링   ]"
+        tools:text="[    힐링    ]"
         android:textSize="12sp"
         android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/btn_retest"
         android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:text="Re"
+        android:layout_height="33dp"
+        android:text="@string/repro"
         android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="normal"
         android:background="@drawable/bg_background_round_on"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_correct_result"
@@ -153,9 +156,11 @@
     <Button
         android:id="@+id/btn_add"
         android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:text="Add"
+        android:layout_height="33dp"
+        android:text="@string/add"
         android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="normal"
         android:background="@drawable/bg_background_round_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_correct_result"

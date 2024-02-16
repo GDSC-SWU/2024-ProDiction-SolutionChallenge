@@ -41,12 +41,19 @@ class SentenseAdapter (private val dataList: MutableList<CategoryResponseDto>) :
     }
 
     inner class SentenseViewHolder(val binding: SentenseItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        var icSentense : TextView = binding.icSentense
         var tvSentenseMain : TextView = binding.tvSentenseMain
         var btnSentense1: Button = binding.btnSentense1
         var btnSentense2: Button = binding.btnSentense2
         var btnRight: ImageButton = binding.btnSentenseRight
 
         init {
+            binding.icSentense.setOnClickListener{
+                val pos = adapterPosition
+                if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
+                    itemClickListener.onItemClick(binding.btnSentenseRight, pos)
+                }
+            }
             binding.btnSentenseRight.setOnClickListener{
                 Log.e("btnSentenseRight", "true")
                 val pos = adapterPosition

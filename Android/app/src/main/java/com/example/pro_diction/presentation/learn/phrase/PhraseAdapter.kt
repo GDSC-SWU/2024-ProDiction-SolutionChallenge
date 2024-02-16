@@ -47,6 +47,12 @@ class PhraseAdapter (private val dataList: MutableList<CategoryResponseDto>) :
         var btnRight: ImageButton = binding.btnPhraseRight
 
         init {
+            binding.icPhrase.setOnClickListener {
+                val pos = adapterPosition
+                if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
+                    itemClickListener.onItemClick(binding.btnPhraseRight, pos)
+                }
+            }
             binding.btnPhraseRight.setOnClickListener{
                 Log.e("btnPhraseRight", "true")
                 val pos = adapterPosition

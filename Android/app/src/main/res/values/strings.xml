@@ -3,8 +3,7 @@
     <string name="SERVER_CLIENT_ID">1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com</string>
     <string name="sign_in">Continue with Google</string>
     <string name="login_text1">For your proper diction</string>
-    <string name="login_text2">바름 [Pro - Diction]</string>
-    <string name="BASE_URL">aaaaa</string>
+    <string name="login_text2">Pro - Diction</string>
     <string name="onboarding_1_title">Please enter your age.</string>
     <string name="onboarding_1_sub">recommendations for frequently used words to make learning more fun!</string>
     <string name="onboarding_1_btn">Next</string>
@@ -26,25 +25,41 @@
     <string name="consonant">Consonant</string>
     <string name="vowels">Vowels</string>
     <string name="syllable_sub">Change your vowels</string>
-    <string name="retest"><u>레벨 테스트 하러 가기></u></string>
-    <string name="word_list">단어장</string>
-    <string name="support">지원</string>
-    <string name="center">107 손말이음센터</string>
-    <string name="language_setting">언어 설정</string>
-    <string name="my">개인정보</string>
-    <string name="logout">로그아웃</string>
-    <string name="delete_account">회원 탈퇴</string>
-    <string name="now">현재</string>
-    <string name="level">단계입니다.</string>
+    <string name="retest"><u>Take the level test></u></string>
+    <string name="word_list">Vocabulary book</string>
+    <string name="support">Support</string>
+    <string name="center">107 Hand-rolling Center</string>
+    <string name="language_setting">Language</string>
+    <string name="my">Privacy</string>
+    <string name="logout">Logout</string>
+    <string name="delete_account">Withdrawal</string>
+    <string name="now">You are</string>
+    <string name="level">on</string>
     <string name="media_url_mp4_v1">https://storage.googleapis.com/prodiction-bucket/diction_video_v1/</string>
     <string name="media_url_mp4_v2">https://storage.googleapis.com/prodiction-bucket/diction_video_v2/</string>
-    <string name="center_sub">전화 이용이 어려운 청각 또는 언어장애인이 자유롭게 전화를 통한 의사소통을 가능하게 해 주는 실시간 통신중계서비스 입니다.</string>
-    <string name="call">전화 연결하기</string>
-    <string name="your_pron">Your pronunciation video</string>
-    <string name="correct_pron">Correct pronunciation video</string>
+    <string name="center_sub">This is a real-time communication relay service that allows hearing or speech impaired people who have difficulty using the phone to communicate freely over the phone.</string>
+    <string name="call">Connect the phone</string>
+    <string name="your_pron">| Your pronunciation video</string>
+    <string name="correct_pron">| Correct pronunciation video</string>
     <string name="view_level">View Level</string>
     <string name="you_are">You are on the</string>
     <string name="next_level">Next Level</string>
+    <string name="kr">Korean</string>
+    <string name="en">English(US)</string>
+    <string name="modify">Modify</string>
+    <string name="change_age">Enter your new age and click the save button to update the information.</string>
+    <string name="save">save</string>
+    <string name="repro">Re-Pronounce</string>
+    <string name="add">Add Voca</string>
+    <string name="coach_0">➊ Record the sign language toward the camera</string>
+    <string name="coach_1">➋ Listen to the recognized sign language by voice</string>
+    <string name="coach_2">➌ Press the microphone button\nand convert what the other person says\ninto text</string>
+    <string name="coach_3">➍ Check the sign language manual</string>
+    <string name="coach_4">➎ Convey speech through the keyboard</string>
+
+
+
+    <!--yet-->
 
     <!-- gesture -->
 
