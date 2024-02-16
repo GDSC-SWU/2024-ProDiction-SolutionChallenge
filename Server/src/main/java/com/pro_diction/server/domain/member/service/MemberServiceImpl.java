@@ -9,6 +9,7 @@ import com.pro_diction.server.domain.member.repository.MemberRepository;
 import com.pro_diction.server.domain.test.entity.Test;
 import com.pro_diction.server.domain.model.Stage;
 import com.pro_diction.server.domain.test.repository.TestRepository;
+import com.pro_diction.server.global.common.ApiResponseDto;
 import com.pro_diction.server.global.exception.GeneralException;
 import com.pro_diction.server.global.util.GoogleOAuthUtil;
 import com.pro_diction.server.global.util.JwtUtil;
@@ -45,6 +46,14 @@ public class MemberServiceImpl implements MemberService {
         redisUtil.setData("ID_" + member.getId(), loginResponseDto.getRefreshToken(), Duration.ofDays(14L).toMillis());
 
         responseUtil.setDataResponse(response, HttpServletResponse.SC_CREATED, loginResponseDto);
+    }
+
+    @Override
+    @Transactional
+    public ApiResponseDto logout(Member member) {
+        redisUtil.deleteData("ID_" + member.getId());
+
+        return ApiResponseDto.of(200, "Successful Logout!");
     }
 
     @Override
