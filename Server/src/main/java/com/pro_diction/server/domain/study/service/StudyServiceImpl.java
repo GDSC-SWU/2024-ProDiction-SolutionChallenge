@@ -108,8 +108,8 @@ public class StudyServiceImpl implements StudyService {
     private SttResultDto sttPronunciation(MultipartFile file) {
         try {
             SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-            factory.setConnectTimeout(2000);
-            factory.setReadTimeout(2000);
+            factory.setConnectTimeout(10000);
+            factory.setReadTimeout(10000);
             RestTemplate restTemplate = new RestTemplate(factory);
 
             // HTTP 헤더 설정
