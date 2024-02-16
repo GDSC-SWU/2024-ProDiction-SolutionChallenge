@@ -9,5 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 public class TestResponseDto {
     private Long studyId;
-    private Double score;
+    private Integer score;
 }

@@ -43,7 +43,7 @@ public class TestServiceImpl implements TestService {
     @Override
     public TestResponseDto testDiction(MultipartFile multipartFile, Long id) throws IOException {
         Study study = studyRepository.findById(id).orElseThrow(StudyNotFoundException::new);
-        Double score = dictionTestUtil.test(multipartFile, study.getPronunciation());
+        Integer score = dictionTestUtil.test(multipartFile, study.getPronunciation());
 
         return TestResponseDto.builder()
                 .studyId(id)
