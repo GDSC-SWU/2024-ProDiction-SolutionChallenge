@@ -53,5 +53,6 @@
         android:layout_marginHorizontal="30dp"
         android:textColor="@color/white"
         android:textSize="17sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textAllCaps="false"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

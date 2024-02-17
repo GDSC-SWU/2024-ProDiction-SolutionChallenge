@@ -1,5 +1,6 @@
 package com.example.pro_diction.data
 
+import com.example.pro_diction.data.api.JoinJamosApiService
 import com.example.pro_diction.data.api.SplitJamosApiService
 import com.example.pro_diction.data.api.SttSyllablesApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -11,6 +12,7 @@ import retrofit2.create
 object AiApiPool {
     val splitJamos = AiRetrofitPool.retrofit.create(SplitJamosApiService::class.java)
     val sttSyllables = AiRetrofitPool.retrofit.create(SttSyllablesApiService::class.java)
+    val joinJamos = AiRetrofitPool.retrofit.create(JoinJamosApiService::class.java)
 }
 
 object AiRetrofitPool {

@@ -1,5 +1,6 @@
 package com.example.pro_diction
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +11,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.example.pro_diction.data.ApiPool
+import com.example.pro_diction.data.BaseResponse
+import com.example.pro_diction.data.dto.MyPageDto
 import com.example.pro_diction.databinding.FragmentMyBinding
 import com.example.pro_diction.presentation.auth.MainLoginActivity
+import com.example.pro_diction.presentation.my.AgeActivity
 import com.example.pro_diction.presentation.my.CallActivity
+import com.example.pro_diction.presentation.my.LanguageActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
 import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +50,10 @@ class MyFragment : Fragment() {
 
     private lateinit var binding: FragmentMyBinding
     var googleSignInClient: GoogleSignInClient?= null
+    var getMyPage = ApiPool.getMyPage
 
+    lateinit var myInflater : View
+    lateinit var ageIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,10 +85,10 @@ class MyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val myInflater = inflater.inflate(R.layout.fragment_my, container, false)
+        myInflater = inflater.inflate(R.layout.fragment_my, container, false)
 
         // 닉네임 nick name
-        myInflater.findViewById<TextView>(R.id.tv_nick).text = nick
+        //myInflater.findViewById<TextView>(R.id.tv_nick).text = nick
 
         var tvLevel = myInflater.findViewById<TextView>(R.id.tv_my_level)
         // level
@@ -132,6 +147,21 @@ class MyFragment : Fragment() {
             startActivity(callIntent)
         }
 
+        val languageIntent = Intent(this.context, LanguageActivity::class.java)
+        myInflater.findViewById<TextView>(R.id.tv_setting).setOnClickListener {
+            startActivity(languageIntent)
+        }
+        myInflater.findViewById<ImageView>(R.id.iv_setting).setOnClickListener {
+            startActivity(languageIntent)
+        }
+
+        // retest
+        val retestIntent = Intent(this.context, OnBoarding1Activity::class.java)
+        myInflater.findViewById<TextView>(R.id.tv_retest).setOnClickListener {
+            startActivity(retestIntent)
+        }
+
+
         // test 온보딩
         val onIntent = Intent(this.context, OnBoarding1Activity::class.java)
         myInflater.findViewById<Button>(R.id.btn_t).setOnClickListener {
@@ -156,8 +186,45 @@ class MyFragment : Fragment() {
             startActivity(recordTIntent)
         }
 
+        ageIntent = Intent(this.context, AgeActivity::class.java)
+        refreshFragment()
+
+        myInflater.findViewById<TextView>(R.id.tv_personal).setOnClickListener {
+            startActivity(ageIntent)
+        }
         return myInflater
     }
+
+    fun refreshFragment() {
+        getMyPage.getMypage().enqueue(object: Callback<BaseResponse<MyPageDto>> {
+            override fun onResponse(
+                call: Call<BaseResponse<MyPageDto>>,
+                response: Response<BaseResponse<MyPageDto>>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        myInflater.findViewById<TextView>(R.id.tv_nick).text =
+                            response.body()!!.data?.nickname ?: ""
+
+                        if (response.body()!!.data?.age != null) {
+                            ageIntent.putExtra("age", response.body()!!.data?.age.toString())
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse<MyPageDto>>, t: Throwable) {
+                Log.e("error", t.toString())
+            }
+        })
+    }
+    override fun onResume() {
+        super.onResume()
+        // 프래그먼트를 재로딩하는 작업 수행
+        refreshFragment()
+        //Locale.setDefault(this.getSharedPreferences("Settings", Context.MODE_PRIVATE))
+    }
+
 
     companion object {
         /**
@@ -170,7 +237,7 @@ class MyFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             MyFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)

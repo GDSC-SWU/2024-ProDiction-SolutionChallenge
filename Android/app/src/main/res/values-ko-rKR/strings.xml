@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pro-Diction</string>
+    <string name="SERVER_CLIENT_ID">1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com</string>
+    <string name="sign_in">구글로 로그인하기</string>
+    <string name="login_text1">당신의 좋은 발음을 위해</string>
+    <string name="login_text2">Pro - Diction</string>
+    <string name="onboarding_1_title">나이를 입력해주세요</string>
+    <string name="onboarding_1_sub">자주 사용하는 단어를 추천해 더 ​​재미있게 학습할 수 있어요!</string>
+    <string name="onboarding_1_btn">다음</string>
+    <string name="skip"><u>건너뛰기</u></string>
+    <string name="onboarding_2_title">실력테스트</string>
+    <string name="onboarding_2_sub">테스트에 응시하고 알맞은 레벨을 추천받아 보세요!</string>
+    <string name="onboarding_2_btn">테스트 응시하기</string>
+    <string name="onboarding_2_1_btn_text">아이콘을 누른 후, 읽으세요!</string>
+    <string name="onboarding_2_1_btn_finish">레벨 확인하기</string>
+    <string name="onboarding_finish">결과</string>
+    <string name="onboarding_finish_btn">시작하기</string>
+    <string name="learn_sub">알맞은 레벨에서 학습해보세요!</string>
+    <string name="learn_search">발음 검색</string>
+    <string name="learn_1">음소</string>
+    <string name="learn_2">음절</string>
+    <string name="learn_3">단어</string>
+    <string name="learn_4">구</string>
+    <string name="learn_5">문장</string>
+    <string name="consonant">자음</string>
+    <string name="vowels">모음</string>
+    <string name="syllable_sub">모음을 바꿔보세요</string>
+    <string name="retest"><u>레벨테스트 하러 가기></u></string>
+    <string name="word_list">단어장</string>
+    <string name="support">지원</string>
+    <string name="center">107 손말이음센터</string>
+    <string name="language_setting">언어설정</string>
+    <string name="my">개인정보</string>
+    <string name="logout">로그아웃</string>
+    <string name="delete_account">회원 탈퇴</string>
+    <string name="now">현재</string>
+    <string name="level">"단계입니다. "</string>
+    <string name="media_url_mp4_v1">https://storage.googleapis.com/prodiction-bucket/diction_video_v1/</string>
+    <string name="media_url_mp4_v2">https://storage.googleapis.com/prodiction-bucket/diction_video_v2/</string>
+    <string name="center_sub">전화 이용이 어려운 청각 또는 언어장애인이 자유롭게 전화를 통한 의사소통을 가능하게 해 주는 실시간 통신중계서비스 입니다.</string>
+    <string name="call">전화 연결하기</string>
+    <string name="kr">한국어</string>
+    <string name="en">영어</string>
+    <string name="modify">개인정보 수정</string>
+    <string name="change_age">새로운 나이를 입력하고 저장 버튼을 저장하세요.</string>
+    <string name="save">저장</string>
+    <string name="repro">다시 연습하기</string>
+    <string name="add">단어장에 추가하기</string>
+
+
+
+
+
+    <string name="your_pron">| 당신의 발음 영상</string>
+    <string name="correct_pron">| 올바른 발음 영상</string>
+    <string name="view_level">레벨 보기</string>
+    <string name="you_are">당신의 레벨은</string>
+    <!-- not yet -->
+    <string name="next_level">다음 단계</string>
+
+    <string name="coach_0">➊ 카메라가 수어를 인식합니다</string>
+    <string name="coach_1">➋ 인식된 수어를 음성으로 들어보세요!</string>
+    <string name="coach_2">➌ 마이크 버튼을 눌러,\n상대방의 말을 텍스트로 변환할 수 있어요</string>
+    <string name="coach_3">➍ 지화 설명서를\n확인할 수 있어요</string>
+    <string name="coach_4">➎ 수화 인식이 원활하지 않을 경우,\n자판을 통해 말을 전달할 수 있어요</string>
+    <string name="etc">기타</string>
+
+
+    <string name="media_pipe">MediaPipe</string>
+
+    <string name="alt_bottom_sheet_chevron">Bottom sheet expandable indicator</string>
+
+    <string name="alt_bottom_sheet_max_results_button_minus">Decreasing
+        maximum recognized results button</string>
+    <string name="alt_bottom_sheet_max_results_button_plus">Increasing maximum recognized results
+        button</string>
+    <string name="alt_bottom_sheet_threshold_button_minus">Decreasing
+        threshold of recognized hand gesture results button</string>
+    <string name="alt_bottom_sheet_threshold_button_plus">Increasing
+        threshold of recognized hand gesture results button</string>
+    <string name="alt_bottom_sheet_thread_button_minus">Decrease the number of threads used</string>
+    <string name="alt_bottom_sheet_thread_button_plus">Increase the number of threads used</string>
+    <string name="menu_camera">Camera</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="tv_gallery_placeholder">Click + to add an image or a video
+        to begin running the gesture recognizer.</string>
+
+    <string name="label_inference_time">Inference Time</string>
+    <string name="label_fps">Frames per Second</string>
+    <string name="label_hand_detection_confidence_threshold">Detection
+        Threshold</string>
+    <string name="label_hand_tracking_confidence_threshold">Tracking
+        Threshold</string>
+    <string name="label_hand_presence_confidence_threshold">Presence
+        Threshold</string>
+    <string name="label_delegate">Delegate</string>
+
+    <string-array name="delegate_spinner_titles">
+        <item>CPU</item>
+        <item>GPU</item>
+    </string-array>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

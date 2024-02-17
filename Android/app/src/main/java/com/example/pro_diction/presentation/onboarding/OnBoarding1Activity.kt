@@ -23,6 +23,7 @@ class OnBoarding1Activity : AppCompatActivity() {
     lateinit var btnNext: Button
     lateinit var btnSkip: TextView
     private val patchAgeService = ApiPool.patchAge
+    private val getMyPage = ApiPool.getMyPage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,8 @@ class OnBoarding1Activity : AppCompatActivity() {
         btnNext.setBackgroundResource(R.drawable.bg_background_round)
         btnNext.setTextColor(Color.parseColor("#B9B9B9"))
         btnNext.isClickable = false
+
+        //getMyPage.getMypage().enqueue()
 
         addOnBackPressedCallback()
 

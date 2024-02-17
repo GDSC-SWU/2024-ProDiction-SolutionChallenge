@@ -134,6 +134,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
         })
 
         // record button
+        waveRecorder.noiseSuppressorActive = true
         recordBtn.setOnClickListener {
             if (!isRecording) {
                 if (ContextCompat.checkSelfPermission(
@@ -156,7 +157,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
 
         }
 
-        waveRecorder.noiseSuppressorActive = true
+
 
         btnNext.setOnClickListener {
             if (isRecording == false) {
@@ -190,7 +191,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
 
                                 // total score
                                 total = testScoreList[0] + testScoreList[1] + testScoreList[2]
-                                if (total >= 60.0) {
+                                if (total >= 210.0) {
                                     stage++
                                     done = false
                                 }

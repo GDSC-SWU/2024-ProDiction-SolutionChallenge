@@ -45,6 +45,12 @@ class WordAdapter (private val dataList: MutableList<CategoryResponseDto>) :
         var btnRight: ImageButton = binding.btnWordRight
 
         init {
+            binding.icWord.setOnClickListener {
+                val pos = adapterPosition
+                if(pos != RecyclerView.NO_POSITION && itemClickListener != null) {
+                    itemClickListener.onItemClick(binding.btnWordRight, pos)
+                }
+            }
             binding.btnWordRight.setOnClickListener{
                 Log.e("btnWordRight", "true")
                 val pos = adapterPosition

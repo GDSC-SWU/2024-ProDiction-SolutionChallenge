@@ -24,6 +24,8 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -37,16 +39,26 @@ import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsClient.getPackageName
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pro_diction.App
 import com.example.pro_diction.R
+import com.example.pro_diction.data.AiApiPool
+import com.example.pro_diction.data.dto.SignDto
 import com.example.pro_diction.databinding.FragmentCommBinding
+import com.google.android.play.integrity.internal.t
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -93,6 +105,85 @@ class CommFragment : Fragment(),
     private lateinit var tts: TextToSpeech
     var isFirst = true
 
+    // ai/ml
+    var recogList: MutableList<String> = mutableListOf()
+    var lastStr = ""
+    var textList: MutableList<String> = mutableListOf()
+
+    // ai api
+    var joinJamos = AiApiPool.joinJamos
+    var splitJamos = AiApiPool.splitJamos
+
+    // coach done
+    var coachDone = App.prefs.getCoach()
+
+    fun getKoreanLetter(str: String): String {
+        val koreanMap = mapOf(
+            "giyeok" to "ㄱ",
+            "nieun" to "ㄴ",
+            "digeut" to "ㄷ",
+            "rieul" to "ㄹ",
+            "mieum" to "ㅁ",
+            "bieup" to "ㅂ",
+            "siot" to "ㅅ",
+            "ieung" to "ㅇ",
+            "jieut" to "ㅈ",
+            "chieut" to "ㅊ",
+            "kieuk" to "ㅋ",
+            "tieut" to "ㅌ",
+            "pieup" to "ㅍ",
+            "hieut" to "ㅎ",
+            "a" to "ㅏ",
+            "ya" to "ㅑ",
+            "eo" to "ㅓ",
+            "yeo" to "ㅕ",
+            "o" to "ㅗ",
+            "yo" to "ㅛ",
+            "u" to "ㅜ",
+            "yu" to "ㅠ",
+            "eu" to "ㅡ",
+            "i" to "ㅣ",
+            "ae" to "ㅐ",
+            "yae" to "ㅒ",
+            "e" to "ㅔ",
+            "ye" to "ㅖ",
+            "oe" to "ㅚ",
+            "wi" to "ㅟ",
+            "ui" to "ㅢ",
+            "add" to "add",
+            "space" to "space",
+            "clear_one" to "clear_one",
+            "clear_all" to "clear_all"
+        )
+
+        return koreanMap[str] ?: ""
+    }
+
+    fun addJa (s1: String, s2: String) : String {
+        return when {
+            s1 == "ㄱ" && s2 == "ㄱ" -> "ㄲ"
+            s1 == "ㄷ" && s2 == "ㄷ" -> "ㄸ"
+            s1 == "ㅂ" && s2 == "ㅂ" -> "ㅃ"
+            s1 == "ㅅ" && s2 == "ㅅ" -> "ㅆ"
+            s1 == "ㅈ" && s2 == "ㅈ" -> "ㅉ"
+            s1 == "ㅅ" && s2 == "ㄱ" -> "ㄳ"
+            s1 == "ㅈ" && s2 == "ㄴ" -> "ㄵ"
+            s1 == "ㅎ" && s2 == "ㄴ" -> "ㄶ"
+            s1 == "ㄱ" && s2 == "ㄹ" -> "ㄺ"
+            s1 == "ㅁ" && s2 == "ㄹ" -> "ㄻ"
+            s1 == "ㅂ" && s2 == "ㄹ" -> "ㄼ"
+            s1 == "ㅅ" && s2 == "ㄹ" -> "ㄽ"
+            s1 == "ㅌ" && s2 == "ㄹ" -> "ㄾ"
+            s1 == "ㅍ" && s2 == "ㄹ" -> "ㄿ"
+            s1 == "ㅎ" && s2 == "ㄹ" -> "ㅀ"
+            s1 == "ㅅ" && s2 == "ㅂ" -> "ㅄ"
+            s1 == "ㅏ" && s2 == "ㅗ" -> "ㅘ"
+            s1 == "ㅐ" && s2 == "ㅗ" -> "ㅙ"
+            s1 == "ㅓ" && s2 == "ㅜ" -> "ㅝ"
+            s1 == "ㅔ" && s2 == "ㅜ" -> "ㅞ"
+            else -> " " // 처리하지 않은 경우 빈 문자 반환
+        }
+    }
     var recodeStr: String = ""
         set(value) {
             field = value
@@ -152,6 +243,10 @@ class CommFragment : Fragment(),
         _fragmentCommBinding =
             FragmentCommBinding.inflate(inflater, container, false)
 
+        val rootLayout = fragmentCommBinding.root
+        fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+        fragmentCommBinding.signLanguage.visibility = View.INVISIBLE
+
         // permission
         val permissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -174,21 +269,196 @@ class CommFragment : Fragment(),
             .setPermissions(*REQUIRED_PERMISSIONS)
             .check()
 
+
+        // coach mark
+        if (coachDone == false) {
+            fragmentCommBinding.coach1.visibility = View.VISIBLE
+            fragmentCommBinding.coach1.isClickable = true
+            fragmentCommBinding.editCommTts.visibility = View.INVISIBLE
+            fragmentCommBinding.ivCommProfile.visibility = View.INVISIBLE
+            fragmentCommBinding.ivCommStt.visibility = View.INVISIBLE
+
+        }
+        else {
+            fragmentCommBinding.coach1.visibility = View.GONE
+            fragmentCommBinding.coach1.isClickable = false
+            fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommProfile.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommStt.visibility = View.VISIBLE
+        }
+        fragmentCommBinding.coach1.setOnClickListener {
+            fragmentCommBinding.coach1.visibility = View.GONE
+            fragmentCommBinding.coach2.visibility = View.VISIBLE
+            fragmentCommBinding.coach2.isClickable = true
+        }
+        fragmentCommBinding.coach2.setOnClickListener {
+            fragmentCommBinding.coach2.visibility = View.GONE
+            fragmentCommBinding.coach3.visibility = View.VISIBLE
+            fragmentCommBinding.coach3.isClickable = true
+        }
+        fragmentCommBinding.coach3.setOnClickListener {
+            fragmentCommBinding.coach3.visibility = View.GONE
+            fragmentCommBinding.coach4.visibility = View.VISIBLE
+            fragmentCommBinding.coach4.isClickable = true
+        }
+        fragmentCommBinding.coach4.setOnClickListener {
+            fragmentCommBinding.coach4.visibility = View.GONE
+            coachDone = true
+            App.prefs.setCoach(coachDone)
+            fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommProfile.visibility = View.VISIBLE
+            fragmentCommBinding.ivCommStt.visibility = View.VISIBLE
+        }
+
+        // 화면 클릭 시 키보드 숨기기
+        rootLayout.setOnClickListener {
+            hideKeyboard()
+        }
+
+        // question button (sign language)
+        val imageJaList : MutableList<SignDto> = mutableListOf()
+        imageJaList.add(SignDto(R.drawable.ja1, "ㄱ"))
+        imageJaList.add(SignDto(R.drawable.ja2, "ㄴ"))
+        imageJaList.add(SignDto(R.drawable.ja3, "ㄷ"))
+        imageJaList.add(SignDto(R.drawable.ja4, "ㄹ"))
+        imageJaList.add(SignDto(R.drawable.ja5, "ㅁ"))
+        imageJaList.add(SignDto(R.drawable.ja6, "ㅂ"))
+        imageJaList.add(SignDto(R.drawable.ja7, "ㅅ"))
+        imageJaList.add(SignDto(R.drawable.ja8, "ㅇ"))
+        imageJaList.add(SignDto(R.drawable.ja9, "ㅈ"))
+        imageJaList.add(SignDto(R.drawable.ja10, "ㅊ"))
+        imageJaList.add(SignDto(R.drawable.ja11, "ㅋ"))
+        imageJaList.add(SignDto(R.drawable.ja12, "ㅌ"))
+        imageJaList.add(SignDto(R.drawable.ja13, "ㅍ"))
+        imageJaList.add(SignDto(R.drawable.ja14, "ㅎ"))
+        val adapterJa = SignAdapter(imageJaList)
+
+        val imageMoList : MutableList<SignDto> = mutableListOf()
+        imageMoList.add(SignDto(R.drawable.mo1, "ㅏ"))
+        imageMoList.add(SignDto(R.drawable.mo2, "ㅐ"))
+        imageMoList.add(SignDto(R.drawable.mo3, "ㅑ"))
+        imageMoList.add(SignDto(R.drawable.mo4, "ㅒ"))
+        imageMoList.add(SignDto(R.drawable.mo5, "ㅓ"))
+        imageMoList.add(SignDto(R.drawable.mo6, "ㅔ"))
+        imageMoList.add(SignDto(R.drawable.mo7, "ㅕ"))
+        imageMoList.add(SignDto(R.drawable.mo8, "ㅖ"))
+        imageMoList.add(SignDto(R.drawable.mo9, "ㅗ"))
+        imageMoList.add(SignDto(R.drawable.mo10, "ㅚ"))
+        imageMoList.add(SignDto(R.drawable.mo11, "ㅛ"))
+        imageMoList.add(SignDto(R.drawable.mo12, "ㅜ"))
+        imageMoList.add(SignDto(R.drawable.mo13, "ㅟ"))
+        imageMoList.add(SignDto(R.drawable.mo14, "ㅠ"))
+        imageMoList.add(SignDto(R.drawable.mo15, "ㅡ"))
+        imageMoList.add(SignDto(R.drawable.mo16, "ㅢ"))
+        imageMoList.add(SignDto(R.drawable.mo17, "ㅣ"))
+        val adapterMo = SignAdapter(imageMoList)
+
+        val imageEtcList : MutableList<SignDto> = mutableListOf()
+        imageEtcList.add(SignDto(R.drawable.add, "add"))
+        imageEtcList.add(SignDto(R.drawable.spacing, "space"))
+        imageEtcList.add(SignDto(R.drawable.clear_one, "clear one"))
+        imageEtcList.add(SignDto(R.drawable.clear_all, "clear all"))
+        val adapterEtc = SignSmallAdapter(imageEtcList)
+
+        fragmentCommBinding.rvCon.adapter = adapterJa
+        fragmentCommBinding.rvCon.layoutManager = GridLayoutManager(this.activity, 3)
+        fragmentCommBinding.rvVo.adapter = adapterMo
+        fragmentCommBinding.rvVo.layoutManager = GridLayoutManager(this.activity, 3)
+        fragmentCommBinding.rvEtc.adapter = adapterEtc
+        fragmentCommBinding.rvEtc.layoutManager = GridLayoutManager(this.activity, 4)
+
+        fragmentCommBinding.btnQuestion.setOnClickListener {
+            fragmentCommBinding.signLanguage.visibility = View.VISIBLE
+            fragmentCommBinding.signLanguage.isClickable = true
+
+        }
+        fragmentCommBinding.btnX.setOnClickListener {
+            fragmentCommBinding.signLanguage.visibility = View.INVISIBLE
+            fragmentCommBinding.signLanguage.isClickable = false
+        }
+
+
+
         // stt
         fragmentCommBinding.btnCommStt.setOnClickListener {
             startVoiceRecording()
             fragmentCommBinding.tvCommStt.text = recodeStr
+
         }
         fragmentCommBinding.tvCommStt.text = recodeStr
+
 
         // tts
         initTTS()
         // tts 버튼 & edit text
         fragmentCommBinding.btnCommTts.setOnClickListener {
             speakOut(fragmentCommBinding.editCommTts.text.toString())
+            // tts 버튼 말한 후 edit text 초기화
+            fragmentCommBinding.editCommTts.text.clear()
         }
 
-        return fragmentCommBinding.root
+        // keyboard 버튼
+        fragmentCommBinding.btnCommKeyboard.setOnClickListener {
+            fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+            // EditText에 포커스를 설정하여 키보드가 나타나도록 함
+            fragmentCommBinding.editCommTts.requestFocus()
+            showKeyboard()
+        }
+
+        fragmentCommBinding.editCommTts.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun afterTextChanged(p0: Editable?) {
+                fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+
+                splitJamos.splitJamos(fragmentCommBinding.editCommTts.text.toString()).enqueue(object: Callback<String> {
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        if (response.isSuccessful) {
+                            if (response.body() != null && response.body() != "") {
+                                /*for (char in response.body().toString()) {
+                                    textList.add(char.toString())
+                                }*/
+                                if (response.body().toString() != textList.joinToString(separator = "")) {
+                                    textList.clear()
+                                    for (char in response.body().toString()) {
+                                        textList.add(char.toString())
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.e("error", t.toString())
+                    }
+                })
+            }
+        })
+
+        // textList에 변경이 일어난 경우 textList의 글자를 string으로 바꾸고 api로 전달해서 받아온 다음에 edittext화면에 넣음
+        // edittext에 클릭 발생한 경우 textList 비우기 + 에디트 텍스트 비우기. 그 다음에 testList가 비어있으면 클릭해도 에디트 텍스트 지우지 말기. 
+        // 키보드 버튼도 마찬가지
+        return rootLayout
+    }
+
+    // 키보드 숨기기
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    // 키보드 보이기
+    private fun showKeyboard() {
+        // 키보드 매니저 가져오기
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // 키보드 나타내기
+        inputMethodManager.showSoftInput(fragmentCommBinding.editCommTts, InputMethodManager.SHOW_IMPLICIT)
     }
 
     @SuppressLint("MissingPermission")
@@ -428,12 +698,143 @@ class CommFragment : Fragment(),
     ) {
         activity?.runOnUiThread {
             if (_fragmentCommBinding != null) {
+                /*
+                val alreadyText = fragmentCommBinding.editCommTts.text
+                if (alreadyText != null && alreadyText.toString() != "") {
+                    splitJamos.splitJamos(alreadyText.toString()).enqueue(object: Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            if (response.isSuccessful) {
+                                if (response.body() != null && response.body() != "") {
+                                    for (char in response.body().toString()) {
+                                        textList.add(char.toString())
+                                    }
+                                }
+
+
+                            }
+                        }
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.e("error", t.toString())
+                        }
+                    })
+                }*/
+
                 // Show result of recognized gesture
                 val gestureCategories = resultBundle.results.first().gestures()
                 if (gestureCategories.isNotEmpty()) {
                     gestureRecognizerResultAdapter.updateResults(
                         gestureCategories.first()
                     )
+                    val firstGesture = gestureCategories.first()
+                    if (gestureCategories.first()?.first()?.categoryName() != null && gestureCategories.first()?.first()?.categoryName() != "") {
+                        val category = gestureCategories.first()?.first()?.categoryName()?: null
+                        Log.e("category", category.toString())
+                        val str = getKoreanLetter(category.toString())
+                        Log.e("str", str)
+
+
+                        if (recogList.size == 20) {
+                            Log.e("recog", recogList[0])
+                            if (lastStr == str) {
+                                Log.e("recogList if (lastStr == str)", recogList.toString())
+                                lastStr = ""
+
+                                if (recogList[0] == "clear_all") {
+                                    if (textList != null) {
+                                        textList.clear()
+                                        fragmentCommBinding.editCommTts.setText("")
+                                    } else {
+
+                                    }
+                                } else if (recogList[0] == "add") {
+                                    Log.e("textList.size", textList.size.toString())
+                                    if (textList.size >= 2) {
+                                        var ja = addJa(
+                                            textList[textList.size - 1],
+                                            textList[textList.size - 2]
+                                        )
+                                        Log.e("addJa", ja)
+                                        Log.e("textList[textList.size - 2]", textList[textList.size - 2])
+                                        Log.e("textList[textList.size - 1]", textList[textList.size - 1])
+                                        if (ja != " ") {
+
+                                            textList.removeAt(textList.size - 1)
+                                            Log.e("textList[textList.size - 2]", textList[textList.size - 1])
+                                            textList.removeAt(textList.size - 1)
+                                            Log.e("textList[textList.size - 1]", textList[textList.size - 1])
+
+                                            textList.add(ja)
+                                            joinJamos(textList)
+                                        }
+
+                                    } else {
+
+                                    }
+                                } else if (recogList[0] == "clear_one") {
+                                    if (textList != null && textList.size > 0) {
+                                        Log.e("if clear_one0", textList.size.toString())
+                                        textList.removeAt(textList.size - 1)
+                                        Log.e("if clear_one1", textList.size.toString())
+                                        joinJamos(textList)
+                                        Log.e("if clear_one2", textList.toString())
+                                    } else {
+
+                                    }
+                                } else if (recogList[0] == "space") {
+                                    textList.add(" ")
+                                    joinJamos(textList)
+                                } else {
+                                    Log.e("textList", textList.toString())
+                                    textList.add(recogList[0])
+                                    Log.e("textList", textList.toString())
+                                    Log.e("recogList[0]", recogList[0].toString())
+                                    Log.e("textList", textList.toString())
+                                    joinJamos(textList)
+                                    Log.e("textList", textList.toString())
+                                    recogList.clear()
+                                }
+                            }
+                            else {
+                                if (recogList.size == 0) {
+                                    recogList.add(str)
+                                    //Log.e("recogList2", recogList.toString())
+                                    lastStr = str
+                                }else {
+                                    recogList.clear()
+                                    recogList.add(str)
+                                    //Log.e("recogList3", recogList.toString())
+                                    lastStr = str
+                                }
+
+                            }
+                            recogList.clear()
+                        }
+                        else {
+                            if (lastStr == str) {
+                                recogList.add(str)
+                                Log.e("recogList1", recogList.toString())
+                                Log.e("textList1", textList.toString())
+                                lastStr = str
+                            }
+                            else {
+                                if (recogList.size == 0) {
+                                    recogList.add(str)
+                                    Log.e("recogList2", recogList.toString())
+                                    lastStr = str
+                                }
+                                else {
+                                    recogList.clear()
+                                    recogList.add(str)
+                                    Log.e("recogList3", recogList.toString())
+                                    Log.e("textList3", textList.toString())
+                                    lastStr = str
+                                }
+
+                            }
+                        }
+                    }
+
                 } else {
                     gestureRecognizerResultAdapter.updateResults(emptyList())
                 }
@@ -454,7 +855,23 @@ class CommFragment : Fragment(),
             }
         }
     }
+    fun joinJamos(list: MutableList<String>) {
+        var text = list.joinToString(separator = "")
+        joinJamos.joinJamos(text).enqueue(object: Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    fragmentCommBinding.editCommTts.clearFocus()
+                    fragmentCommBinding.editCommTts.setText(response.body().toString())
+                } else {
+                    Log.e("joinJamos", response.toString())
+                }
+            }
 
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("joinJamos", t.toString())
+            }
+        })
+    }
     override fun onError(error: String, errorCode: Int) {
         activity?.runOnUiThread {
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
