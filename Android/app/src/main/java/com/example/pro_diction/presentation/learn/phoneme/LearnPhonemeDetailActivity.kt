@@ -238,25 +238,25 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         if (response.body()!!.data?.sttResult.toString() == "") {
-                            Toast.makeText(this@LearnPhonemeDetailActivity, "Please record again.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LearnPhonemeDetailActivity, getString(R.string.please_again), Toast.LENGTH_SHORT).show()
                         }
                         else if (response.body()!!.data?.sttResult.toString() == "too fast"){
-                            Toast.makeText(this@LearnPhonemeDetailActivity, "Please pronounce syllable by syllable slowly and clearly.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LearnPhonemeDetailActivity, getString(R.string.please_slow), Toast.LENGTH_SHORT).show()
                         }
                         else if('-' in response.body()!!.data?.sttResult.toString()) {
-                            Toast.makeText(this@LearnPhonemeDetailActivity, "Please pronounce syllable by syllable slowly and clearly.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LearnPhonemeDetailActivity, getString(R.string.please_slow), Toast.LENGTH_SHORT).show()
                         }
                         else if (response.body()!!.data?.sttResult.toString().contains("Read timed out")) {
-                            Toast.makeText(this@LearnPhonemeDetailActivity, "Timed out.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LearnPhonemeDetailActivity, getString(R.string.please_again), Toast.LENGTH_SHORT).show()
                         }
                         else {
                             val resultIntent = Intent(this@LearnPhonemeDetailActivity, LearnResultActivity::class.java)
-                            resultIntent.putExtra("score", response.body()!!.data?.score.toString())
                             resultIntent.putExtra("sttResult", response.body()!!.data?.sttResult.toString())
                             resultIntent.putExtra("splitSttResult", response.body()!!.data?.splitSttResult.toString())
                             resultIntent.putExtra("studyId", response.body()!!.data?.studyId.toString())
                             resultIntent.putExtra("name", tv.text)
                             resultIntent.putExtra("splitedItem", splitedItem.toString())
+                            resultIntent.putExtra("pronunciation", pronunciation.toString())
                             startActivity(resultIntent)
                         }
 
@@ -318,7 +318,7 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
         isPaused = false
 
         findViewById<ImageButton>(R.id.btn_record).setImageDrawable(resources.getDrawable(R.drawable.btn_listen))
-        Toast.makeText(this, "Recording completed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.record_success), Toast.LENGTH_SHORT).show()
 
         if (isRecording == false) {
             if (recordExist == true) {

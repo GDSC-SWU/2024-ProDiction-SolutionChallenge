@@ -104,6 +104,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="real_spead">Pronounce at actual speed and check your pronunciation score.</string>
+    <string name="real_spead">Pronounce at actual speed\nand check your pronunciation score.</string>
     <string name="slow_record">Click the icon and speak clearly and slowly.</string>
+    <string name="standard">Standard</string>
+    <string name="please_slow">Please pronounce syllable by syllable slowly and clearly.</string>
+    <string name="please_again">Please record again.</string>
+    <string name="record_success">Recording completed.</string>
+    <string name="please_record">Please record it!</string>
+    <string name="word_add">Word added.</string>
+    <string name="word_already">Word already exists.</string>
 </resources>

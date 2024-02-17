@@ -42,7 +42,7 @@ class MainLoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        if (account != null) { // account != null || App.prefs.getLoggedInBefore() == true
+        if (account != null && App.prefs.getLoggedInBefore() == true) { // account != null || App.prefs.getLoggedInBefore() == true
             // 이미 로그인 되어있으면 바로 메인 액티비티로 이동
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

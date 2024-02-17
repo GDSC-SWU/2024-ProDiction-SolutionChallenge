@@ -4,12 +4,13 @@ import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.RandomTestDto
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface OnBoardingRandomApiService {
-    @GET("/api/v1/test/study")
+    @GET("/api/v1/test/{categoryId}")
     fun getRandomTest (
-        @Query("stage") stage: Int
+        @Path("categoryId") stage: Int
     ): Call<BaseResponse<List<RandomTestDto>>>
 
 }

@@ -7,6 +7,7 @@ import com.example.pro_diction.data.API.API_TAG
 import com.example.pro_diction.data.api.AddWordApiService
 import com.example.pro_diction.data.api.CategoryApiService
 import com.example.pro_diction.data.api.DeleteWordApiService
+import com.example.pro_diction.data.api.LogoutApiService
 import com.example.pro_diction.data.api.MyPageApiService
 import com.example.pro_diction.data.api.MyWordApiService
 import com.example.pro_diction.data.api.OnBoardingAgeApiService
@@ -48,6 +49,7 @@ object ApiPool {
     val getMyWord = RetrofitPool.retrofit.create(MyWordApiService::class.java)
     val deleteMyWord = RetrofitPool.retrofit.create(DeleteWordApiService::class.java)
     val getMyPage = RetrofitPool.retrofit.create(MyPageApiService::class.java)
+    val logout = RetrofitPool.retrofit.create(LogoutApiService::class.java)
 }
 
 object RetrofitPool {

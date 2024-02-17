@@ -23,6 +23,7 @@ import com.example.pro_diction.presentation.my.CallActivity
 import com.example.pro_diction.presentation.my.LanguageActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
 import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity
+import com.example.pro_diction.presentation.onboarding.OnBoarding2Activity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -54,6 +55,8 @@ class MyFragment : Fragment() {
 
     lateinit var myInflater : View
     lateinit var ageIntent: Intent
+
+    var logout = ApiPool.logout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +116,21 @@ class MyFragment : Fragment() {
 
         // 로그아웃 버튼 logout button
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
-            signOut()
+            logout.logout().enqueue(object: Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.isSuccessful) {
+                        if(response.body() != null) {
+                            Log.e("logout", response.body().toString())
+                            signOut()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.e("error", t.toString())
+                }
+            })
+
         }
 
         // 단어장 word list button
@@ -156,7 +173,7 @@ class MyFragment : Fragment() {
         }
 
         // retest
-        val retestIntent = Intent(this.context, OnBoarding1Activity::class.java)
+        val retestIntent = Intent(this.context, OnBoarding2Activity::class.java)
         myInflater.findViewById<TextView>(R.id.tv_retest).setOnClickListener {
             startActivity(retestIntent)
         }
