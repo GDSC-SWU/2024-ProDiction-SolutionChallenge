@@ -26,7 +26,7 @@
     <string name="consonant">자음</string>
     <string name="vowels">모음</string>
     <string name="syllable_sub">모음을 바꿔보세요</string>
-    <string name="retest"><u>레벨테스트 하러 가기</u></string>
+    <string name="retest"><u>레벨테스트 하러 가기></u></string>
     <string name="word_list">단어장</string>
     <string name="support">지원</string>
     <string name="center">107 손말이음센터</string>
@@ -64,6 +64,7 @@
     <string name="coach_2">➌ 마이크 버튼을 눌러,\n상대방의 말을 텍스트로 변환할 수 있어요</string>
     <string name="coach_3">➍ 지화 설명서를\n확인할 수 있어요</string>
     <string name="coach_4">➎ 수화 인식이 원활하지 않을 경우,\n자판을 통해 말을 전달할 수 있어요</string>
+    <string name="etc">기타</string>
 
 
     <string name="media_pipe">MediaPipe</string>

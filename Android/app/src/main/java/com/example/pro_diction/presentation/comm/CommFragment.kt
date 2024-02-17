@@ -45,10 +45,12 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pro_diction.App
 import com.example.pro_diction.R
 import com.example.pro_diction.data.AiApiPool
+import com.example.pro_diction.data.dto.SignDto
 import com.example.pro_diction.databinding.FragmentCommBinding
 import com.google.android.play.integrity.internal.t
 import com.google.mediapipe.tasks.vision.core.RunningMode
@@ -243,6 +245,7 @@ class CommFragment : Fragment(),
 
         val rootLayout = fragmentCommBinding.root
         fragmentCommBinding.editCommTts.visibility = View.VISIBLE
+        fragmentCommBinding.signLanguage.visibility = View.INVISIBLE
 
         // permission
         val permissionListener = object : PermissionListener {
@@ -310,6 +313,68 @@ class CommFragment : Fragment(),
         // 화면 클릭 시 키보드 숨기기
         rootLayout.setOnClickListener {
             hideKeyboard()
+        }
+
+        // question button (sign language)
+        val imageJaList : MutableList<SignDto> = mutableListOf()
+        imageJaList.add(SignDto(R.drawable.ja1, "ㄱ"))
+        imageJaList.add(SignDto(R.drawable.ja2, "ㄴ"))
+        imageJaList.add(SignDto(R.drawable.ja3, "ㄷ"))
+        imageJaList.add(SignDto(R.drawable.ja4, "ㄹ"))
+        imageJaList.add(SignDto(R.drawable.ja5, "ㅁ"))
+        imageJaList.add(SignDto(R.drawable.ja6, "ㅂ"))
+        imageJaList.add(SignDto(R.drawable.ja7, "ㅅ"))
+        imageJaList.add(SignDto(R.drawable.ja8, "ㅇ"))
+        imageJaList.add(SignDto(R.drawable.ja9, "ㅈ"))
+        imageJaList.add(SignDto(R.drawable.ja10, "ㅊ"))
+        imageJaList.add(SignDto(R.drawable.ja11, "ㅋ"))
+        imageJaList.add(SignDto(R.drawable.ja12, "ㅌ"))
+        imageJaList.add(SignDto(R.drawable.ja13, "ㅍ"))
+        imageJaList.add(SignDto(R.drawable.ja14, "ㅎ"))
+        val adapterJa = SignAdapter(imageJaList)
+
+        val imageMoList : MutableList<SignDto> = mutableListOf()
+        imageMoList.add(SignDto(R.drawable.mo1, "ㅏ"))
+        imageMoList.add(SignDto(R.drawable.mo2, "ㅐ"))
+        imageMoList.add(SignDto(R.drawable.mo3, "ㅑ"))
+        imageMoList.add(SignDto(R.drawable.mo4, "ㅒ"))
+        imageMoList.add(SignDto(R.drawable.mo5, "ㅓ"))
+        imageMoList.add(SignDto(R.drawable.mo6, "ㅔ"))
+        imageMoList.add(SignDto(R.drawable.mo7, "ㅕ"))
+        imageMoList.add(SignDto(R.drawable.mo8, "ㅖ"))
+        imageMoList.add(SignDto(R.drawable.mo9, "ㅗ"))
+        imageMoList.add(SignDto(R.drawable.mo10, "ㅚ"))
+        imageMoList.add(SignDto(R.drawable.mo11, "ㅛ"))
+        imageMoList.add(SignDto(R.drawable.mo12, "ㅜ"))
+        imageMoList.add(SignDto(R.drawable.mo13, "ㅟ"))
+        imageMoList.add(SignDto(R.drawable.mo14, "ㅠ"))
+        imageMoList.add(SignDto(R.drawable.mo15, "ㅡ"))
+        imageMoList.add(SignDto(R.drawable.mo16, "ㅢ"))
+        imageMoList.add(SignDto(R.drawable.mo17, "ㅣ"))
+        val adapterMo = SignAdapter(imageMoList)
+
+        val imageEtcList : MutableList<SignDto> = mutableListOf()
+        imageEtcList.add(SignDto(R.drawable.add, "add"))
+        imageEtcList.add(SignDto(R.drawable.spacing, "space"))
+        imageEtcList.add(SignDto(R.drawable.clear_one, "clear one"))
+        imageEtcList.add(SignDto(R.drawable.clear_all, "clear all"))
+        val adapterEtc = SignSmallAdapter(imageEtcList)
+
+        fragmentCommBinding.rvCon.adapter = adapterJa
+        fragmentCommBinding.rvCon.layoutManager = GridLayoutManager(this.activity, 3)
+        fragmentCommBinding.rvVo.adapter = adapterMo
+        fragmentCommBinding.rvVo.layoutManager = GridLayoutManager(this.activity, 3)
+        fragmentCommBinding.rvEtc.adapter = adapterEtc
+        fragmentCommBinding.rvEtc.layoutManager = GridLayoutManager(this.activity, 4)
+
+        fragmentCommBinding.btnQuestion.setOnClickListener {
+            fragmentCommBinding.signLanguage.visibility = View.VISIBLE
+            fragmentCommBinding.signLanguage.isClickable = true
+
+        }
+        fragmentCommBinding.btnX.setOnClickListener {
+            fragmentCommBinding.signLanguage.visibility = View.INVISIBLE
+            fragmentCommBinding.signLanguage.isClickable = false
         }
 
 
