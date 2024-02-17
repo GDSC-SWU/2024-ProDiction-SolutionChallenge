@@ -57,7 +57,10 @@
     <string name="coach_3">➍ Check the sign language manual</string>
     <string name="coach_4">➎ Convey speech through the keyboard</string>
     <string name="etc">Etc.</string>
-
+    <string name="delete_text">Are you sure you want to delete the word?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="view_pro">View Standard</string>
 
 
     <!--yet-->
@@ -101,4 +104,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="real_spead">Pronounce at actual speed and check your pronunciation score.</string>
+    <string name="slow_record">Click the icon and speak clearly and slowly.</string>
 </resources>

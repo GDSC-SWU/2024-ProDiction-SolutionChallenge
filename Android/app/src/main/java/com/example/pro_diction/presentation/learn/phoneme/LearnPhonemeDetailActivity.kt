@@ -2,6 +2,7 @@ package com.example.pro_diction.presentation.learn.phoneme
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
@@ -55,19 +56,11 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
     private var item: String? = null
     private var splitedItem: String = ""
     private val splitJamosService = AiApiPool.splitJamos
+    private var pronunciation = ""
 
     // media record
     private var fileName: String = ""
 
-    private var recordButton: MediaRecorderActivity.RecordButton? = null
-    private var recorder: MediaRecorder? = null
-
-    private var playButton: MediaRecorderActivity.PlayButton? = null
-    private var player: MediaPlayer? = null
-
-    // Requesting permission to RECORD_AUDIO
-    private var permissionToRecordAccepted = false
-    private var permissions: Array<String> = arrayOf(android.Manifest.permission.RECORD_AUDIO)
 
     // test api
     private val postTestResult = ApiPool.postTestResult
@@ -90,7 +83,7 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
 
     lateinit var tv: TextView
 
-
+    var btnProClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -143,6 +136,7 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
         tv = findViewById<TextView>(R.id.textView)
         Log.e("item", item.toString())
 
+
         item?.toInt()?.let {
             getStudyId.getStudyId(it).enqueue(object : Callback<BaseResponse<StudyItem>> {
                 override fun onResponse(
@@ -158,6 +152,7 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
                         Log.e("tv.text", tv.text.toString())
                         splitedItem = response.body()?.data?.splitPronunciation.toString()
                         Log.e("splitedItem", splitedItem)
+                        pronunciation = response.body()?.data?.pronunciation.toString()
                     }
                 }
 
@@ -167,7 +162,22 @@ class LearnPhonemeDetailActivity : AppCompatActivity() {
             })
         }
 
-
+        // view pronunciation
+        var btnPro = findViewById<Button>(R.id.btn_pro)
+        btnPro.setOnClickListener{
+            if(btnProClicked == false) {
+                btnPro.text = pronunciation
+                btnPro.background = getDrawable(R.drawable.bg_background_round_on_border)
+                btnPro.setTextColor(Color.parseColor("#2F4C74"))
+                btnProClicked = true
+            }
+            else {
+                btnPro.text = getString(R.string.view_pro)
+                btnPro.background = getDrawable(R.drawable.bg_background_round_on)
+                btnPro.setTextColor(Color.parseColor("#FFFFFF"))
+                btnProClicked = false
+            }
+        }
 
 
         /*

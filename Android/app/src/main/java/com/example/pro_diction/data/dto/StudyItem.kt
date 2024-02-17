@@ -7,5 +7,6 @@ import kotlinx.serialization.Serializable
 data class StudyItem(
     @SerialName("studyId") val studyId: Int,
     @SerialName("content") val content: String,
+    @SerialName("pronunciation") val pronunciation: String,
     @SerialName("splitPronunciation") val splitPronunciation: String
 )

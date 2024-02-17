@@ -33,6 +33,21 @@
         android:maxLines="2"
         android:paddingHorizontal="20dp"/>
 
+    <Button
+        android:id="@+id/btn_pro"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="@string/view_pro"
+        android:textSize="11sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_background_round_on"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="7dp"
+        android:paddingHorizontal="20dp"/>
+
     <ImageView
         android:id="@+id/iv_video1"
         android:layout_width="0dp"
@@ -44,7 +59,7 @@
         app:layout_constraintEnd_toStartOf="@+id/iv_video2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintVertical_bias="0.272" />
 
     <ImageView
         android:id="@+id/iv_video2"
@@ -63,9 +78,9 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_record"
         app:layout_constraintStart_toStartOf="@+id/btn_record"
         app:layout_constraintEnd_toEndOf="@+id/btn_record"
-        android:text="@string/onboarding_2_1_btn_text"
+        android:text="@string/slow_record"
         android:textColor="@color/main"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_marginBottom="15dp"/>
 
     <ImageButton
