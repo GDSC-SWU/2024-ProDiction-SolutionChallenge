@@ -1,6 +1,7 @@
 package com.pro_diction.server.domain.search.controller;
 
 import com.pro_diction.server.domain.model.ContextUser;
+import com.pro_diction.server.domain.search.dto.SearchContentHistoryDto;
 import com.pro_diction.server.domain.search.service.SearchService;
 import com.pro_diction.server.domain.study.dto.StudyResponseDto;
 import com.pro_diction.server.global.common.ApiDataResponseDto;
@@ -18,6 +19,12 @@ import java.util.List;
 @Slf4j
 public class SearchController {
     private final SearchService searchService;
+
+    @GetMapping
+    public ApiDataResponseDto<List<SearchContentHistoryDto>> getSearchContentHistoryList(@AuthenticationPrincipal ContextUser contextUser) {
+
+        return ApiDataResponseDto.of(searchService.getRecentSearchList(contextUser.getMember()));
+    }
 
     @PostMapping
     public ApiDataResponseDto<List<StudyResponseDto>> getSearchResultStudyList(@RequestParam String keyword,
