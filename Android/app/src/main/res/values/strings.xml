@@ -113,4 +113,5 @@
     <string name="please_record">Please record it!</string>
     <string name="word_add">Word added.</string>
     <string name="word_already">Word already exists.</string>
+    <string name="nim"></string>
 </resources>

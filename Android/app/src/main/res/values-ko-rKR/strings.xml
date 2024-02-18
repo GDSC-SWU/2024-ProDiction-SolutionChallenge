@@ -8,7 +8,7 @@
     <string name="onboarding_1_title">나이를 입력해주세요</string>
     <string name="onboarding_1_sub">자주 사용하는 단어를 추천해 더 ​​재미있게 학습할 수 있어요!</string>
     <string name="onboarding_1_btn">다음</string>
-    <string name="skip"><u>건너뛰기</u></string>
+    <string name="skip"><u>건너뛰기></u></string>
     <string name="onboarding_2_title">실력테스트</string>
     <string name="onboarding_2_sub">테스트에 응시하고 알맞은 레벨을 추천받아 보세요!</string>
     <string name="onboarding_2_btn">테스트 응시하기</string>
@@ -118,4 +118,5 @@
     <string name="please_record">녹음해 주세요!</string>
     <string name="word_add">단어장에 추가되었습니다.</string>
     <string name="word_already">이미 추가된 단어입니다.</string>
+    <string name="nim">님</string>
 </resources>

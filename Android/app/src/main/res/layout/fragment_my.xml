@@ -19,33 +19,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="30dp" >
-            <View
+            <ImageView
                 android:id="@+id/v_profile"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:src="@drawable/ic_profile"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/ic_profile"
-                android:layout_marginTop="70dp"/>
+                android:layout_marginTop="70dp"
+                android:scaleType="centerCrop"/>
             <TextView
                 android:id="@+id/tv_nick"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text=""
-                android:autoSizeMinTextSize="5dp"
-                android:autoSizeStepGranularity="1dp"
-                android:autoSizeTextType="uniform"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="@color/font"
                 android:textStyle="bold"
-                android:maxLines="2"
                 android:textAlignment="center"
                 android:ellipsize="end"
                 app:layout_constraintStart_toStartOf="@+id/v_profile"
-                app:layout_constraintTop_toTopOf="@+id/v_profile"
-                app:layout_constraintEnd_toEndOf="@+id/v_profile"
-                app:layout_constraintBottom_toBottomOf="@+id/v_profile"/>
+                app:layout_constraintTop_toBottomOf="@+id/v_profile"
+                app:layout_constraintEnd_toEndOf="@+id/v_profile" />
 
 
             <LinearLayout
@@ -53,11 +50,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/v_profile"
+                app:layout_constraintTop_toBottomOf="@id/tv_nick"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="15dp">
 
                 <TextView
                     android:layout_width="wrap_content"
