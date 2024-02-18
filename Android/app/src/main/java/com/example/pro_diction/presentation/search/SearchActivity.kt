@@ -5,7 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -77,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
         // recycler view
         val recyclerview = findViewById<RecyclerView>(R.id.rv_recent_search)
         var adapter = SearchRecentAdapter(list)
-        var adapterSearch = SearchAdapter(listSearch)
+        var adapterSearch = SearchAdapter(listSearch, findViewById<EditText>(R.id.edit_search))
 
         getSearchRecent.getSearchRecent().enqueue(object: Callback<BaseResponse<List<SearchRecentDto>>> {
             override fun onResponse(
@@ -181,7 +184,7 @@ class SearchActivity : AppCompatActivity() {
                 })
 
                 // adapter
-                adapterSearch = SearchAdapter(listSearch)
+                adapterSearch = SearchAdapter(listSearch, findViewById<EditText>(R.id.edit_search))
                 recyclerview.adapter = adapterSearch
                 recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -197,6 +200,8 @@ class SearchActivity : AppCompatActivity() {
                         }
                     }
                 })
+
+
 
                 true // 이벤트가 소비되었음을 반환
             } else {
@@ -216,6 +221,21 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun highlightText(textView: TextView, fullText: String, targetText: String, color: Int) {
+        val spannable = SpannableStringBuilder(fullText)
+        val startIndex = fullText.indexOf(targetText)
+        if (startIndex != -1) {
+            val endIndex = startIndex + targetText.length
+            spannable.setSpan(
+                ForegroundColorSpan(color),
+                startIndex,
+                endIndex,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            textView.text = spannable
+        }
     }
     /*
     // 툴바 메뉴 버튼 설정
