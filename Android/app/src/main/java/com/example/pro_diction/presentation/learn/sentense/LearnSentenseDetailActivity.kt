@@ -14,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
-import com.example.pro_diction.data.dto.PhraseDetailDto
-import com.example.pro_diction.data.dto.SentenseDetailDto
 import com.example.pro_diction.data.dto.StudyResponseDto
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
-import com.example.pro_diction.presentation.learn.phrase.PhraseDetailAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback

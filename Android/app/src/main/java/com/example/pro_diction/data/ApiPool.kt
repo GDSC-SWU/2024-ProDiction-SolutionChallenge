@@ -15,6 +15,9 @@ import com.example.pro_diction.data.api.OnBoardingRandomApiService
 import com.example.pro_diction.data.api.OnBoardingStageApiService
 import com.example.pro_diction.data.api.OnBoardingTestApiService
 import com.example.pro_diction.data.api.ParentStudyApiService
+import com.example.pro_diction.data.api.SearchApiService
+import com.example.pro_diction.data.api.SearchDeleteApiService
+import com.example.pro_diction.data.api.SearchRecentApiService
 import com.example.pro_diction.data.api.StudyIdApiService
 import com.example.pro_diction.data.api.SubCategoryApiService
 import com.example.pro_diction.data.api.TestResultApiService
@@ -50,6 +53,9 @@ object ApiPool {
     val deleteMyWord = RetrofitPool.retrofit.create(DeleteWordApiService::class.java)
     val getMyPage = RetrofitPool.retrofit.create(MyPageApiService::class.java)
     val logout = RetrofitPool.retrofit.create(LogoutApiService::class.java)
+    val getSearchRecent = RetrofitPool.retrofit.create(SearchRecentApiService::class.java)
+    val postSearch = RetrofitPool.retrofit.create(SearchApiService::class.java)
+    val deleteSearch = RetrofitPool.retrofit.create(SearchDeleteApiService::class.java)
 }
 
 object RetrofitPool {

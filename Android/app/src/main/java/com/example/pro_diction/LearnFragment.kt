@@ -11,7 +11,7 @@ import android.widget.ImageButton
 import com.example.pro_diction.databinding.FragmentLearnBinding
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeActivity
 import com.example.pro_diction.presentation.learn.syllable.LearnSyllableActivity
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.phrase.LearnPhraseActivity
 import com.example.pro_diction.presentation.learn.sentense.LearnSentenseActivity
 import com.example.pro_diction.presentation.learn.word.LearnWordActivity

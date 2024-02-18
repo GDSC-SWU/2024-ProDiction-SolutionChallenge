@@ -3,7 +3,6 @@ package com.example.pro_diction.presentation.learn.phrase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,12 +14,8 @@ import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.CategoryResponseDto
-import com.example.pro_diction.data.dto.PhraseDto
-import com.example.pro_diction.data.dto.WordDto
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
-import com.example.pro_diction.presentation.learn.word.LearnWordDetailActivity
-import com.example.pro_diction.presentation.learn.word.WordAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback

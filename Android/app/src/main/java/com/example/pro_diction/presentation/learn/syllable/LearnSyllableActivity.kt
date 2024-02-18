@@ -14,15 +14,13 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pro_diction.HangulConverter
 import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
-import com.example.pro_diction.data.dto.CategoryDto
 import com.example.pro_diction.data.dto.CategoryResponseDto
 import com.example.pro_diction.data.dto.ConsonantDto
 import com.example.pro_diction.data.dto.StudyResponseDto
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

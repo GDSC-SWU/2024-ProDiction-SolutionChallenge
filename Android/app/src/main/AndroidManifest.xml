@@ -83,7 +83,7 @@
             android:name=".presentation.learn.phoneme.LearnPhonemeDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.learn.SearchActivity"
+            android:name=".presentation.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.learn.syllable.LearnSyllableActivity"
