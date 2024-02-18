@@ -13,6 +13,8 @@ import com.pro_diction.server.domain.study.dto.StudyResponseDto;
 import com.pro_diction.server.domain.study.entity.Study;
 import com.pro_diction.server.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ public class SearchServiceImpl implements SearchService {
     @Transactional(readOnly = true)
     public List<SearchContentHistoryDto> getRecentSearchList(Member member) {
         member = memberRepository.findById(member.getId()).orElseThrow(MemberNotFoundException::new);
-        List<Search> searchList = searchRepository.findAllByMemberOrderById(member);
+        List<Search> searchList = searchRepository.findTop5ByMemberOrderById(member);
 
         return searchList.stream()
                 .map(search -> SearchContentHistoryDto.builder()
@@ -45,7 +47,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     @Transactional
     public List<StudyResponseDto> getSearchResultStudyList(String keyword, Member member) {
-        if(keyword.isEmpty()) throw  new KeywordRequiredException();    // 공백만 입력 or 문자열의 길이가 0
+        if(keyword.isBlank()) throw  new KeywordRequiredException();    // 공백만 입력 or 문자열의 길이가 0
         member = memberRepository.findById(member.getId()).orElseThrow(MemberNotFoundException::new);
         List<Study> studyList = studyRepository.findByContentContaining(keyword);
 
@@ -72,5 +74,21 @@ public class SearchServiceImpl implements SearchService {
         searchRepository.delete(search);
 
         return search.toResponse();
+    }
+
+    @Override
+    @Async
+    @Scheduled(cron = "0 0 4 ? * MON", zone = "Asia/Seoul")
+    public void cleanSearchHistory() {     // 스케줄링을 통해 필요없는 검색 기록 삭제(매주 월요일 오전 4시)
+        List<Member> memberList = memberRepository.findAll();
+
+        for(Member member : memberList) {
+            List<Search> searchList = searchRepository.findAllByMemberOrderByIdDesc(member);
+
+            if (searchList.size() > 5) {
+                List<Search> searchToDelete = searchList.subList(5, searchList.size());
+                searchRepository.deleteAll(searchToDelete);
+            }
+        }
     }
 }

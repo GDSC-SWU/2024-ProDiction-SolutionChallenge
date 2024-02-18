@@ -13,4 +13,6 @@ public interface SearchService {
     List<StudyResponseDto> getSearchResultStudyList(String keyword, Member member);
 
     SearchResponseDto deleteSearch(Long searchId);
+
+    void cleanSearchHistory();
 }
