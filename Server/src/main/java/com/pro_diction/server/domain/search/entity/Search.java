@@ -1,18 +1,21 @@
 package com.pro_diction.server.domain.search.entity;
 
 import com.pro_diction.server.domain.member.entity.Member;
+import com.pro_diction.server.domain.search.dto.SearchResponseDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Search")
 @Entity
 public class Search {
@@ -24,10 +27,18 @@ public class Search {
     @NotNull
     private String searchContent;
 
-    @CreationTimestamp
-    private LocalDateTime searchTime;
+    @CreatedDate
+    private LocalDate searchDate;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public SearchResponseDto toResponse() {
+        return SearchResponseDto.builder()
+                .searchId(getId())
+                .searchContent(getSearchContent())
+                .memberId(getMember().getId())
+                .build();
+    }
 }

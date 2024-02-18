@@ -52,7 +52,11 @@ public enum ErrorCode {
 
     // Vocabulary Error
     VOCABULARY_NOT_FOUND(15000, HttpStatus.BAD_REQUEST, "Vocabulary not found."),
-    DUPLICATED_VOCABULARY(15001, HttpStatus.BAD_REQUEST, "Vocabulary is duplicated.");
+    DUPLICATED_VOCABULARY(15001, HttpStatus.BAD_REQUEST, "Vocabulary is duplicated."),
+
+    // Search Error
+    KEYWORD_REQUIRED(16000, HttpStatus.BAD_REQUEST, "Keyword required."),
+    SEARCH_NOT_FOUND(16001, HttpStatus.BAD_REQUEST, "Search not found.");
 
     private final Integer code;
     private final HttpStatus httpStatus;
