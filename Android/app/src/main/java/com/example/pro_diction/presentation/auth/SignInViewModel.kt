@@ -22,7 +22,7 @@ class SignInViewModel : ViewModel() {
         }.fold(
             {
                 _accessToken.value = UiState.Success(it.data?.accessToken ?: "")
-                RetrofitPool.setAccessToken(it.data?.accessToken ?: "")
+                RetrofitPool.setAccessTokenApi(it.data?.accessToken ?: "")
                 Log.e("응답값1", it.data?.accessToken.toString())
                 Log.e("응답값2", it.data?.memberId.toString())
                 Log.e("응답값3", it.data?.refreshToken.toString())
@@ -30,7 +30,10 @@ class SignInViewModel : ViewModel() {
                 App.prefs.setRefreshToken(it.data?.refreshToken ?: "")
                 App.prefs.setMemberId(it.data?.memberId ?: 0)
                 App.prefs.setLoggedIn(true) // 로그인 상태
+                Log.e("it.data?.accessToken", it.data?.accessToken.toString())
+                Log.e("it.data?.refreshToke", it.data?.refreshToken.toString())
                 Log.e("accessToken", (App.prefs.getAccessToken("")).toString())
+                Log.e("refreshToken", (App.prefs.getRefreshToken("")).toString())
             },
             {
                 Log.e("dddd", it.message.toString())

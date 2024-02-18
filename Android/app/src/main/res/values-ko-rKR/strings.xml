@@ -119,4 +119,6 @@
     <string name="word_add">단어장에 추가되었습니다.</string>
     <string name="word_already">이미 추가된 단어입니다.</string>
     <string name="nim">님</string>
+    <string name="recent_search">최근 검색어</string>
+    <string name="delete_search">삭제</string>
 </resources>

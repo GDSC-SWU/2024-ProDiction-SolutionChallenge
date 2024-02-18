@@ -128,6 +128,7 @@ class LearnWordActivity : AppCompatActivity() {
             }
             R.id.menu_search -> { // search button
                 val intent = Intent(this, SearchActivity::class.java)
+                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
         }

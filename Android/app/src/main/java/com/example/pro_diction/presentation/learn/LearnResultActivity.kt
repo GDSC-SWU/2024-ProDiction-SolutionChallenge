@@ -328,6 +328,7 @@ class LearnResultActivity : AppCompatActivity() {
             }
             R.id.menu_search -> { // 검색 버튼
                 val intent = Intent(this, SearchActivity::class.java)
+                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
         }

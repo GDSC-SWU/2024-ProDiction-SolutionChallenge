@@ -50,10 +50,7 @@ class CallActivity : AppCompatActivity() {
                 finish()
                 return true
             }
-            R.id.menu_search -> { // 검색 버튼
-                val intent = Intent(this, SearchActivity::class.java)
-                startActivity(intent)
-            }
+
         }
         return super.onOptionsItemSelected(item)
     }

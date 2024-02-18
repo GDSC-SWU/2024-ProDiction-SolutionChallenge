@@ -61,7 +61,7 @@ object RetrofitPool {
     private var isRefresh: Boolean = false
 
     // AccessToken을 설정하는 함수
-    fun setAccessToken(token: String?) {
+    fun setAccessTokenApi(token: String?) {
         accessToken = token
     }
 
@@ -86,36 +86,47 @@ object RetrofitPool {
                 .writeTimeout( 100, TimeUnit.SECONDS ).addInterceptor(loggingInterceptor).addInterceptor { chain ->
 
                 // AccessToken이 있는 경우, 헤더에 추가합니다.
-                    Log.e("access accessToken", accessToken.toString())
-                    Log.e("refresh accessToken", accessToken.toString())
-                    Log.e("access", App.prefs.getAccessToken("").toString())
-                    Log.e("refresh", App.prefs.getRefreshToken("").toString())
-                val request = accessToken?.let { token ->
-                    if(!isRefresh) {
-                        chain.request().newBuilder()
-                            .addHeader("Authorization", "Bearer $token")
-                            .build()
+                    Log.e("1", accessToken.toString())
+                    Log.e("2", App.prefs.getAccessToken("").toString())
+                    Log.e("3", App.prefs.getRefreshToken("").toString())
+                val request = App.prefs.getAccessToken("")?.let { token ->
+                    if (token != "") {
+                        if(!isRefresh) {
+                            Log.e("4", "!isRefresh accessToken")
+
+                            chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer $token")
+                                .build()
+                        }
+                        else {
+                            Log.e("5", "isRefresh accessToken")
+
+                            chain.request().newBuilder()
+                                .addHeader("Authorization-refresh", "Bearer $token")
+                                .build()
+                        }
                     }
                     else {
                         chain.request().newBuilder()
-                            .addHeader("Authorization-refresh", "Bearer $token")
                             .build()
                     }
+
                 } ?: chain.request()
 
                 var response = chain.proceed(request)
 
                 // 토큰 만료 에러 발생시
                 if (response.code == 401) {
-                    Log.e("response", response.toString())
-                    Log.e("last access", App.prefs.getAccessToken("").toString())
-                    Log.e("last refresh", App.prefs.getRefreshToken("").toString())
+                    Log.e("6", response.toString())
+                    Log.e("7", App.prefs.getAccessToken("").toString())
+                    Log.e("8", App.prefs.getRefreshToken("").toString())
                     runBlocking {
                         //  accessToken 재발급 api 요청
                         val refreshToken = App.prefs.getRefreshToken("")
                         isRefresh = true
                         if (refreshToken != null) {
                             accessToken = refreshToken
+                            App.prefs.setAccessToken(refreshToken.toString())
                             val refreshResponse : BaseResponse<ResponseSignInDto> = ApiPool.getTokenRefresh.getTokenRefresh()
 
 
@@ -123,21 +134,27 @@ object RetrofitPool {
                             if (refreshResponse.data!=null) {
                                 isRefresh = false
                                 App.prefs.setAccessToken(refreshResponse.data.accessToken)
+                                Log.e("9", refreshResponse.data.accessToken)
+
                                 App.prefs.setRefreshToken(refreshResponse.data.refreshToken)
+                                Log.e("10", refreshResponse.data.refreshToken)
+
                                 accessToken = App.prefs.getAccessToken("")
+                                Log.e("11", accessToken.toString())
+
 
                                 // 새로운 accessToken을 Request Header에 추가하고, 기존에 요청하고자 했던 api를 재요청
-                                val refreshRequest = accessToken?.let { token ->
+                                val refreshRequest = App.prefs.getAccessToken("")?.let { token ->
+                                    Log.e("12", accessToken.toString())
                                     chain.request().newBuilder()
-                                        .addHeader("Authorization", "Bearer ${App.prefs.getAccessToken("")}")
+                                        .addHeader("Authorization", "Bearer $token")
                                         .build()
                                 } ?: chain.request()
                                 response.close()
                                 response = chain.proceed(refreshRequest)
-                                Log.e("now access accessToken", accessToken.toString())
-                                Log.e("now refresh accessToken", accessToken.toString())
-                                Log.e("now access", App.prefs.getAccessToken("").toString())
-                                Log.e("now refresh", App.prefs.getRefreshToken("").toString())
+                                Log.e("13", accessToken.toString())
+                                Log.e("14", App.prefs.getAccessToken("").toString())
+                                Log.e("15", App.prefs.getRefreshToken("").toString())
                             }
                             else {
                                 Log.e("refreshResponse.data : 서버 통신", "refreshResponse.data == null")

@@ -114,4 +114,6 @@
     <string name="word_add">Word added.</string>
     <string name="word_already">Word already exists.</string>
     <string name="nim"></string>
+    <string name="recent_search">Recent searches</string>
+    <string name="delete_search">delete</string>
 </resources>
