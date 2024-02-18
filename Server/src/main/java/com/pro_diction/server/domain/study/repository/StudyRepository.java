@@ -12,4 +12,6 @@ import java.util.List;
 public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("SELECT s FROM Study s WHERE s.subCategory.category.id = :categoryId ORDER BY rand() LIMIT 3")
     List<Study> getStudyByCategoryId(@Param("categoryId") Integer categoryId);
+
+    List<Study> findByContentContaining(String keyword);
 }
