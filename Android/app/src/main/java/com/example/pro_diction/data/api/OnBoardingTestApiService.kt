@@ -10,13 +10,14 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface OnBoardingTestApiService {
     @Multipart
-    @POST("/api/v1/test/diction")
+    @POST("/api/v1/test/diction/{studyId}")
     fun getScore(
-        @Query("id") id: Int,
+        @Path("studyId") id: Int,
         @Part multipartFile : MultipartBody.Part
     ): Call<BaseResponse<TestScoreDto>>
 }

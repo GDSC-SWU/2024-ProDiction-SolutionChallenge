@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="@+id/btn_onboarding_2_1"
         android:text="@string/onboarding_2_1_btn_text"
         android:textColor="@color/main"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_marginTop="15dp"/>
     <ImageView
         android:id="@+id/btn_next_record"

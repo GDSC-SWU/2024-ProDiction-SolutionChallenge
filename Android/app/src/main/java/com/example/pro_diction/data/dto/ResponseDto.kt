@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TestScoreDto(
-    @SerialName("studyId") val studyId: Int,
-    @SerialName("score") val score: Int
+data class ResponseDto(
+    @SerialName("code") val code: Int,
+    @SerialName("message") val message: String
 )

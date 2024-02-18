@@ -170,6 +170,12 @@ dependencies {
     // wav recorder
     implementation("com.github.squti:Android-Wave-Recorder:1.7.0")
 
+    // circleimageview
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

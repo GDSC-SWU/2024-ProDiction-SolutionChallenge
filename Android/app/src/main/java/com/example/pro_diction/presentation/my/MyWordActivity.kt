@@ -115,14 +115,14 @@ class MyWordActivity : AppCompatActivity() {
             override fun onItemLongClick(view: View, position: Int) {
                 val builder = AlertDialog.Builder(this@MyWordActivity)
                 builder.setTitle("")
-                    .setMessage("정말 단어를 삭제하시겠습니까?")
-                    .setNegativeButton("취소",
+                    .setMessage(getString(R.string.delete_text))
+                    .setNegativeButton(getString(R.string.cancel),
                         DialogInterface.OnClickListener { dialog, id ->
 
 
                         })
 
-                    .setPositiveButton("삭제",
+                    .setPositiveButton(getString(R.string.delete),
                         DialogInterface.OnClickListener() { dialog, id ->
                             deleteMyWord.deleteWord(mywordList[position].vocabularyId).enqueue(object: Callback<BaseResponse<WordApiDto>> {
                                 override fun onResponse(
@@ -169,6 +169,7 @@ class MyWordActivity : AppCompatActivity() {
             }
             R.id.menu_search -> { // 검색 버튼
                 val intent = Intent(this, SearchActivity::class.java)
+                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
         }

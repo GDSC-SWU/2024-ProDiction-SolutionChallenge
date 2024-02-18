@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.pro_diction.R
@@ -67,7 +68,8 @@ class LearnPhonemeActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_search -> { // 검색 버튼
-                val intent = Intent(this, SearchActivity::class.java)
+                val intent = Intent(this@LearnPhonemeActivity, SearchActivity::class.java)
+                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
         }

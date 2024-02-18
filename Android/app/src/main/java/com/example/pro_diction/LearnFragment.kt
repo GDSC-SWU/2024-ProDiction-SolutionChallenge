@@ -53,6 +53,7 @@ class LearnFragment : Fragment() {
         val search = learnInflater.findViewById<Button>(R.id.btn_search)
         search.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
+            intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
         }
 

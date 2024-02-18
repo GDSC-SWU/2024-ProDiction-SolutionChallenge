@@ -13,9 +13,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.bumptech.glide.Glide
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.MyPageDto
+import com.example.pro_diction.data.dto.ResponseDto
 import com.example.pro_diction.databinding.FragmentMyBinding
 import com.example.pro_diction.presentation.auth.MainLoginActivity
 import com.example.pro_diction.presentation.my.AgeActivity
@@ -23,13 +25,16 @@ import com.example.pro_diction.presentation.my.CallActivity
 import com.example.pro_diction.presentation.my.LanguageActivity
 import com.example.pro_diction.presentation.my.MyWordActivity
 import com.example.pro_diction.presentation.onboarding.OnBoarding1Activity
+import com.example.pro_diction.presentation.onboarding.OnBoarding2Activity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.URL
 import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,6 +59,9 @@ class MyFragment : Fragment() {
 
     lateinit var myInflater : View
     lateinit var ageIntent: Intent
+
+    var logout = ApiPool.logout
+    var profile = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +121,25 @@ class MyFragment : Fragment() {
 
         // 로그아웃 버튼 logout button
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
-            signOut()
+            logout.logout().enqueue(object: Callback<ResponseDto> {
+                override fun onResponse(call: Call<ResponseDto>, response: Response<ResponseDto>) {
+                    if (response.isSuccessful) {
+                        if(response.body() != null) {
+                            if (response.body()!!.code == 200)
+                            {
+                                Log.e("logout", response.body().toString())
+                                signOut()
+                            }
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseDto>, t: Throwable) {
+                    Log.e("error", t.toString())
+                }
+            })
+
         }
 
         // 단어장 word list button
@@ -156,7 +182,7 @@ class MyFragment : Fragment() {
         }
 
         // retest
-        val retestIntent = Intent(this.context, OnBoarding1Activity::class.java)
+        val retestIntent = Intent(this.context, OnBoarding2Activity::class.java)
         myInflater.findViewById<TextView>(R.id.tv_retest).setOnClickListener {
             startActivity(retestIntent)
         }
@@ -205,7 +231,16 @@ class MyFragment : Fragment() {
                     if (response.body() != null) {
                         myInflater.findViewById<TextView>(R.id.tv_nick).text =
                             response.body()!!.data?.nickname ?: ""
-
+                        val url = URL(response.body()!!.data?.googleProfile ?: "")
+                        val defaultImage = R.drawable.ic_default
+                        val view = myInflater.findViewById<ImageView>(R.id.v_profile)
+                        Glide.with(this@MyFragment)
+                            .load(url)
+                            .placeholder(defaultImage)
+                            .error(defaultImage)
+                            .fallback(defaultImage)
+                            .circleCrop()
+                            .into(view)
                         if (response.body()!!.data?.age != null) {
                             ageIntent.putExtra("age", response.body()!!.data?.age.toString())
                         }

@@ -8,7 +8,7 @@
     <string name="onboarding_1_title">나이를 입력해주세요</string>
     <string name="onboarding_1_sub">자주 사용하는 단어를 추천해 더 ​​재미있게 학습할 수 있어요!</string>
     <string name="onboarding_1_btn">다음</string>
-    <string name="skip"><u>건너뛰기</u></string>
+    <string name="skip"><u>건너뛰기></u></string>
     <string name="onboarding_2_title">실력테스트</string>
     <string name="onboarding_2_sub">테스트에 응시하고 알맞은 레벨을 추천받아 보세요!</string>
     <string name="onboarding_2_btn">테스트 응시하기</string>
@@ -65,6 +65,11 @@
     <string name="coach_3">➍ 지화 설명서를\n확인할 수 있어요</string>
     <string name="coach_4">➎ 수화 인식이 원활하지 않을 경우,\n자판을 통해 말을 전달할 수 있어요</string>
     <string name="etc">기타</string>
+    <string name="delete_text">정말 단어를 삭제하시겠습니까?</string>
+    <string name="cancel">취소</string>
+    <string name="delete">삭제</string>
+    <string name="view_pro">표준발음 보기</string>
+
 
 
     <string name="media_pipe">MediaPipe</string>
@@ -104,4 +109,16 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="real_spead">실제 속도로 발음하고 내 발음 점수를 확인해보세요.</string>
+    <string name="slow_record">아이콘을 누르고 또박또박 천천히 말해보세요.</string>
+    <string name="standard">표준발음</string>
+    <string name="please_slow">한 음절씩 또박또박 천천히 발음해 주세요.</string>
+    <string name="please_again">다시 녹음해 주세요.</string>
+    <string name="record_success">녹음되었습니다.</string>
+    <string name="please_record">녹음해 주세요!</string>
+    <string name="word_add">단어장에 추가되었습니다.</string>
+    <string name="word_already">이미 추가된 단어입니다.</string>
+    <string name="nim">님</string>
+    <string name="recent_search">최근 검색어</string>
+    <string name="delete_search">삭제</string>
 </resources>

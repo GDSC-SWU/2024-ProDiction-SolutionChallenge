@@ -51,9 +51,9 @@ class OnBoarding2_1Activity : AppCompatActivity() {
     var testList : MutableList<String> = mutableListOf()
     var testIdList : MutableList<Int> = mutableListOf()
     private var now = 0  // question number in this level
-    private var total : Float = 0.0f  // total score
+    private var total : Int = 0  // total score
     private var done = false  // if total < 60 => test done
-    var testScoreList: MutableList<Float> = mutableListOf()
+    var testScoreList: MutableList<Int> = mutableListOf()
 
     // test api
     private val getScoreService = ApiPool.getScore
@@ -191,7 +191,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
 
                                 // total score
                                 total = testScoreList[0] + testScoreList[1] + testScoreList[2]
-                                if (total >= 210.0) {
+                                if (total >= 210) {
                                     stage++
                                     done = false
                                 }
@@ -362,7 +362,7 @@ class OnBoarding2_1Activity : AppCompatActivity() {
         //findViewById<Button>(R.id.pauseResumeRecordingButton).visibility = View.GONE
         //findViewById<Switch>(R.id.showAmplitudeSwitch).isChecked = false
         findViewById<ImageButton>(R.id.btn_onboarding_2_1).setImageDrawable(resources.getDrawable(R.drawable.btn_listen))
-        Toast.makeText(this, "Recording completed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.record_success), Toast.LENGTH_SHORT).show()
         //findViewById<Button>(R.id.button).text = "START"
         //findViewById<TextView>(R.id.noiseSuppressorSwitch).isEnabled = true
 
