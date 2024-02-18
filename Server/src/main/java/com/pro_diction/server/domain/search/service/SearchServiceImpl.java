@@ -4,8 +4,10 @@ import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.member.exception.MemberNotFoundException;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
 import com.pro_diction.server.domain.search.dto.SearchContentHistoryDto;
+import com.pro_diction.server.domain.search.dto.SearchResponseDto;
 import com.pro_diction.server.domain.search.entity.Search;
 import com.pro_diction.server.domain.search.exception.KeywordRequiredException;
+import com.pro_diction.server.domain.search.exception.SearchNotFoundException;
 import com.pro_diction.server.domain.search.repository.SearchRepository;
 import com.pro_diction.server.domain.study.dto.StudyResponseDto;
 import com.pro_diction.server.domain.study.entity.Study;
@@ -24,6 +26,21 @@ public class SearchServiceImpl implements SearchService {
     private final SearchRepository searchRepository;
     private final StudyRepository studyRepository;
     private final MemberRepository memberRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SearchContentHistoryDto> getRecentSearchList(Member member) {
+        member = memberRepository.findById(member.getId()).orElseThrow(MemberNotFoundException::new);
+        List<Search> searchList = searchRepository.findAllByMemberOrderById(member);
+
+        return searchList.stream()
+                .map(search -> SearchContentHistoryDto.builder()
+                        .searchId(search.getId())
+                        .searchContent(search.getSearchContent())
+                        .searchDate(search.getSearchDate().format(DateTimeFormatter.ofPattern("MM.dd")))    // 날짜 형식 변환
+                        .build())
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional
@@ -48,17 +65,12 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<SearchContentHistoryDto> getRecentSearchList(Member member) {
-        member = memberRepository.findById(member.getId()).orElseThrow(MemberNotFoundException::new);
-        List<Search> searchList = searchRepository.findAllByMemberOrderById(member);
+    @Transactional
+    public SearchResponseDto deleteSearch(Long searchId) {
+        Search search = searchRepository.findById(searchId)
+                .orElseThrow(SearchNotFoundException::new);
+        searchRepository.delete(search);
 
-        return searchList.stream()
-                .map(search -> SearchContentHistoryDto.builder()
-                        .searchId(search.getId())
-                        .searchContent(search.getSearchContent())
-                        .searchDate(search.getSearchDate().format(DateTimeFormatter.ofPattern("MM.dd")))    // 날짜 형식 변환
-                        .build())
-                .collect(Collectors.toList());
+        return search.toResponse();
     }
 }

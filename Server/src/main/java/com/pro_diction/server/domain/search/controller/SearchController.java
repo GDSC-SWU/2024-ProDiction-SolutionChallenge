@@ -2,6 +2,7 @@ package com.pro_diction.server.domain.search.controller;
 
 import com.pro_diction.server.domain.model.ContextUser;
 import com.pro_diction.server.domain.search.dto.SearchContentHistoryDto;
+import com.pro_diction.server.domain.search.dto.SearchResponseDto;
 import com.pro_diction.server.domain.search.service.SearchService;
 import com.pro_diction.server.domain.study.dto.StudyResponseDto;
 import com.pro_diction.server.global.common.ApiDataResponseDto;
@@ -31,5 +32,11 @@ public class SearchController {
                                                                                @AuthenticationPrincipal ContextUser contextUser) {
 
         return ApiDataResponseDto.of(searchService.getSearchResultStudyList(keyword, contextUser.getMember()));
+    }
+
+    @DeleteMapping("/{searchId}")
+    public ApiDataResponseDto<SearchResponseDto> deleteSearch(@PathVariable Long searchId) {
+
+        return ApiDataResponseDto.of(searchService.deleteSearch(searchId));
     }
 }
