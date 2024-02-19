@@ -1,6 +1,7 @@
 package com.example.pro_diction.presentation.search
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -73,6 +75,9 @@ class SearchActivity : AppCompatActivity() {
                     val intent = Intent(this@SearchActivity, SearchActivity::class.java)
                     intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
+                    val editText = findViewById<EditText>(R.id.edit_search)
+                    val inputMethodManager = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
                 }
             }
         })
@@ -114,9 +119,53 @@ class SearchActivity : AppCompatActivity() {
             override fun onItemClick(view: View, position: Int) {
                 when (view.id) {
                     R.id.tv_search_recent -> {
-                        val intent = Intent(this@SearchActivity, LearnPhonemeDetailActivity::class.java)
-                        intent.putExtra("item", list[position].searchId.toString())
-                        startActivity(intent)
+                        findViewById<EditText>(R.id.edit_search).setText(list[position].searchContent.toString())
+                        postSearch.postSearch(list[position].searchContent.toString()).enqueue(object: Callback<BaseResponse<List<StudyResponseDto>>> {
+                            override fun onResponse(
+                                call: Call<BaseResponse<List<StudyResponseDto>>>,
+                                response: Response<BaseResponse<List<StudyResponseDto>>>
+                            ) {
+                                if (response.isSuccessful) {
+                                    listSearch.clear()
+                                    if (response.body() != null) {
+                                        response.body()!!.data?.forEach {it ->
+                                            listSearch.add(it)
+                                        }
+                                        findViewById<TextView>(R.id.tv_recent_search).visibility = View.INVISIBLE
+                                        findViewById<TextView>(R.id.tv_del).visibility = View.INVISIBLE
+
+                                        recyclerview.adapter = adapterSearch
+                                        recyclerview.layoutManager = LinearLayoutManager(this@SearchActivity)
+
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<BaseResponse<List<StudyResponseDto>>>,
+                                t: Throwable
+                            ) {
+                                Log.e("error", t.toString())
+                            }
+                        })
+                        // adapter
+                        adapterSearch = SearchAdapter(listSearch, findViewById<EditText>(R.id.edit_search))
+                        recyclerview.adapter = adapterSearch
+                        recyclerview.layoutManager = LinearLayoutManager(this@SearchActivity)
+
+                        adapterSearch.setOnItemClickListener(object: SearchAdapter.OnItemClickListener {
+                            override fun onItemClick(view: View, position: Int) {
+                                when (view.id) {
+                                    R.id.tv_search_recent -> {
+                                        val intent =
+                                            Intent(this@SearchActivity, LearnPhonemeDetailActivity::class.java)
+                                        intent.putExtra("item", listSearch[position].studyId.toString())
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
+                        })
+
                     }
                     R.id.iv_search_delete -> {
                         Log.e("click", "click")
