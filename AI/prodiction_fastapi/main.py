@@ -173,7 +173,7 @@ def process_audio_file(file: UploadFile):
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=11025,
+        sample_rate_hertz=16000,
         language_code="ko-KR",
         enable_word_confidence=True,
     )
@@ -207,7 +207,7 @@ def process_audio_file_syllable(file_path):
 
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=11025,
+        sample_rate_hertz=16000,
         language_code="ko-KR",
         enable_word_confidence=True,
     )
