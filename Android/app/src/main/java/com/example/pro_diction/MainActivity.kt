@@ -5,12 +5,14 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.pro_diction.presentation.comm.CommFragment
 import com.example.pro_diction.databinding.ActivityMainBinding
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.language.bm.Lang
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
+
 
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
 /*
     override fun onResume() {

@@ -4,7 +4,7 @@
     <string name="SERVER_CLIENT_ID">1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com</string>
     <string name="sign_in">구글로 로그인하기</string>
     <string name="login_text1">당신의 좋은 발음을 위해</string>
-    <string name="login_text2">Pro - Diction</string>
+    <string name="login_text2">\'Pro-Diction\'</string>
     <string name="onboarding_1_title">나이를 입력해주세요</string>
     <string name="onboarding_1_sub">자주 사용하는 단어를 추천해 더 ​​재미있게 학습할 수 있어요!</string>
     <string name="onboarding_1_btn">다음</string>
@@ -121,4 +121,13 @@
     <string name="nim">님</string>
     <string name="recent_search">최근 검색어</string>
     <string name="delete_search">삭제</string>
+    <string name="addT">합치기</string>
+    <string name="space">띄어쓰기</string>
+    <string name="clear_one">한글자 삭제</string>
+    <string name="clear_all">전체 삭제</string>
+    <string name="login_top">Log in and enjoy your personalized</string>
+    <string name="login_left">‘Pro-Dicition’</string>
+    <string name="login_right">learing</string>
+    <string name="main_title">Pro - Diction</string>
+
 </resources>

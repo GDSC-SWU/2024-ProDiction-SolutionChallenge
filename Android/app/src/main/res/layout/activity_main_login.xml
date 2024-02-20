@@ -11,42 +11,57 @@
         android:id="@+id/tv_login1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_text1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_login2"
-        app:layout_constraintEnd_toEndOf="@+id/tv_login2"
-        app:layout_constraintBottom_toTopOf="@+id/tv_login2"
-        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/login_top"
         android:textColor="@color/font"
         android:textSize="16sp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="200dp"/>
+        app:layout_constraintBottom_toTopOf="@+id/tv_login2"
+        app:layout_constraintEnd_toEndOf="@+id/iv_logo"
+        app:layout_constraintStart_toStartOf="@+id/iv_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/tv_login2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_text2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login1"
-        app:layout_constraintStart_toStartOf="@+id/iv_logo"
-        app:layout_constraintEnd_toEndOf="@+id/iv_logo"
-        app:layout_constraintBottom_toTopOf="@id/iv_logo"
         android:layout_marginBottom="15dp"
+        android:text="@string/login_text2"
         android:textColor="#264A74"
         android:textSize="19sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/iv_logo"
+        app:layout_constraintEnd_toStartOf="@+id/tv_login_right"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/iv_logo"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login1"
+        android:paddingEnd="2dp"/>
+
+    <TextView
+        android:id="@+id/tv_login_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_right"
+        android:textColor="@color/font"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_login2"
+        app:layout_constraintEnd_toEndOf="@+id/iv_logo"
+        app:layout_constraintStart_toEndOf="@+id/tv_login2"
+        app:layout_constraintTop_toTopOf="@+id/tv_login2"
+        android:paddingStart="2dp"/>
 
 
     <ImageView
         android:id="@+id/iv_logo"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_margin="0dp"
         android:src="@drawable/ic_main_logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="0dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_google_login"
@@ -64,14 +79,14 @@
             android:id="@+id/iv_google"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_google"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_sign_in"
             app:layout_constraintHorizontal_chainStyle="packed"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_sign_in"
@@ -80,16 +95,13 @@
             android:text="@string/sign_in"
             android:textColor="#001938"
             android:textSize="15sp"
-            app:layout_constraintTop_toTopOf="@+id/iv_google"
             app:layout_constraintBottom_toBottomOf="@+id/iv_google"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_google"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-
+            app:layout_constraintTop_toTopOf="@+id/iv_google" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     <string name="SERVER_CLIENT_ID">1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com</string>
     <string name="sign_in">Continue with Google</string>
     <string name="login_text1">For your proper diction</string>
-    <string name="login_text2">Pro - Diction</string>
+    <string name="login_text2">\'Pro-Diction\'</string>
     <string name="onboarding_1_title">Please enter your age.</string>
     <string name="onboarding_1_sub">recommendations for frequently used words to make learning more fun!</string>
     <string name="onboarding_1_btn">Next</string>
@@ -116,4 +116,12 @@
     <string name="nim"></string>
     <string name="recent_search">Recent searches</string>
     <string name="delete_search">delete</string>
+    <string name="addT">add</string>
+    <string name="space">space</string>
+    <string name="clear_one">clear one</string>
+    <string name="clear_all">clear all</string>
+    <string name="login_top">Log in and enjoy your personalized</string>
+    <string name="login_left">‘Pro-Dicition’</string>
+    <string name="login_right">learing</string>
+    <string name="main_title">Pro - Diction</string>
 </resources>

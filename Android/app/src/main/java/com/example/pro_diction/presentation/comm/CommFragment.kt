@@ -354,10 +354,10 @@ class CommFragment : Fragment(),
         val adapterMo = SignAdapter(imageMoList)
 
         val imageEtcList : MutableList<SignDto> = mutableListOf()
-        imageEtcList.add(SignDto(R.drawable.add, "add"))
-        imageEtcList.add(SignDto(R.drawable.spacing, "space"))
-        imageEtcList.add(SignDto(R.drawable.clear_one, "clear one"))
-        imageEtcList.add(SignDto(R.drawable.clear_all, "clear all"))
+        imageEtcList.add(SignDto(R.drawable.add, getString(R.string.addT)))
+        imageEtcList.add(SignDto(R.drawable.spacing, getString(R.string.addT)))
+        imageEtcList.add(SignDto(R.drawable.clear_one, getString(R.string.addT)))
+        imageEtcList.add(SignDto(R.drawable.clear_all, getString(R.string.addT)))
         val adapterEtc = SignSmallAdapter(imageEtcList)
 
         fragmentCommBinding.rvCon.adapter = adapterJa
