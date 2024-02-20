@@ -37,12 +37,12 @@ class MainSplashActivity : AppCompatActivity() {
                     button.setBackgroundResource(R.drawable.bg_background_round_on)
                     button.setTextColor(Color.parseColor("#E8ECEF"))
                     button.isClickable = true
-                    button.isEnabled= true
+
                 } else {
                     button.setBackgroundResource(R.drawable.bg_background_round)
                     button.setTextColor(Color.parseColor("#B9B9B9"))
                     button.isClickable = false
-                    button.isEnabled= false
+
                 }
             }
         })
@@ -69,7 +69,7 @@ class MainSplashActivity : AppCompatActivity() {
         return arrayListOf("Comm", "Learn", "My")
     }
     private fun getList(): ArrayList<Int> {
-        return arrayListOf<Int>(R.drawable.ic_splash_test, R.drawable.ic_splash_test, R.drawable.ic_splash_test)
+        return arrayListOf<Int>(R.drawable.splash1, R.drawable.splash2, R.drawable.splash3)
     }
     private fun getStringList(): ArrayList<String> {
         return arrayListOf<String>(getString(R.string.splash1_sub), getString(R.string.splash2_sub), getString(R.string.splash3_sub))

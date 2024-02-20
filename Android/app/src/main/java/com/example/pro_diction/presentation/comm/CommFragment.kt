@@ -734,7 +734,7 @@ class CommFragment : Fragment(),
                         Log.e("str", str)
 
 
-                        if (recogList.size == 20) {
+                        if (recogList.size == 15) {
                             Log.e("recog", recogList[0])
                             if (lastStr == str) {
                                 Log.e("recogList if (lastStr == str)", recogList.toString())

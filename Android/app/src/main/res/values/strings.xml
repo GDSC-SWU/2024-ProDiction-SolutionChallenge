@@ -33,8 +33,8 @@
     <string name="my">Privacy</string>
     <string name="logout">Logout</string>
     <string name="delete_account">Withdrawal</string>
-    <string name="now">You are</string>
-    <string name="level">on</string>
+    <string name="now">You\'re at the</string>
+    <string name="level">stage</string>
     <string name="media_url_mp4_v1">https://storage.googleapis.com/prodiction-bucket/diction_video_v1/</string>
     <string name="media_url_mp4_v2">https://storage.googleapis.com/prodiction-bucket/diction_video_v2/</string>
     <string name="center_sub">This is a real-time communication relay service that allows hearing or speech impaired people who have difficulty using the phone to communicate freely over the phone.</string>
@@ -124,8 +124,11 @@
     <string name="login_left">‘Pro-Dicition’</string>
     <string name="login_right">learing</string>
     <string name="main_title">Pro - Diction</string>
-    <string name="splash1_sub">Real-time communication with non-disabled people (especially those who do not know sign language) is possible through sign language or text.</string>
-    <string name="splash2_sub">Users can learn pronunciation by Level / by 가나다 / by Relevance, etc.</string>
-    <string name="splash3_sub">While learning, you can check the words you have saved as favorites through the vocabulary book in My Menu.</string>
+    <string name="splash1_sub">Real-time communication\nwith non-disabled people\n(especially those who do not know sign language)\nis possible through sign language or text.</string>
+    <string name="splash2_sub">Users can learn pronunciation\nby Level / by 가나다 / by Relevance, etc.</string>
+    <string name="splash3_sub">While learning,\nyou can check the words\nyou have saved as favorites\nthrough the vocabulary book in My Menu.</string>
     <string name="next">Next</string>
+    <string name="order1">가나다순</string>
+    <string name="order2">Difficult</string>
+    <string name="order3">Relevance</string>
 </resources>
