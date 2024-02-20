@@ -124,4 +124,8 @@
     <string name="login_left">‘Pro-Dicition’</string>
     <string name="login_right">learing</string>
     <string name="main_title">Pro - Diction</string>
+    <string name="splash1_sub">Real-time communication with non-disabled people (especially those who do not know sign language) is possible through sign language or text.</string>
+    <string name="splash2_sub">Users can learn pronunciation by Level / by 가나다 / by Relevance, etc.</string>
+    <string name="splash3_sub">While learning, you can check the words you have saved as favorites through the vocabulary book in My Menu.</string>
+    <string name="next">Next</string>
 </resources>

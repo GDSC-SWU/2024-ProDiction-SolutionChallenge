@@ -129,5 +129,8 @@
     <string name="login_left">‘Pro-Dicition’</string>
     <string name="login_right">learing</string>
     <string name="main_title">Pro - Diction</string>
-
+    <string name="splash1_sub">수어나 텍스트를 통해서 비장애인(특히 수어를 모르는)과의 실시간 소통이 가능합니다.</string>
+    <string name="splash2_sub">사용자는 레벨 별/가나나 순/관련도 순 등으로 발음을 학습할 수 있습니다.</string>
+    <string name="splash3_sub">학습을 하며 즐겨찾기로 저장해둔 단어들을 마이 메뉴 내의 단어장을 통해 확인 할 수 있습니다.</string>
+    <string name="next">다음</string>
 </resources>
