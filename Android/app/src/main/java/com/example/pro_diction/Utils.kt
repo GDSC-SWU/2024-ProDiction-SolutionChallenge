@@ -62,7 +62,7 @@ class Utils (context: Context) {
         prefsEditor.remove(ACCESS_TOKEN)
         prefsEditor.remove(REFRESH_TOKEN)
         prefsEditor.putBoolean("LOGGED_IN", false)
-
+        prefsEditor.putBoolean("LOGGED_IN_BEFORE", false)
     }
 
     fun setStage(stage: Int) {

@@ -49,7 +49,7 @@ class OnBoardingResultAdapter (private val dataList: MutableList<OnBoardingResul
             tvQuestion.text = onboardingResult.question
             progressBar.progress = onboardingResult.progress?.toDouble()?.toInt() ?: 0
             tvPercent.text = onboardingResult.percent.toString() + "%"
-            if (onboardingResult.percent!!.toDouble() >= 50.0) {
+            if (onboardingResult.percent!!.toDouble() > 70.0) {
                 tvQuestion.setTextColor(Color.parseColor("#2F4C74"))
                 progressBar.progressTintList = ColorStateList.valueOf(Color.parseColor("#2F4C74"))
                 tvPercent.setTextColor(Color.parseColor("#2F4C74"))
