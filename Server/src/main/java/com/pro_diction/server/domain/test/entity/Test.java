@@ -35,7 +35,7 @@ public class Test {
     @Enumerated(EnumType.STRING)
     private Stage stage;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
 

@@ -6,9 +6,6 @@ import com.pro_diction.server.domain.member.entity.Member;
 import com.pro_diction.server.domain.member.exception.IdTokenRequiredException;
 import com.pro_diction.server.domain.member.exception.MemberNotFoundException;
 import com.pro_diction.server.domain.member.repository.MemberRepository;
-import com.pro_diction.server.domain.test.entity.Test;
-import com.pro_diction.server.domain.model.Stage;
-import com.pro_diction.server.domain.test.repository.TestRepository;
 import com.pro_diction.server.global.common.ApiResponseDto;
 import com.pro_diction.server.global.exception.GeneralException;
 import com.pro_diction.server.global.util.GoogleOAuthUtil;
@@ -30,7 +27,6 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
-    private final TestRepository testRepository;
     private final GoogleOAuthUtil googleOAuthUtil;
     private final ResponseUtil responseUtil;
     private final JwtUtil jwtUtil;
@@ -60,13 +56,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     public MemberResponseDto getMyProfile(Member member) {
         member = memberRepository.findById(member.getId()).orElseThrow(MemberNotFoundException::new);
-        String stage = testRepository.findOneByMember(member)
-                .map(Test::getStage)
-                .map(Stage::getTitle)
-                .orElse(null);
 
         return MemberResponseDto.toResponse(
-                member.getId(), member.getGoogleNickname(), member.getGoogleProfile(), stage, member.getAge()
+                member.getId(), member.getGoogleNickname(), member.getGoogleProfile(), member.getTest().getStage().getTitle(), member.getAge()
         );
     }
 
