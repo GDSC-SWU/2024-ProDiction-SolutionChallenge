@@ -1,5 +1,6 @@
 package com.pro_diction.server.domain.model;
 
+import com.pro_diction.server.domain.test.exception.InvalidStageException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,6 @@ public enum Stage {
                 return stage;
             }
         }
-        throw new IllegalArgumentException("No Stage found for level: " + level);
+        throw new InvalidStageException();
     }
 }
