@@ -41,7 +41,7 @@ Even without pronunciation training and correction, real-time communication with
 
 ### 2. Architecture
 - I built a Docker image for our Spring Boot project using a Dockerfile and pushed it to Dockerhub.
-- Next, I used the Vim text editor within a GCP Compute Engine instance to write the docker-compose.yml file.
+- Next, I used the Vim text editor within a GCP Compute Engine instance to write the [docker-compose.yml](https://github.com/GDSC-SWU/2024-ProDiction-SolutionChallenge/issues/37#issuecomment-1948326979).
 - After that, I pulled the Spring Boot image, along with MySQL and Redis images. 
 - Running 'docker-compose up -d' created the necessary containers. 
 - Subsequently, I utilized a Docker MySQL container to create a user, schema, and database. 
