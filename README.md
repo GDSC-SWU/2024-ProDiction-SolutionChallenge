@@ -47,9 +47,9 @@ Even without pronunciation training and correction, real-time communication with
 - Subsequently, I utilized a Docker MySQL container to create a user, schema, and database. 
 - Backend communicated with the frontend using the server container we created. 
 - To connect to an external API for pronunciation testing, the frontend sent recorded audio files to the server using Multipart. 
-- The server then handled the encoding to Base64 and sent the encoded values to the external API. 
-- Additionally, we stored Refresh Tokens in the Redis container for user authentication and authorization.
+- The server then handled the encoding to Base64 and sent the encoded values to the external API.
 - The external API processed the audio, returned the pronunciation scores to the server, which in turn forwarded them to the frontend.
+- Additionally, we stored Refresh Tokens in the Redis container for user authentication and authorization.
 - Furthermore, to play pronunciation practice videos, the backend sends the string that needs to be pronounced to an AI server. The AI server then separates the consonants and vowels in the string.
 
 ### 3. ERD
