@@ -78,8 +78,8 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Async
-    @Transactional
     @Scheduled(cron = "0 0 4 ? * MON", zone = "Asia/Seoul")
+    @Transactional
     public void cleanSearchHistory() {     // 스케줄링을 통해 필요없는 검색 기록 삭제(매주 월요일 오전 4시)
         List<Member> memberList = memberRepository.findAll();
 
