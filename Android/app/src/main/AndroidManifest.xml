@@ -2,18 +2,121 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_main_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_main_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProDiction"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.splash.MainSplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.auth.MainLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.my.AgeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.my.LanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".AudioRecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MediaRecorderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.sentense.LearnSentenseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.sentense.LearnSentenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.phrase.LearnPhraseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.phrase.LearnPhraseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.word.LearnWordDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.word.LearnWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SttActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.LearnResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.my.CallActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.VideoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.my.MyWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.syllable.LearnSyllableDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.phoneme.LearnPhonemeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.search.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.syllable.LearnSyllableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.learn.phoneme.LearnPhonemeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.onboarding.OnBoardingFinishActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.onboarding.OnBoarding2_1FinishActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.onboarding.OnBoarding2_1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.onboarding.OnBoarding2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.onboarding.OnBoarding1Activity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +124,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.comm.CommFragment"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

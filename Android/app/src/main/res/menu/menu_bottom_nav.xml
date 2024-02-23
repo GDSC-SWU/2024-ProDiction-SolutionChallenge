@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fragment_comm"
+        android:title="Comm"
+        android:icon="@drawable/ic_comm"/>
+    <item
+        android:id="@+id/fragment_learn"
+        android:title="Learn"
+        android:icon="@drawable/ic_learn" />
+    <item
+        android:id="@+id/fragment_my"
+        android:title="My"
+        android:icon="@drawable/ic_my"/>
+
+</menu>

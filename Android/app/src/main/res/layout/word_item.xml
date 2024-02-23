@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="30dp"
+    android:paddingTop="20dp">
+    <TextView
+        android:id="@+id/ic_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔗"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/tv_word_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ㄱ"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/font"
+        app:layout_constraintTop_toTopOf="@+id/ic_word"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_word"
+        app:layout_constraintStart_toEndOf="@+id/ic_word"
+        android:layout_marginStart="5dp"/>
+    <ImageButton
+        android:id="@+id/btn_word_right"
+        android:layout_width="0dp"
+        android:layout_height="13dp"
+        android:src="@drawable/ic_word_right"
+        android:background="#00ff0000"
+        android:scaleType="fitStart"
+        app:layout_constraintTop_toTopOf="@+id/ic_word"
+        app:layout_constraintBottom_toBottomOf="@+id/ic_word"
+        app:layout_constraintStart_toEndOf="@+id/tv_word_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="10dp" />
+
+    <Button
+        android:id="@+id/btn_word1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="가위"
+        android:background="@drawable/btn_background_round_border"
+        android:textColor="@color/main"
+        android:textSize="18sp"
+        android:paddingVertical="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_word2"
+        app:layout_constraintTop_toBottomOf="@+id/ic_word"
+        android:layout_marginTop="15dp"/>
+    <Button
+        android:id="@+id/btn_word2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="가위"
+        android:background="@drawable/btn_background_round_border"
+        android:textColor="@color/main"
+        android:textSize="18sp"
+        android:paddingVertical="12dp"
+        app:layout_constraintStart_toEndOf="@+id/btn_word1"
+        app:layout_constraintEnd_toStartOf="@+id/btn_word3"
+        app:layout_constraintTop_toBottomOf="@+id/ic_word"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="15dp"/>
+    <Button
+        android:id="@+id/btn_word3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="가위"
+        android:background="@drawable/btn_background_round_border"
+        android:textColor="@color/main"
+        android:textSize="18sp"
+        android:paddingVertical="12dp"
+        app:layout_constraintStart_toEndOf="@+id/btn_word2"
+        app:layout_constraintTop_toBottomOf="@+id/ic_word"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
