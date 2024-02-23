@@ -9,12 +9,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.RadioButton
 import androidx.appcompat.widget.Toolbar
 import com.example.pro_diction.MainActivity
-import com.example.pro_diction.MyFragment
 import com.example.pro_diction.R
-import com.example.pro_diction.presentation.learn.SearchActivity
 import java.util.Locale
 
 class LanguageActivity : AppCompatActivity() {

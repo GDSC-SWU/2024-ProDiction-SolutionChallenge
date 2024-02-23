@@ -54,5 +54,6 @@
         android:textColor="@color/white"
         android:textSize="17sp"
         android:textStyle="bold"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

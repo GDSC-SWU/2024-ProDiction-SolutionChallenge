@@ -25,6 +25,7 @@ import com.example.pro_diction.MediaRecorderActivity
 import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
+import com.example.pro_diction.data.dto.MyPageDto
 import com.example.pro_diction.data.dto.RandomTestDto
 import com.example.pro_diction.data.dto.TestScoreDto
 import com.example.pro_diction.presentation.learn.phrase.LearnPhraseDetailActivity
@@ -409,12 +410,12 @@ class OnBoarding2_1Activity : AppCompatActivity() {
             "00:00"
         }
     }
-/*
-    override fun onStop() {
-        super.onStop()
-        recorder?.release()
-        recorder = null
-        player?.release()
-        player = null
-    }*/
+    /*
+        override fun onStop() {
+            super.onStop()
+            recorder?.release()
+            recorder = null
+            player?.release()
+            player = null
+        }*/
 }

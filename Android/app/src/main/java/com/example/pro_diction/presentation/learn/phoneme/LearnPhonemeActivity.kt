@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.pro_diction.R
 import com.example.pro_diction.presentation.learn.LearnPhonemeVowelsFragment
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.google.android.material.tabs.TabLayout
 
 class LearnPhonemeActivity : AppCompatActivity() {

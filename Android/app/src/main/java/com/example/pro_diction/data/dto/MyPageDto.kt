@@ -9,6 +9,6 @@ data class MyPageDto(
     @SerialName("memberId") val categmemberIdoryId: Int,
     @SerialName("nickname") val nickname: String,
     @SerialName("googleProfile") val googleProfile: String,
-    @SerialName("stage") val stage: String,
-    @SerialName("age") val age: Int
+    @SerialName("stage") val stage: String?,
+    @SerialName("age") val age: Int?
 )

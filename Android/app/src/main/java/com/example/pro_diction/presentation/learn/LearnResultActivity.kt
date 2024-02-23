@@ -19,12 +19,11 @@ import androidx.core.content.ContextCompat
 import com.example.pro_diction.R
 import com.example.pro_diction.data.AiApiPool
 import com.example.pro_diction.data.ApiPool
-import com.example.pro_diction.data.ApiPool.postTestResult
 import com.example.pro_diction.data.BaseResponse
-import com.example.pro_diction.data.dto.TestResultDto
 import com.example.pro_diction.data.dto.TestScoreDto
 import com.example.pro_diction.data.dto.WordApiDto
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.github.squti.androidwaverecorder.RecorderState
 import com.github.squti.androidwaverecorder.WaveRecorder
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

@@ -3,8 +3,6 @@ package com.example.pro_diction.presentation.learn.phoneme
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.media.MediaPlayer
-import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,21 +17,16 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import com.example.pro_diction.MediaRecorderActivity
 import com.example.pro_diction.R
 import com.example.pro_diction.data.AiApiPool
-import com.example.pro_diction.data.AiRetrofitPool
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.StudyItem
 import com.example.pro_diction.data.dto.TestResultDto
-import com.example.pro_diction.data.dto.TestScoreDto
 import com.example.pro_diction.databinding.ActivityLearnPhonemeDetailBinding
 import com.example.pro_diction.presentation.learn.LearnResultActivity
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.VideoActivity
-import com.example.pro_diction.presentation.onboarding.OnBoarding2_1Activity
 import com.github.squti.androidwaverecorder.RecorderState
 import com.github.squti.androidwaverecorder.WaveRecorder
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -42,9 +35,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import java.io.File
-import java.io.IOException
 
 private const val LOG_TAG = "AudioRecordTest"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200

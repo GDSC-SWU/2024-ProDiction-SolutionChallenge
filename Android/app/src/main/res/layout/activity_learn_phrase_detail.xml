@@ -51,6 +51,22 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_phrase_detail_title"
         android:layout_marginTop="30dp" />
 
+    <Button
+        android:id="@+id/btn_order"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="@string/order1"
+        android:textColor="@color/font"
+        android:textSize="12sp"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="@+id/tv_phrase_detail_main"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_phrase_detail_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="30dp"
+        android:drawableEnd="@drawable/ic_order_size"
+        android:textAllCaps="false"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_phrase_detail"
         android:layout_width="match_parent"

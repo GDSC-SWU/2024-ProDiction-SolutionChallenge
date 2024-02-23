@@ -9,6 +9,7 @@
     <color name="camera_back">#CD000000</color>
     <color name="comm_edit_back">#CC00142E</color>
     <color name="gray2">#565656</color>
+    <color name="transparent">#00ff0000</color>
 
 
     <!-- gesture -->

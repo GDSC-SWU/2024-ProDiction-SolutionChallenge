@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
-import com.example.pro_diction.data.dto.MyWordDto
-import com.example.pro_diction.data.dto.SentenseDetailDto
 import com.example.pro_diction.data.dto.WordApiDto
 import com.example.pro_diction.data.dto.WordListDto
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
-import com.example.pro_diction.presentation.learn.sentense.SentenseDetailAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback

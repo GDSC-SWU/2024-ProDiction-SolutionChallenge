@@ -75,17 +75,11 @@ class MyFragment : Fragment() {
 
         // 구글 로그아웃을 위해 로그인 세션 가져오기
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("1016660677235-epa63ipq5lp6ppeiih7vkpuug8pdjho4.apps.googleusercontent.com")
+            .requestIdToken("1016660677235-2t9s0516ga3u2intbuga7dvp0uaro0v6.apps.googleusercontent.com")
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
-        val account: GoogleSignInAccount? = this.context?.let {
-            GoogleSignIn.getLastSignedInAccount(
-                it
-            )
-        }
-        nick = account?.displayName.toString()
     }
 
     override fun onCreateView(
@@ -98,26 +92,10 @@ class MyFragment : Fragment() {
         // 닉네임 nick name
         //myInflater.findViewById<TextView>(R.id.tv_nick).text = nick
 
+
         var tvLevel = myInflater.findViewById<TextView>(R.id.tv_my_level)
         // level
-        if (App.prefs.getStage() == 1) {
-            tvLevel.text = getString(R.string.learn_1)
-        }
-        else if (App.prefs.getStage() == 2) {
-            tvLevel.text = getString(R.string.learn_2)
-        }
-        else if (App.prefs.getStage() == 3) {
-            tvLevel.text = getString(R.string.learn_3)
-        }
-        else if (App.prefs.getStage() == 4) {
-            tvLevel.text = getString(R.string.learn_4)
-        }
-        else if (App.prefs.getStage() == 5) {
-            tvLevel.text = getString(R.string.learn_5)
-        }
-        else{
-            tvLevel.text = "-"
-        }
+
 
         // 로그아웃 버튼 logout button
         myInflater.findViewById<TextView>(R.id.tv_logout).setOnClickListener {
@@ -231,6 +209,36 @@ class MyFragment : Fragment() {
                     if (response.body() != null) {
                         myInflater.findViewById<TextView>(R.id.tv_nick).text =
                             response.body()!!.data?.nickname ?: ""
+                        if (response.body()!!.data?.stage != null) {
+                            var tvLevel = myInflater.findViewById<TextView>(R.id.tv_my_level)
+                            if (response.body()!!.data?.stage == "Phoneme") {
+                                tvLevel.text = getString(R.string.learn_1)
+                                App.prefs.setStage(1)
+
+                            }
+                            else if (response.body()!!.data?.stage == "Syllable") {
+                                tvLevel.text = getString(R.string.learn_2)
+                                App.prefs.setStage(2)
+                            }
+                            else if (response.body()!!.data?.stage == "Word") {
+                                tvLevel.text = getString(R.string.learn_3)
+                                App.prefs.setStage(3)
+                            }
+                            else if (response.body()!!.data?.stage == "Phrase") {
+                                tvLevel.text = getString(R.string.learn_4)
+                                App.prefs.setStage(4)
+                            }
+                            else {
+                                tvLevel.text = getString(R.string.learn_5)
+                                App.prefs.setStage(5)
+                            }
+
+
+                        }
+                        else {
+                            myInflater.findViewById<TextView>(R.id.tv_my_level).text = getString(R.string.learn_1)
+                            App.prefs.setStage(1)
+                        }
                         val url = URL(response.body()!!.data?.googleProfile ?: "")
                         val defaultImage = R.drawable.ic_default
                         val view = myInflater.findViewById<ImageView>(R.id.v_profile)

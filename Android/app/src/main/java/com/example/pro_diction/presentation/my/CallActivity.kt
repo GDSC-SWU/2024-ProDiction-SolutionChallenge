@@ -9,9 +9,7 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.pro_diction.R
-import com.example.pro_diction.presentation.learn.SearchActivity
 
 class CallActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

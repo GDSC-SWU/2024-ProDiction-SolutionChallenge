@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MyFragment">
+    tools:context=".MyFragment"
+    android:background="@color/white">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -392,7 +393,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="onboarding" />
+        android:text="onboarding"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_t_stt"
@@ -400,7 +402,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_t"
-        android:text="stt" />
+        android:text="stt"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_t_record"
@@ -408,7 +411,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_t_stt"
-        android:text="record" />
+        android:text="record"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_t_record_2"
@@ -416,6 +420,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_t_record"
-        android:text="record" />
+        android:text="record"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,12 +14,8 @@ import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
 import com.example.pro_diction.data.dto.CategoryResponseDto
-import com.example.pro_diction.data.dto.PhraseDto
-import com.example.pro_diction.data.dto.SentenseDto
-import com.example.pro_diction.presentation.learn.SearchActivity
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
-import com.example.pro_diction.presentation.learn.phrase.LearnPhraseDetailActivity
-import com.example.pro_diction.presentation.learn.phrase.PhraseAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback

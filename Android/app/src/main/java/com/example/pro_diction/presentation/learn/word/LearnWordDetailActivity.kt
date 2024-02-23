@@ -6,23 +6,19 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pro_diction.R
 import com.example.pro_diction.data.ApiPool
 import com.example.pro_diction.data.BaseResponse
-import com.example.pro_diction.data.dto.ConsonantDto
 import com.example.pro_diction.data.dto.StudyResponseDto
-import com.example.pro_diction.data.dto.WordDetailDto
-import com.example.pro_diction.presentation.learn.SearchActivity
-import com.example.pro_diction.presentation.learn.phoneme.ConsonantAdapter
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.example.pro_diction.presentation.learn.phoneme.LearnPhonemeDetailActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.protobuf.Api
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +26,7 @@ import retrofit2.Response
 class LearnWordDetailActivity : AppCompatActivity() {
     var getSubCategory = ApiPool.getSubCategory
     var list: MutableList<StudyResponseDto> = mutableListOf()
+    var order = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_learn_word_detail)
@@ -39,6 +36,23 @@ class LearnWordDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+        // order
+        var btnOrder = findViewById<Button>(R.id.btn_order)
+        btnOrder.setOnClickListener {
+            if (order == 0) {
+                btnOrder.text = getString(R.string.order2)
+                order = 1
+            }
+            else if (order == 1) {
+                btnOrder.text = getString(R.string.order3)
+                order = 2
+            }
+            else {
+                btnOrder.text = getString(R.string.order1)
+                order = 0
+            }
+        }
 
         // consonant setting
         val id = intent.getStringExtra("id")

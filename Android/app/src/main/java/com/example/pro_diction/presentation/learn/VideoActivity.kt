@@ -10,8 +10,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.example.pro_diction.R
-import com.example.pro_diction.databinding.ActivityLearnPhonemeDetailBinding
 import com.example.pro_diction.databinding.ActivityVideoBinding
+import com.example.pro_diction.presentation.search.SearchActivity
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
